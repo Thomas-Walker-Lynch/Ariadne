@@ -1,0 +1,41 @@
+
+Generally, project directories are named after the agent the files are for.
+
+The top level directory is reserved for the project manager. The project
+manager's directory will hold the git repo, virtual environment tool installs,
+and one or more files to be sourced for initializing the environment.  The
+environment variable $REPO_HOME points to the top level directory.
+
+The developers' directory is $REPO_HOME/developer, which is the also
+$DEVELOPER_HOME.
+
+When 'make' or 'build.gradle' is found in the top level directory,
+i.e. $REPO_HOME, it is for building tools. The developer will have a separate
+build file under $DEVELOPER_HOME.
+
+When a project has files for the C compiler, cc, are put in a directory called "cc".
+Files for the java compiler, javac, are in the directory "javac". Etc.
+
+An `executor` is a generic name for a program that runs a file. Example
+executors include the OS loader for binary files, the JVM for .jar files,
+and bash for running shell scripts.  A directory that holds a mix of such
+files is called `executor`, as the files are for the `executor`.
+
+A directory full of documents is then for 'readers'.
+
+Some directories are more difficult to name after an agent that uses the
+files in them. Like our ancestors who personified nearly everything with
+spirits, we will do the same.
+
+When programs use a directory as a scratch pad, where files will disappear
+seemingly without reason we will call the directory "tanuki". This is a Japanese
+raccoon so famous for making things disappear that it has taken on mystical
+proportions.
+
+As a developer I often have files that I set aside just in case I want to look
+at them again, or later make new versions. So I give them to the God of sleep,
+Somnus. Maybe they will be woken up, maybe they won't. Unlike tanuki files,
+they are not deleted by any of the tools.
+
+Files in tanuki and Soumnus are not placed into the repo.
+
