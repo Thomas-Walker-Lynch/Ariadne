@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# environment common to all tests
+# each test directory also has an environment

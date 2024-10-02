@@ -1,0 +1,82 @@
+
+Naming Conventions for Directories
+
+  Our shop has a convention of naming directories after the role of the person,
+  the name of the program, or generally, the agent, who is going to use the
+  files in the directory. In short, the name is often the answer to the question
+  "who are the files are for?".
+
+  Sometimes there is not a good answer to that question. A good example is the
+  documents directory. There really isn't a good term for the role that people
+  are playing when the read the documents.  Perhaps, 'readers'? This is not a
+  job function, and it is a somewhat ambiguous.  Perhaps, 'projectologist'? Ah
+  nah ..
+
+  When we can not answer the question of who the files are for, we instead
+  choose another common property shared by each and every file in the directory.
+  It is often the case that a property that each and every file has in common
+  will be singular.  Hence in the example in the prior paragraph, when each file
+  in a directory has the property of being a document, the directory gets called
+  'document'.
+
+Top Level Directory
+
+  The top level of a github project is of course named after the project. Though
+  we people like to see actors related to project names. Look at all the
+  mythical animals on the covers of the O'Reilley manuals.
+
+  The top level directory of our git project is reserved for project manager to
+  use. The project manager builds the directory structure, initializes the
+  repository, installs tools that will be needed, and generally administers
+  the project.
+
+  In the environment, the top level directory is located at `$REPO_HOME`
+
+Developer
+
+  The developer's directory is located at `$REPO_HOME/developer`.
+
+  This directory contains the developer's workspace.  Developers are free to
+  organize it in any manner they see fit, though they should continue to follow the
+  convention of naming directories after the agents that operate on the contained files.
+
+  As examples,
+
+  - Files for the **C compiler** are placed in the `cc` directory, since they
+    are "for" the C compiler.
+
+  - Files for the **Java compiler** (javac) are stored in the `javac` directory.
+
+  - Similar naming conventions are followed for other tools. For instance, if
+    the project involves files for another tool or compiler, the directory is
+    named after that tool.
+
+Executor
+
+  Sometimes multiple related actors operate on the files in a directory. In
+  which case we give the directory a more general name that describes the
+  actors as a group.
+
+  So if we had a directory that held a mix of files for various compilers we might
+  name the directory 'compiler_input' or even 'compiler'.
+
+  One common generalization is 'executor'. An executor is any program that runs
+  another program; examples include shells that interpret shell scripts;
+  various language interpreter; and most famously the machine loader, which will
+  load an instruction sequence into memory and point the program counter at it.
+
+Temporary
+
+  This is a scratch pad directory used by programs. Files will appear
+  and disappear from here.  There is no reason a developer can not manually
+  add a file, but scripts such as `make clean`, might delete it. Directories
+  with this name should be git ignored.
+
+Deprecated
+
+  As a developer I often have files that I set aside just in case I want to look
+  at them again. Sometimes I plan to bring them back later. Unlike temporary files,
+  they are not deleted by any clean script or any program that is using them as
+  intermediate files. This directory is also git ignored.
+
+LocalWords:  projectologist

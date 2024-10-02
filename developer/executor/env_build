@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# The build environment. 
+#
+
+# Ensure the script is sourced rather than run directly
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+  echo "This script must be sourced, not executed. Exiting."
+  return 1
+fi
+
+export ENV_BUILD_VERSION="0.1"

@@ -1,0 +1,5 @@
+*
+!/.gitignore
+!/document
+# upstream has a .gitignore file in it
+!/upstream

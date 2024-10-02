@@ -1,0 +1,9 @@
+
+export JAVA_HOME="$REPO_HOME/tool/jdk-11"
+export GROOVY_HOME="$REPO_HOME/tool/groovy-4.0.9"
+
+export PATH=\
+"$REPO_HOME"/user/Ariadne_0.1\
+:"$JAVA_HOME"/bin\
+:"$GROOVY_HOME"/bin\
+:"$PATH"

@@ -1,0 +1,41 @@
+#!/usr/bin/env groovy
+
+// Access the environment variable REPO_HOME
+def repo_home = System.getenv('REPO_HOME')
+if (!repo_home) {
+    println "Error: REPO_HOME is not set."
+    System.exit(1)
+}
+
+def version = "0.1"
+def release_dir = "${repo_home}/user/Ariadne_${version}"
+def build_fp = "${repo_home}/developer/groovy/build"
+def ariadne_lib_fp = "${repo_home}/developer/groovy/Ariadne.groovy"
+
+// Check if the release directory exists, if not, create it
+def release_dir_file = new File(release_dir)
+if (!release_dir_file.exists()) {
+    release_dir_file.mkdirs()
+}
+
+// Function to use 'install' command for copying and setting permissions
+def install_file(source_fp, target_dp, perms) {
+    def target_file = "${target_dp}/${new File(source_fp).name}"
+    def cmd = ["install", "-m", perms, source_fp, target_file]
+    def process = cmd.execute()
+    process.waitFor()
+
+    if (process.exitValue() != 0) {
+        println "Error: Failed to install ${new File(source_fp).name} to ${target_dp}"
+        println process.err.text
+        System.exit(1)
+    }
+
+    println "Installed ${new File(source_fp).name} to ${target_dp} with permissions ${perms}"
+}
+
+// Install the Shell UI and Ariadne.groovy into the release directory with the correct permissions
+install_file(build_fp, release_dir, "ug+r,ug+x")    // Executable script
+install_file(ariadne_lib_fp, release_dir, "ug+r")   // Readable script
+
+println "Release version ${version} completed at $release_dir"
