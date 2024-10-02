@@ -1,41 +1,84 @@
 
-Generally, project directories are named after the agent the files are for.
+Naming Conventions for Directories
 
-The top level directory is reserved for the project manager. The project
-manager's directory will hold the git repo, virtual environment tool installs,
-and one or more files to be sourced for initializing the environment.  The
-environment variable $REPO_HOME points to the top level directory.
+  Our shop has a convention of naming directories after the role of the person,
+  the name of the program, or generally, the agent, that is going to use
+  the files in the directory.  In short, "directories are named after the agent the
+  files are for."
 
-The developers' directory is $REPO_HOME/developer, which is the also
-$DEVELOPER_HOME.
+  This convention makes it easier for people to make sense of directory names. It
+  is also natural for people to think in terms of the actors doing things. Indeed
+  our ancestors saw the hand of a person, spirit, or God behind everything.
 
-When 'make' or 'build.gradle' is found in the top level directory,
-i.e. $REPO_HOME, it is for building tools. The developer will have a separate
-build file under $DEVELOPER_HOME.
+Top Level Directory
 
-When a project has files for the C compiler, cc, are put in a directory called "cc".
-Files for the java compiler, javac, are in the directory "javac". Etc.
+  Sometimes this naming convention is not practical.  The top level of a github
+  project must be named after the project. Though note here to the human
+  tendency to see actors. Look at all the mythical animals on the covers of the
+  O'Reilley manuals.
 
-An `executor` is a generic name for a program that runs a file. Example
-executors include the OS loader for binary files, the JVM for .jar files,
-and bash for running shell scripts.  A directory that holds a mix of such
-files is called `executor`, as the files are for the `executor`.
+  The top level directory of our git project is reserved for project manager to
+  use. It will have files such as `.git`, and various scripts for maintaining
+  the project. The project manager will install the tools used in a directory
+  called 'toolsmiths.  There is a sub directory for the developers, called
+  'developers'.
 
-A directory full of documents is then for 'readers'.
+  The top level directory is located at `$REPO_HOME`
 
-Some directories are more difficult to name after an agent that uses the
-files in them. Like our ancestors who personified nearly everything with
-spirits, we will do the same.
+Developers
 
-When programs use a directory as a scratch pad, where files will disappear
-seemingly without reason we will call the directory "tanuki". This is a Japanese
-raccoon so famous for making things disappear that it has taken on mystical
-proportions.
+  The developer’s directory is located at `$REPO_HOME/developers`, and is
+  known in the environment as `$DEVELOPERS_HOME`. 
 
-As a developer I often have files that I set aside just in case I want to look
-at them again, or later make new versions. So I give them to the God of sleep,
-Somnus. Maybe they will be woken up, maybe they won't. Unlike tanuki files,
-they are not deleted by any of the tools.
+  This directory contains the developers' workspace.  Developers are free to
+  organize it in any manner they see fit, though they should continue to follow the
+  convention of naming directories after the agents that operate on the contained files.
 
-Files in tanuki and Soumnus are not placed into the repo.
+  As examples,
 
+  - Files for the **C compiler** are placed in the `cc` directory, since they
+    are "for" the C compiler.
+
+  - Files for the **Java compiler** (javac) are stored in the `javac` directory.
+
+  - Similar naming conventions are followed for other tools. For instance, if
+    the project involves files for another tool or compiler, the directory is
+    named after that tool.
+
+Executor
+
+  Sometimes multiple actors operate on the files in a directory. In which case
+  we give the directory a more general name that describes the actors.
+
+  So if we had a directory that held a mix of files for various compilers we might
+  name the directory 'compiler_input' or even 'compiler'.
+
+  One common generalization is 'executor'. An executor is any program that runs
+  another program; examples include shells that interpret shell scripts;
+  various language interpreter; and most famously the machine loader, which will
+  load an instruction sequence into memory and point the program counter at it.
+
+Readers
+
+  This refers to humans or AIs. It is short for 'Dear Readers,".  These
+  files are for those rare individuals who read documents.
+
+Files for mythological beings
+
+  I've had a bit of fun and introduced a couple of these. We wouldn't want too
+  many.
+
+  tanuki, たぬき
+
+  Both a mythical beast, and a real animal. A kind of raccoon, which like all
+  raccoons, will steal things, especially food. Files left within reach of a
+  tanuki, are likely to disappear without notice. Typically these are things
+  such as intermediate files during a build.
+
+  Somnus
+
+  As a developer I often have files that I set aside just in case I want to look
+  at them again. Sometimes I plan to bring them back later. Unlike tanuki files,
+  they are not deleted by any clean script or any program that is using them as
+  intermediate files. However, they do not appear it the repo. Somnus is the
+  Roman god of sleep.

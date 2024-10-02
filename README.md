@@ -1,20 +1,27 @@
+Theseus volunteered to enter the inescapable maze designed by Daedalus to slay
+the Minotaur and put an end to the Athenian sacrifices. Ariadne, fearing for his
+life and desperate to help, thinks to give him a ball of string, which Theseus
+then uses to trace his way out of the maze thus saving his life.
+
+Building experimental code for GQL_to_Cypher has proven to be as complex as
+navigating Daedalus's maze. The traditional build tool `make` does not
+backward-chain pattern rules. Gradle/Groovy tends to build projects in
+layers. However, in experimental code, it is often the case that
+no complete layer will build without errors.
+
+Ariandne will attempt to build all that is buildable, no matter where in 
+a the dependency graph the buildable node is found, while leaving other
+parts untouched.
+
+To use the Ariadne build tool, a developer writes their dependency graph in
+Groovy, utilizing a map and a set of regular expression matching
+functions. Then, to build or clean up the project, the developer invokes
+Ariadne. 
+
+Ariadne was originally written in Groovy because it evolved incrementally as
+part of a Gradle script. While there are plans to port the build tool to other
+languages, Groovy has proven to be a practical language for this purpose, so this
+is currently not a priority.  
+
 Ariadne is a project in progress.
-
-Ariadne had an idea, and gave a ball of string to Theseus, so he could find his way
-back out of Daedalus's maze after killing the Minotaur.
-
-Building experimental code for GQL_to_Cypher has turned out to be such a
-maze. `make` for example does not backwards chain pattern rules, and gradle/grovy
-is predisposed to build up the project in layers, although no full layer
-ever seems to be working at one time.
-
-To use the 'Ariadne' build tool, a developer uses the groovy language to define
-a dependency grpah, while using a map and a list of regular expression mathching
-functions. Then to build, or cleanup, the project, the developer calls Ariadne.
-
-Ariadne was originally written in Groovy because it was incrementally developed
-as part of a gradle script. It is planned to port the build tool to addiitonal
-languages; however groovy turns out to be a reasonable language, so this is not
-pressing.
-
 
