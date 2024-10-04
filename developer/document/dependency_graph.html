@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dependency Build Algorithm</title>
+  <style>
+    body {
+      background-color: hsl(0, 0%, 0%); /* Black background */
+      color: hsl(40, 100%, 85%); /* Wheatgrass color (offwhite with a tan hue) */
+      font-family: "Courier New", Courier, monospace;
+    }
+    code {
+      background-color: hsl(0, 0%, 15%); /* Dark gray background for code blocks */
+      border: 1px solid hsl(0, 0%, 25%); /* Slightly lighter gray for the border */
+      border-radius: 4px;
+      padding: 4px;
+      color: hsl(40, 100%, 85%); /* Wheatgrass-colored text */
+      display: block;
+      white-space: pre-wrap;
+      font-size: 14px;
+    }
+    ol {
+      margin-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    h1, h2 {
+      color: hsl(40, 100%, 75%); /* Lighter wheatgrass color for headers */
+    }
+    a {
+      color: hsl(150, 100%, 65%); /* Light green for links */
+    }
+  </style>
+</head>
+<body>
+  <h2>Cycle Detection in Dependency Graph</h2>
+  <h3>Overview</h3>
+  <p>
+    The <code>is_acyclic_q</code> function is designed to detect cycles in a dependency graph using a depth-first search (DFS) algorithm. It starts from a list of root node labels and traverses the graph to ensure that there are no cycles. If a cycle is detected, the function marks the nodes involved and continues to explore other parts of the graph.
+  </p>
+  <h3>Key Concepts</h3>
+  <ul>
+    <li><strong>Dependency Graph</strong>: A graph where nodes represent build targets and edges represent dependencies between these targets.</li>
+    <li><strong>Depth-First Search (DFS)</strong>: An algorithm for traversing or searching tree or graph data structures. It starts at the root and explores as far as possible along each branch before backtracking.</li>
+    <li><strong>Cycle Detection</strong>: The process of identifying cycles (loops) in a graph, where a cycle is a path that starts and ends at the same node.</li>
+  </ul>
+  <h3>Functions</h3>
+  <h4>1. is_acyclic_q</h4>
+  <p>
+    <strong>Purpose</strong>: To determine if the dependency graph is acyclic (i.e., contains no cycles).
+  </p>
+  <p>
+    <strong>Parameters</strong>: 
+    <ul>
+      <li><code>root_node_labels</code>: A list of labels for the root nodes to start the cycle search.</li>
+      <li><code>verbose</code>: A boolean flag for enabling detailed output (default is <code>true</code>).</li>
+    </ul>
+  </p>
+  <p>
+    <strong>Returns</strong>: 
+    <ul>
+      <li><code>'acyclic'</code> if no cycles are found.</li>
+      <li><code>'cycle_found'</code> if cycles are detected.</li>
+    </ul>
+  </p>
+  <p>
+    <strong>Process</strong>:
+    <ul>
+      <li>Initializes a stack for DFS traversal.</li>
+      <li>Iteratively calls the <code>is_acyclic_q_descend</code> function to traverse the graph and detect cycles.</li>
+      <li>Updates the traversal state and continues exploring other paths until the stack is empty.</li>
+    </ul>
+  </p>
+  <h4>2. is_acyclic_q_descend</h4>
+  <p>
+    <strong>Purpose</strong>: To perform the actual DFS traversal and cycle detection for a given path.
+  </p>
+  <p>
+    <strong>Parameters</strong>: 
+    <ul>
+      <li><code>path_stack</code>: A stack representing the current path in the graph.</li>
+      <li><code>verbose</code>: A boolean flag for enabling detailed output (default is <code>true</code>).</li>
+    </ul>
+  </p>
+  <p>
+    <strong>Returns</strong>: 
+    <ul>
+      <li><code>'leaf_node'</code> if the current node has no children.</li>
+      <li><code>'cycle_found'</code> if a cycle is detected.</li>
+    </ul>
+  </p>
+  <p>
+    <strong>Process</strong>:
+    <ul>
+      <li>Collects the current path and node.</li>
+      <li>Checks for cycles by comparing the current node with nodes in the path.</li>
+      <li>Marks nodes involved in cycles and updates the stack to continue traversal.</li>
+    </ul>
+  </p>
+  <h3>Usage</h3>
+  <p>
+    The <code>is_acyclic_q</code> function is used to ensure that the dependency graph defined in the build file is free of cycles. This is crucial for preventing infinite loops and ensuring that the build process can proceed smoothly.
+  </p>
+
+</body>
+</html>  
+
+<h2>2. Run Build Scripts</h2>
+<ol>
+  <li>Traverse the queue starting from the tail (the most recently added nodes).</li>
+  <li>For each node, attempt to build it by checking the file dates of the target node and its dependencies:
+    <ol>
+      <li>If the target file is older than any dependency, execute the node’s build function.</li>
+      <li>After building, recheck the file dates. If the file date has been updated, mark the node as successfully built.</li>
+      <li>If the build fails or the file date is not updated, mark the node with an error in its property list.</li>
+    </ol>
+  </li>
+  <li>Nodes with dependencies marked with errors will not be built, and errors will propagate up the dependency tree.</li>
+</ol>
+
+<h2>3. Final Reporting and Status</h2>
+<ol>
+  <li>If the root node is successfully built, report the success and any other successfully built nodes.</li>
+  <li>If an error has propagated to the root, report the failure.</li>
+  <li>Keep a list of all successfully built nodes and provide a final summary of the build status.</li>
+</ol>
+
+<h2>4. Node Definitions</h2>
+<p>Each node in the dependency graph is defined by a property dictionary. A node is either a symbol or a path:</p>
+<ol>
+  <li>Symbol Nodes: These represent abstract concepts or commands and always trigger a build unless marked with an error.</li>
+  <li>Path Nodes: These represent file paths. A path node is considered built if its target file is newer than its dependencies.</li>
+</ol>
+<p>Both node types are identified by a label, and their dependencies are stored as a list of node labels. The presence of an error property indicates that the node has failed to build or encountered a problem during processing.</p>
+
+</body>
+</html>

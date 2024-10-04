@@ -29,13 +29,13 @@
 */
 
 def unpack_file_path = { file_fp ->
-  def file_fn = new File(file_fp)
+  def file = new File(file_fp)  // Renamed to 'file' to avoid overwriting 'file_fn'
 
   // Get the parent directory path
-  def parent_dp = file_fn.getParent()
+  def parent_dp = file.getParent()
 
   // Get the file name (with extension)
-  def file_fn = file_fn.getName()
+  def file_fn = file.getName()
 
   // Split the file name into base and extension
   def file_fn_base = file_fn.lastIndexOf('.') > 0 ? file_fn[0..file_fn.lastIndexOf('.') - 1] : file_fn
@@ -71,7 +71,7 @@ def persistent_node_mark_set = ['cycle_member' ,'wellformed' ,'build_failed'] as
 def leaf_q = { node -> node && node.type && node.type == 'leaf' }
 
 // mark 
-def has_mark(node) = { node.mark && !node.mark.isEmpty() }
+def has_mark = { node -> node.mark && !node.mark.isEmpty() }
 def set_mark(node ,mark){
   node.mark = node.mark ?: [] as Set
   node.mark << mark
@@ -446,6 +446,7 @@ def run_build_scripts_f(root_node_labels ,boolean verbose = true){
 
   }
 
+  println("run_build_scripts_f:: running ...")
   // Apply the function to all nodes in a depth-first manner
   all_DAG_DF(root_node_labels ,node_function ,verbose)
 }

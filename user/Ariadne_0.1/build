@@ -1,54 +1,48 @@
 #!/usr/bin/env groovy
 
-def include_ariadne_library(){
-
-  // Get the directory where this script is located
-  def script_dp = new File(getClass().protectionDomain.codeSource.location.path).parent
-  def ariadne_lib_fp = new File(script_dp ,"Ariadne.groovy")
-
-  if(!ariadne_lib_fp.exists()){
-    println "Error: Ariadne library not found in ${script_dp}"
-    System.exit(1)
-  }
-
-  return ariadne_lib_fp.text
+// Function to load the graph class dynamically
+def include_graph_class( graph_class_fp ) {
+    def class_loader = this.class.classLoader
+    try {
+        def graph_class = class_loader.loadClass(graph_class_fp)
+        println "Successfully loaded class: ${graph_class}"
+        return graph_class.newInstance()
+    } catch (Exception e) {
+        println "Error loading class: ${e.message}"
+        e.printStackTrace()
+        System.exit(1)
+    }
 }
 
-
 // Main build function for the Shell UI
-def build(graph_fp){
-  // Check if the graph definition exists
-  def graph_fn = new File(graph_fp)
-  if(!graph_fn.exists()){
-    println "Error: Graph definition file not found: $graph_fp"
-    System.exit(1)
-  }
+def build( graph_class_fp ) {
+    // Load the graph class dynamically
+    def graph_class = include_graph_class( graph_class_fp )
 
-  // Prepare the binding and shell for evaluation
-  def binding = new Binding()
-  def shell = new GroovyShell(binding)
+    // Get the node_map and node_f_list from the graph class
+    def node_map = graph_class.get_node_map()
+    def node_f_list = graph_class.get_node_f_list()
 
-  // Load the graph definition into the shell
-  shell.evaluate(graph_fn.text)
+    // Log the result
+    println "node_map: ${node_map}"
+    println "node_f_list: ${node_f_list}"
 
-  // Check if node_map and node_f_list are defined as local variables
-  if (!binding.variables.containsKey('node_map') || !binding.variables.containsKey('node_f_list')) {
-    println "Error: Graph definition must define both 'node_map' and 'node_f_list'"
-    System.exit(1)
-  }
+    // Check if node_map and node_f_list are defined
+    if( !(node_map instanceof Map)  || !(node_f_list instanceof List) ){
+        println "Error: Graph definition must define both 'node_map' and 'node_f_list'"
+        System.exit(1)
+    }
 
-  // Load the Ariadne library functions
-  shell.evaluate(include_ariadne_library())
-
-  // Call the build function in Ariadne.groovy
-  run_build_scripts(binding.getVariable('node_map'), binding.getVariable('node_f_list'))
+  
+    // Call the build function in AriadneGraph
+    AriadneGraph.run_build_scripts_f( node_map ,node_f_list )
 }
 
 // Entry point for the script
-if(args.length == 0){
-  println "Usage: ./shellUI.groovy <graph_definition>"
-  System.exit(1)
+if( args.length == 0 ){
+    println "Usage: ./build <graph_class_definition>"
+    System.exit(1)
 }
 
-def graph_fp = args[0]
-build(graph_fp)
+def graph_class_fp = args[0]
+build( graph_class_fp )
