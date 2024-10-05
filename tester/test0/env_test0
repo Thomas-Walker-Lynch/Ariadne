@@ -1,13 +1,11 @@
 
+if [ -z "$ENV_TESTER" ]; then
+  echo "env_test0:: script can only be run in the tester  environment"
+  env_error=true
+fi
 
-export JAVA_HOME="$REPO_HOME/tool/jdk-11"
-export GROOVY_HOME="$REPO_HOME/tool/groovy-4.0.9"
-
-export PATH=\
-"$REPO_HOME"/user/Ariadne_0.1\
-:"$JAVA_HOME"/bin\
-:"$GROOVY_HOME"/bin\
-:"$PATH"
-
-export CLASSPATH="$REPO_HOME"/user/Ariadne_0.1:"$REPO_HOME"/tester/test0:$CLASSPATH
+export CLASSPATH=\
+"$REPO_HOME"/release_candidate\
+:"$REPO_HOME"/tester/test0\
+:$CLASSPATH
 

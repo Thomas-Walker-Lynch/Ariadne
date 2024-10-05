@@ -78,7 +78,7 @@ def dir_map = [
   ,'JAVA_COMP_IN_SYN'    : 'javac/synthesized/'
   ,'JAVA_COMP_OUT'       : 'jvm/'
   ,'JVM_IN'              : 'jvm/'
-  ,'TEMP'                : 'Erebus/'
+  ,'TEMP'                : 'scratch_pad/'
 ]
 
 env.CLASSPATH += ":${dir_map.JVM_IN}"

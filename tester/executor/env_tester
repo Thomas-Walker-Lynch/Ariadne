@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# environment common to all tests
+# each test directory also has an environment
+
+export JAVA_HOME="$REPO_HOME/tool/jdk-11"
+export GROOVY_HOME="$REPO_HOME/tool/groovy-4.0.9"
+
+export PATH=\
+"$REPO_HOME"/release_candidate\
+:"$JAVA_HOME"/bin\
+:"$GROOVY_HOME"/bin\
+:"$PATH"

@@ -1,0 +1,10 @@
+#!/bin/env bash
+
+# Ensure the script is sourced
+if [ -z "$ENV_TESTER" ]; then
+  echo "env_build:: script can only be run in the tester  environment"
+  return 1
+fi
+
+cd "$REPO_HOME"/tester/test0
+groovyc TestGraph.groovy

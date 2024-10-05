@@ -8,7 +8,15 @@ class AriadneGraph {
   List node_f_list = []
 
   // Constructor to accept a graph definition (node_map and node_f_list)
-  AriadneGraph( Map node_map ,List node_f_list ){
+  AriadneGraph(Map node_map ,List node_f_list){
+    def accept_arg_list = true;
+    if( !(node_map === null) && !(node_map instanceof Map) ) accept_arg_list = false
+    if( !(node_f_list === null) && !(node_f_list instanceof List) ) accept_arg_list = false
+    if(node_map === null && node_f_list === null) accept_arg_list = false
+    if(!accept_arg_list){
+      println "AriandreGraph: requiers one or both of 'node_map' as Map, and 'node_f_list as List.'"
+      System.exit(1)
+    }
     this.node_map = node_map ?: [:]
     this.node_f_list = node_f_list ?: []
   }
@@ -231,9 +239,10 @@ class AriadneGraph {
   def wellformed_graph_q(root_node_labels ,boolean verbose = true){
     def ret_value = [] as Set
     def exists_malformed = false;
+    def result // used variously
 
     // check the root nodes
-    def result = mark_the_wellformed_f(root_node_labels ,verbose)
+    result = mark_the_wellformed_f(root_node_labels ,verbose)
     if(result == 'exists_malformed'){
       ret_value << 'exists_malformed'
     }
@@ -245,7 +254,7 @@ class AriadneGraph {
     // iterate over left side tree descent ,not ideal as it starts at the
     // root each time ,but avoids complexity in the cycle detection logic.
     do{
-      def result = markup_graph_f_descend(path_stack ,verbose)
+      result = markup_graph_f_descend(path_stack ,verbose)
       if('cycle_found' in result) ret_value << 'cycle_exists'
       if('exists_malformed' in result) exists_malformed = true;
 

@@ -19,3 +19,5 @@ PPS2=">> "
 echo REPO_HOME "$REPO_HOME"
 echo PROJECT "$PROJECT"
 echo "${BASH_SOURCE[0]}" "complete"
+
+export ENV_BASE=true

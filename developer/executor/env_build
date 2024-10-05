@@ -2,11 +2,25 @@
 
 # The build environment. 
 #
-
-# Ensure the script is sourced rather than run directly
+env_error=false
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
-  echo "This script must be sourced, not executed. Exiting."
+  echo "env_build:: This script must be sourced, not executed."
+  env_error=true
+fi
+if [ -z "$ENV_DEV" ]; then
+  echo "env_build:: script can only be run from the developer environment"
+  env_error=true
+fi
+if [ "$env_error" = true ]; then
   return 1
 fi
 
-export ENV_BUILD_VERSION="0.1"
+export JAVA_HOME="$REPO_HOME/tool/jdk-11"
+export GROOVY_HOME="$REPO_HOME/tool/groovy-4.0.9"
+export PATH=\
+:"$JAVA_HOME"/bin\
+:"$GROOVY_HOME"/bin\
+:"$PATH"
+
+export ENV_DEV_BUILD=true
+echo "${BASH_SOURCE[0]}" "complete"

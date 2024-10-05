@@ -1,0 +1,29 @@
+2024-10-05T12:09:05Z[]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer§
+> cd Ariadne
+
+2024-10-05T12:09:24Z[]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne§
+> source executor/env_tester
+REPO_HOME /var/user_data/Thomas-developer/Ariadne
+PROJECT Ariadne
+/var/user_data/Thomas-developer/Ariadne/executor/env_base complete
+executor/env_tester complete
+
+2024-10-05T12:09:33Z[Ariadne_TESTER]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne/tester§
+> cd test0
+
+2024-10-05T12:09:38Z[Ariadne_TESTER]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne/tester/test0§
+> make.sh
+
+2024-10-05T12:09:42Z[Ariadne_TESTER]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne/tester/test0§
+> ./test0.sh 
+build:: loaded TestGraph.class
+test0 complete
+
+2024-10-05T12:09:51Z[Ariadne_TESTER]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne/tester/test0§
+> 
