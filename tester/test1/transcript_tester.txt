@@ -1,0 +1,54 @@
+2024-10-06T07:25:26Z[]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer§
+> cd Ariadne
+
+2024-10-06T07:25:41Z[]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne§
+> source executor/env_tester 
+REPO_HOME /var/user_data/Thomas-developer/Ariadne
+PROJECT Ariadne
+/var/user_data/Thomas-developer/Ariadne/executor/env_base complete
+executor/env_tester complete
+
+2024-10-06T07:25:49Z[Ariadne_TESTER]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne/tester§
+> cd test1
+
+2024-10-06T07:25:55Z[Ariadne_TESTER]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne/tester/test1§
+> ls
+.  ..  env_test  TestGraph.groovy  test.sh
+
+2024-10-06T07:25:56Z[Ariadne_TESTER]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne/tester/test1§
+> make.sh
+
+2024-10-06T07:26:28Z[Ariadne_TESTER]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne/tester/test1§
+> ./test.sh
+test 0 will complain there are no build targets
+Summary: Building targets for graph 'TestGraph.class'
+No build targets specified. Please provide root node labels to build.
+
+test 1 will print the graph title
+Summary: Building targets for graph 'TestGraph.class'
+Building targets: title
+build:: loaded TestGraph.class
+node_map: [title:[type:symbol, neighbor:[], build:TestGraph$_get_node_map_closure1@3fae596]]
+node_f_list: []
+run_build_script:: Checking if graph is well formed.
+lookup::node: [type:symbol, neighbor:[], build:TestGraph$_get_node_map_closure1@3fae596, label:title]
+mark_node_form::node: [type:symbol, neighbor:[], build:TestGraph$_get_node_map_closure1@3fae596, label:title]
+Graph is not well-formed. Expect build problems. Errors:
+  - all_wellformed
+run_build_scripts_f:: running ...
+all_DAG_DF::
+lookup::node: [type:symbol, neighbor:[], build:TestGraph$_get_node_map_closure1@3fae596, label:title, mark:[wellformed]]
+run_build_scripts_f:: Running build script for title
+TestGraph for test1
+
+test complete
+
+2024-10-06T07:26:37Z[Ariadne_TESTER]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne/tester/test1§
+> 

@@ -1,0 +1,11 @@
+
+if [ -z "$ENV_TESTER" ]; then
+  echo "env_test0:: script can only be run in the tester  environment"
+  env_error=true
+fi
+
+export CLASSPATH=\
+"$REPO_HOME"/release_candidate\
+:"$REPO_HOME"/tester/test1\
+:$CLASSPATH
+

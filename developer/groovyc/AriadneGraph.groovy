@@ -143,83 +143,82 @@ class AriadneGraph {
    This must be run on the graph for `lookup_marked_good` to work.
   */
 
-  /*
-   Given a node label list. Applies well_formed_q to each node and marks the
-   node accordingly. Returns 'all_wellformed' or 'exists_malformed'.
-  */
-  def mark_the_wellformed_f(node_label_list ,boolean verbose = true){
-    def all_wellformed = true
+  def mark_node_form(node ,verbose = true){
+    println("mark_node_form::node: ${node}")
+    
+    def form_errors = wellformed_q(node)
 
-    def neighbors = node_label_list.collect{ neighbor_label ->
-      def neighbor_node = lookup(neighbor_label)
-      def form_errors = wellformed_q(neighbor_node)
-      if(form_errors.isEmpty()){
-        neighbor_node.mark = neighbor_node.mark ?: [] as Set
-        neighbor_node.mark << 'wellformed'
-      } else {
-        all_wellformed = false
-        if(verbose){
-          if(neighbor_node.label && neighbor_node.label.length() > 0){
-            print("node ${neighbor_node.label} is malformed due to:")
-          } else {
-            print("anonymous node is malformed due to:")
-          }
-          form_errors.each { error -> print(" ${error}") }
-          println("")
-        }
-      }
-      neighbor_label
+    if( form_errors.isEmpty() ){
+      set_mark(node ,'wellformed');
+      return 'wellformed'
     }
 
-    return all_wellformed ? 'all_wellformed' : 'exists_malformed'
+    if(verbose){
+      if(node.label && node.label.length() > 0){
+        print("node ${neighbor_node.label} is malformed due to:")
+      } else {
+        print("anonymous node is malformed due to:")
+      }
+      form_errors.each { error -> print(" ${error}") }
+      println("")
+    }
+
+    return 'malformed'
   }
+
 
   /*
    Given a path stack initialized with the path root ,descends to a leaf node
    while looking for cycles. Marks nodes as 'cycle_member' if a cycle is
    detected. Marks nodes as `wellformed` if `wellformed_q`.  Returns a set of
-   tokens indicating the status: 'cycle_found' ,'defacto_leaf_node' ,and
+   tokens indicating the status: 'cycle_found' ,'defacto_leaf' ,and
    'exists_malformed'.
+
+    the de-fact leaf node test ..
+      // a 'de-facto' leaf node test .. subtleties here because we have not yet
+      // determined if the nodes we are wellformed. This is purposeful ,as
+      // this function does not know about the relationships between the 
+      // possible error marks.
+
+
   */
   def markup_graph_f_descend(path_stack ,boolean verbose = true){
     def ret_value = [] as Set
+    if( path_stack.isEmpty() ){
+      println( "markup_graph_f_descend:: given null to descend from")
+      return ret_value
+    }
     def local_path = path_stack.collect{ it[0] }
     def local_node_label = local_path[-1]
     def cycle_start_index
 
     do{
+
       // Check for a cycle in the local path
-      cycle_start_index = local_path[0..-2].findIndexOf{ it == local_node_label }
-      if(cycle_start_index != -1){ // Cycle detected
-        ret_value << 'cycle_found'
-        if(verbose) print "markup_graph_f_descend:: dependency cycle found:"
-        local_path[cycle_start_index..-1].each{ cycle_node_label ->
-          def cycle_node = lookup(cycle_node_label)
-          if(verbose) print " ${cycle_node.label}"
-          cycle_node.mark = cycle_node.mark ?: [] as Set // Initialize mark set if needed
-          cycle_node.mark << 'cycle_member'
+      if( local_path.size() > 1){
+        cycle_start_index = local_path[0..-2].findIndexOf{ it == local_node_label }
+        if(cycle_start_index != -1){ // Cycle detected
+          ret_value << 'cycle_found'
+          if(verbose) print "markup_graph_f_descend:: dependency cycle found:"
+          local_path[cycle_start_index..-1].each{ cycle_node_label ->
+            def cycle_node = lookup(cycle_node_label)
+            if(verbose) print " ${cycle_node.label}"
+            cycle_node.mark = cycle_node.mark ?: [] as Set // Initialize mark set if needed
+            cycle_node.mark << 'cycle_member'
+          }
+          if(verbose) println ""
+          // we can not continue searching after the loop so ,we pop back to treat
+          // the first node in the loop as though a leaf node.
+          path_stack = path_stack[0..cycle_start_index]
+          return ret_value
         }
-        if(verbose) println ""
-        // we can not continue searching after the loop so ,we pop back to treat
-        // the first node in the loop as though a leaf node.
-        path_stack = path_stack[0..cycle_start_index]
-        return ret_value
       }
 
-      // a 'de-facto' leaf node test subtleties here because we have not yet
-      // determined if the nodes we are wellformed. This is purposeful ,as
-      // this function does not know about the relationships between the 
-      // possible error marks.
       def local_node = lookup(local_node_label)
-      if(local_node.neighbor.isEmpty()){
-        ret_value << 'defacto_leaf_node'
+      if( mark_node_form(local_node) == 'malformed' ) ret_value << 'exists_malformed'
+      if( local_node.neighbor.isEmpty() ){
+        ret_value << 'defacto_leaf' // might not be `type:leaf`
         return ret_value
-      }
-
-      // Mark the wellformed nodes and get the result
-      def result = mark_the_wellformed_f(local_node.neighbor ,verbose)
-      if(result == 'exists_malformed'){
-        ret_value << 'exists_malformed'
       }
 
       // Descend further into the tree.
@@ -230,26 +229,22 @@ class AriadneGraph {
   }
 
   /*
-   Given root_node_labels ,marks up the graph and returns a set possibly
+   Given root_node_label_list ,marks up the graph and returns a set possibly
    containing 'all_wellformed' and 'cycles_exist'.
 
    Marks potentially added to each node include  'cycle_member' ,'wellformed'.
    Note that these marks are independent.
   */
-  def wellformed_graph_q(root_node_labels ,boolean verbose = true){
+  def wellformed_graph_q(root_node_label_list ,boolean verbose = true){
     def ret_value = [] as Set
     def exists_malformed = false;
     def result // used variously
 
-    // check the root nodes
-    result = mark_the_wellformed_f(root_node_labels ,verbose)
-    if(result == 'exists_malformed'){
-      ret_value << 'exists_malformed'
-    }
-
+    if( root_node_label_list.isEmpty() ) return ret_value
+    
     // Initialize the DFS tree iterator.
     def path_stack = []
-    path_stack << root_node_labels.clone()
+    path_stack << root_node_label_list.clone()
 
     // iterate over left side tree descent ,not ideal as it starts at the
     // root each time ,but avoids complexity in the cycle detection logic.
@@ -280,11 +275,12 @@ class AriadneGraph {
      Graph traversal
   */
 
-  Map lookup( String node_label ,boolean verbose = false ){
-    def lookup_node = node_map[ node_label ]
-    if( !lookup_node ){
+  Map lookup(String node_label ,boolean verbose = true){
+    def lookup_node = this.node_map[node_label]
+    if(!lookup_node){
+      if(verbose) println "lookup:: Node ${node_label} could not be found."
       def match_result
-      for( func in node_f_list ){
+      for( func in this.node_f_list ){
         match_result = func( node_label )
         if( match_result.status == "matched" ){
           lookup_node = match_result
@@ -292,13 +288,13 @@ class AriadneGraph {
         }
       }
     }
-
-    if( !lookup_node && verbose ) println "lookup:: Node ${node_label} could not be found."
+    lookup_node.label = node_label
+    if(verbose) println("lookup::node: ${lookup_node}")
     return lookup_node
   }
 
   // mark aware lookup function
-  def lookup_marked_good(node_label ,verbose = false){
+  def lookup_marked_good(node_label ,verbose = true){
     def node = lookup(node_label ,verbose)
     if( node && marked_good_q(node) ) return node;
     return null;
@@ -306,36 +302,56 @@ class AriadneGraph {
 
 
   /*
-   Given `root_node_labels` of a DAG. Applies `node_function` to each node in a
+   Given `root_node_label_list` of a DAG. Applies `node_function` to each node in a
    depth-first traversal order.  Returns a set of error tokens encountered
    during traversal.
 
    `wellformed_graph_q` must be run on the DAG before this function is called ,or
    `lookup_marked_good` will not function correctly.
   */
-  def all_DAG_DF(root_node_labels ,node_function ,boolean verbose = true) {
+  def all_DAG_DF(root_node_label_list ,node_function ,boolean verbose = true) {
+    if(verbose) println("all_DAG_DF::")
+
     def error_token_set = [] as Set
 
-    if (root_node_labels.isEmpty()) return error_token_set
+    def accept_arg_list = true
+    if( !node_function ){
+      error_token_set << 'null_node_function'
+      accept_arg_list = false
+    }
+    if( !(node_function instanceof Closure) ){
+      error_token_set << 'nod_function_not_a_function'
+      accept_arg_list = false
+    }
+    if( !root_node_label_list  ){
+      error_token_set << 'null_root_node_label_list'
+      accept_arg_list = false
+    }
+    if( root_node_label_list.isEmpty() ){
+      error_token_set << 'empty_root_node_label_list'
+      accept_arg_list = false
+    }
+    if( !accept_arg_list ) return error_token_set
 
     def visited = [] as Set
     def in_traversal_order = []
-    def stack = []
 
-    root_node_labels.each { root_label ->
+    def stack = []
+    root_node_label_list.each { root_label ->
       stack << root_label
     }
 
     do {
+      if( stack.isEmpty() ) break
       def node_label = stack.pop()
 
       def node = lookup_marked_good(node_label ,verbose)
-      if (!node) {
+      if(!node){
         error_token_set << 'lookup_fail'
         continue
       }
 
-      if (node.label in visited) continue
+      if(node.label in visited) continue
       visited << node.label
 
       in_traversal_order << node
@@ -343,10 +359,10 @@ class AriadneGraph {
       node.neighbor.each { neighbor_label ->
         stack << neighbor_label
       }
-    } while (!stack.isEmpty())
+    } while(true)
 
     in_traversal_order.reverse().each { node ->
-      node_function(node ,error_token_set ,verbose)
+      node_function(node ,error_token_set)
     }
 
     return error_token_set
@@ -415,48 +431,69 @@ class AriadneGraph {
     return false
   }
 
-  void run_build_scripts_f( List root_node_labels ,boolean verbose = true ){
-    if( root_node_labels.isEmpty() ) return
+  void run_build_scripts_f( List root_node_label_list ,boolean verbose = true ){
 
-    def node_function = { node ,error_token_set ->
+    if( root_node_label_list.isEmpty() ) return
+    Set error_token_set // used to catch return values
+
+    println( "run_build_script:: Checking if graph is well formed." )
+    error_token_set = wellformed_graph_q(root_node_label_list)
+    if( error_token_set && !error_token_set.isEmpty() ){
+      println( "Graph is not well-formed. Expect build problems. Errors:" )
+      error_token_set.each { token ->
+        println( "  - ${token}" )
+      }
+    } else {
+      println( "Graph is well-formed. Proceeding with build." )
+    }
+
+    def node_function = { node ,error_token_set_2 ->
 
       if( !can_be_built_q( node ) ){
-        println( "Skipping build for ${node.label} due to dependency problems" )
+        println( "run_build_scripts_f:: Skipping build for ${node.label} due to problems with dependencies." )
         return
       }
       if( !should_be_built_q( node ) ){
-        if( verbose ) println( "${node.label} already up to date" )
+        if( verbose ) println( "run_build_scripts_f:: ${node.label} already up to date" )
         return
       }
 
-      println( "Running build script for ${node.label}" )
-      node.build( node ,node.neighbor )
+      // build the target
+      println( "run_build_scripts_f:: Running build script for ${node.label}" )
+      node.build()
 
-      if( should_be_built_q( node ) ){
-        println( "Build failed for ${node.label}" )
-        set_mark( node ,'build_failed' )
+      // for path nodes, check if the build updated the target at path
+      if( node.type == 'path' && should_be_built_q( node ) ){
+        println( "run_build_scripts_f:: Build failed for ${node.label}" )
+        set_mark(node ,'build_failed')
       }
+
     }
 
-    println( "run_build_scripts_f:: running ..." )
-    all_DAG_DF( root_node_labels ,node_function ,verbose )
+    println("run_build_scripts_f:: running ...")
+    error_token_set = all_DAG_DF(root_node_label_list, node_function, verbose)
+    if( error_token_set ){
+      error_token_set.each { error ->
+        println("run_build_scripts_f::all_DAG_DF:: ${error}")
+      }
+   }
+
   }
 
-  // Add the rest of your methods here as instance/static methods based on whether they depend on the graph instance
 
 }
 
 
 /*
  def clean(nodes_to_clean) {
-  def all_dependencies = node_map["all"].neighbor.clone()
+  def all_dependencies = this.node_map["all"].neighbor.clone()
   nodes_to_clean.each { node ->
     all_dependencies.remove(node)
   }
 
   def must_have_nodes = []
   all_dependencies.each { node ->
-    def node_info = node_map[node]
+    def node_info = this.node_map[node]
     if (node_info.must_have) {
       must_have_nodes += node_info.must_have
     }
@@ -464,13 +501,13 @@ class AriadneGraph {
 
   def to_clean_list = []
   nodes_to_clean.each { node ->
-    if (!must_have_nodes.contains(node) && node_map[node].type == "path") {
+    if (!must_have_nodes.contains(node) && this.node_map[node].type == "path") {
       to_clean_list += node
     }
   }
 
   to_clean_list.each { node ->
-    def file_path = node_map[node].label
+    def file_path = this.node_map[node].label
     def file = new File(file_path)
     if (file.exists()) {
       file.delete()

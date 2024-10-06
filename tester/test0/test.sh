@@ -2,7 +2,7 @@
 
 # smoke test, and yes, there was a lot of smoke
 
-source env_test0
+source env_test
 build TestGraph
 echo "test0 complete"
 

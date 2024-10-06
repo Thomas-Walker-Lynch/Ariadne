@@ -1,0 +1,78 @@
+2024-10-06T07:23:25Z[]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer§
+> repo Ariadne
+REPO_HOME /var/user_data/Thomas-developer/Ariadne
+PROJECT Ariadne
+/var/user_data/Thomas-developer/Ariadne/executor/env_base complete
+/var/user_data/Thomas-developer/Ariadne/developer/executor/env_build complete
+/var/user_data/Thomas-developer/Ariadne/executor/env_dev complete
+
+2024-10-06T07:23:34Z[Ariadne]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne/developer§
+> ls
+.  ..  deprecated  document  executor  groovy  groovyc	scratch_pad
+
+2024-10-06T07:23:37Z[Ariadne]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne/developer§
+> ls groovy
+.  ..  build
+
+2024-10-06T07:23:40Z[Ariadne]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne/developer§
+> ls groovyc
+.  ..  AriadneGraph.groovy
+
+2024-10-06T07:23:44Z[Ariadne]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne/developer§
+> make.sh
+
+2024-10-06T07:23:53Z[Ariadne]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne/developer§
+> ls groovy
+.  ..  build
+
+2024-10-06T07:23:56Z[Ariadne]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne/developer§
+> ls groovyc/
+ .
+ ..
+'AriadneGraph$_all_DAG_DF_closure7.class'
+'AriadneGraph$_all_DAG_DF_closure8.class'
+'AriadneGraph$_all_DAG_DF_closure9.class'
+'AriadneGraph$_good_dependency_q_closure10.class'
+'AriadneGraph$_mark_node_form_closure3.class'
+'AriadneGraph$_markup_graph_f_descend_closure4.class'
+'AriadneGraph$_markup_graph_f_descend_closure5.class'
+'AriadneGraph$_markup_graph_f_descend_closure6.class'
+'AriadneGraph$_newer_than_all_closure11.class'
+'AriadneGraph$_run_build_scripts_f_closure12.class'
+'AriadneGraph$_run_build_scripts_f_closure13.class'
+'AriadneGraph$_run_build_scripts_f_closure14.class'
+'AriadneGraph$_wellformed_q_closure1.class'
+'AriadneGraph$_wellformed_q_closure2.class'
+ AriadneGraph.class
+ AriadneGraph.groovy
+
+2024-10-06T07:23:59Z[Ariadne]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne/developer§
+> release
+Installed build to /var/user_data/Thomas-developer/Ariadne/release_candidate with permissions ug+r,ug+x
+Installed AriadneGraph.class to /var/user_data/Thomas-developer/Ariadne/release_candidate with permissions ug+r
+Installed AriadneGraph$_wellformed_q_closure1.class to /var/user_data/Thomas-developer/Ariadne/release_candidate with permissions ug+r
+Installed AriadneGraph$_wellformed_q_closure2.class to /var/user_data/Thomas-developer/Ariadne/release_candidate with permissions ug+r
+Installed AriadneGraph$_mark_node_form_closure3.class to /var/user_data/Thomas-developer/Ariadne/release_candidate with permissions ug+r
+Installed AriadneGraph$_markup_graph_f_descend_closure4.class to /var/user_data/Thomas-developer/Ariadne/release_candidate with permissions ug+r
+Installed AriadneGraph$_markup_graph_f_descend_closure5.class to /var/user_data/Thomas-developer/Ariadne/release_candidate with permissions ug+r
+Installed AriadneGraph$_markup_graph_f_descend_closure6.class to /var/user_data/Thomas-developer/Ariadne/release_candidate with permissions ug+r
+Installed AriadneGraph$_all_DAG_DF_closure7.class to /var/user_data/Thomas-developer/Ariadne/release_candidate with permissions ug+r
+Installed AriadneGraph$_all_DAG_DF_closure8.class to /var/user_data/Thomas-developer/Ariadne/release_candidate with permissions ug+r
+Installed AriadneGraph$_all_DAG_DF_closure9.class to /var/user_data/Thomas-developer/Ariadne/release_candidate with permissions ug+r
+Installed AriadneGraph$_good_dependency_q_closure10.class to /var/user_data/Thomas-developer/Ariadne/release_candidate with permissions ug+r
+Installed AriadneGraph$_newer_than_all_closure11.class to /var/user_data/Thomas-developer/Ariadne/release_candidate with permissions ug+r
+Installed AriadneGraph$_run_build_scripts_f_closure12.class to /var/user_data/Thomas-developer/Ariadne/release_candidate with permissions ug+r
+Installed AriadneGraph$_run_build_scripts_f_closure13.class to /var/user_data/Thomas-developer/Ariadne/release_candidate with permissions ug+r
+Installed AriadneGraph$_run_build_scripts_f_closure14.class to /var/user_data/Thomas-developer/Ariadne/release_candidate with permissions ug+r
+
+2024-10-06T07:24:08Z[Ariadne]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne/developer§
+> 
