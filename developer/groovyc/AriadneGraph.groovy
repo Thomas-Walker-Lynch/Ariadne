@@ -3,7 +3,10 @@ import java.nio.file.Paths
 
 class AriadneGraph {
 
-  // Instance variables for graph data if needed
+  // to turn on debug checks and messages
+  static Boolean debug = true
+
+  // Instance variables for graph data
   Map node_map = [:]
   List node_f_list = []
 
@@ -24,21 +27,36 @@ class AriadneGraph {
   /*--------------------------------------------------------------------------------
    File utility functions
   */
+  static Map unpack_file_path(String file_fp) {
+    if (debug) println("unpack_file_path::file_fp: ${file_fp}")
 
-  static Map unpack_file_path( String file_fp ){
-    def file = new File( file_fp )
+    def file = new File(file_fp)
+    def parent_dp = file.getParent() ?: ""
 
-    def parent_dp = file.getParent()
+    if (parent_dp && !parent_dp.endsWith(File.separator)) {
+      parent_dp += File.separator
+    }
+
     def file_fn = file.getName()
-    def file_fn_base = file_fn.lastIndexOf('.') > 0 ? file_fn[ 0..file_fn.lastIndexOf('.') - 1 ] : file_fn
-    def file_fn_ext = file_fn.lastIndexOf('.') > 0 ? file_fn[ file_fn.lastIndexOf('.') + 1..-1 ] : ''
+    def file_fn_base = file_fn
+    def file_fn_ext = ''
 
-    return [
-      parent_dp: parent_dp
-      ,file_fn: file_fn
-      ,file_fn_base: file_fn_base
-      ,file_fn_ext: file_fn_ext
+    if (file_fn.lastIndexOf('.') > 0) {
+      file_fn_base = file_fn[0..file_fn.lastIndexOf('.') - 1]
+      if (file_fn.lastIndexOf('.') + 1 < file_fn.length()) {
+        file_fn_ext = file_fn[file_fn.lastIndexOf('.') + 1..-1]
+      }
+    }
+
+    def ret_val = [
+      dp      : parent_dp,
+      fn      : file_fn,
+      fn_base : file_fn_base,
+      fn_ext  : file_fn_ext
     ]
+    if (debug) println("unpack_file_path::ret_val: ${ret_val}")
+
+    return ret_val
   }
 
   static boolean file_exists_q( String node_label ){
@@ -50,8 +68,21 @@ class AriadneGraph {
    Node type checks and marking
   */
 
-  static Set all_node_type_set = ['symbol' ,'path' ,'leaf' ,'generator'] as Set
-  static Set persistent_node_mark_set = ['cycle_member' ,'wellformed' ,'build_failed'] as Set
+  static Set all_node_type_set = [
+    'symbol'  // label is a symbol
+    ,'path'   // label is a path to a file, though it might not exist
+    ,'leaf'   // label is a path to a file that has no dependencies
+    ,'generator' // label is a path, but node has no neighbors
+    ,'error'   // typically created by the system node has a message property
+  ] as Set
+
+  static Set persistent_node_mark_set = 
+    [
+    'cycle_member' 
+     ,'wellformed' 
+     ,'build_failed'
+     ,'null_node'
+     ] as Set
 
   static boolean leaf_q( Map node ){
     return node && node.type == 'leaf'
@@ -86,6 +117,7 @@ class AriadneGraph {
     ,'bad_node_type'
     ,'neighbor_value_must_be_list'
     ,'neighbor_reference_must_be_string'
+    ,'neighbor_label_not_in_graph'
     ,'mark_property_value_must_be_set'
     ,'unregistered_mark'
     ,'missing_required_build_code'
@@ -97,7 +129,7 @@ class AriadneGraph {
     def form_error_set = [] as Set
 
     if( !node ){
-      form_error_set << 'no_node'
+      form_error_set << 'null_node'
       return form_error_set
     }
 
@@ -144,21 +176,25 @@ class AriadneGraph {
   */
 
   def mark_node_form(node ,verbose = true){
-    println("mark_node_form::node: ${node}")
+    if(debug){
+      if(node)
+        println("mark_node_form::node: ${node}")
+      else
+        println("mark_node_form given a null node")
+    }
     
     def form_errors = wellformed_q(node)
-
     if( form_errors.isEmpty() ){
       set_mark(node ,'wellformed');
       return 'wellformed'
     }
-
+    // at this point we know that form_errors is not empty
+    
     if(verbose){
-      if(node.label && node.label.length() > 0){
+      if(node && node.label && node.label.length() > 0)
         print("node ${neighbor_node.label} is malformed due to:")
-      } else {
+      else
         print("anonymous node is malformed due to:")
-      }
       form_errors.each { error -> print(" ${error}") }
       println("")
     }
@@ -167,25 +203,36 @@ class AriadneGraph {
   }
 
 
-  /*
+  /* 
+   Each node_label must be a string and not empty.
+
+   Subleties here because we have not yet determined if the nodes we are
+   wellformed (after all, that is what we are determining here).
+
    Given a path stack initialized with the path root ,descends to a leaf node
-   while looking for cycles. Marks nodes as 'cycle_member' if a cycle is
-   detected. Marks nodes as `wellformed` if `wellformed_q`.  Returns a set of
-   tokens indicating the status: 'cycle_found' ,'defacto_leaf' ,and
-   'exists_malformed'.
+   while looking for cycles. Marks nodes as to their form.  Returns a set of
+   tokens.
 
-    the de-fact leaf node test ..
-      // a 'de-facto' leaf node test .. subtleties here because we have not yet
-      // determined if the nodes we are wellformed. This is purposeful ,as
-      // this function does not know about the relationships between the 
-      // possible error marks.
+   If we want to attempt to build 'islands' of things that might be located on
+   the far side of cycles, then modify the cycle finder to return a list of
+   cycles (i.e. a list of lists), then use each of cycle definition (a list) as
+   the root nodes for further search.
 
 
-  */
+   */
+  static Set markup_graph_f_descend_set = [
+    'empty_path_stack'
+    ,'cycle_found'
+    ,'undefined_node'
+    ,'exists_malformed'
+    ,'defacto_leaf'
+  ] as Set
+
   def markup_graph_f_descend(path_stack ,boolean verbose = true){
     def ret_value = [] as Set
     if( path_stack.isEmpty() ){
-      println( "markup_graph_f_descend:: given null to descend from")
+      if(verbose) println( "markup_graph_f_descend:: given empty path_stack to descend from")
+      ret_value << 'empty_path_stack'
       return ret_value
     }
     def local_path = path_stack.collect{ it[0] }
@@ -194,15 +241,15 @@ class AriadneGraph {
 
     do{
 
-      // Check for a cycle in the local path
+      // Check for a cycle in the local path, if found marks cycle members
       if( local_path.size() > 1){
         cycle_start_index = local_path[0..-2].findIndexOf{ it == local_node_label }
         if(cycle_start_index != -1){ // Cycle detected
           ret_value << 'cycle_found'
           if(verbose) print "markup_graph_f_descend:: dependency cycle found:"
           local_path[cycle_start_index..-1].each{ cycle_node_label ->
+            if(verbose) print " ${cycle_node_label}"
             def cycle_node = lookup(cycle_node_label)
-            if(verbose) print " ${cycle_node.label}"
             cycle_node.mark = cycle_node.mark ?: [] as Set // Initialize mark set if needed
             cycle_node.mark << 'cycle_member'
           }
@@ -215,7 +262,13 @@ class AriadneGraph {
       }
 
       def local_node = lookup(local_node_label)
-      if( mark_node_form(local_node) == 'malformed' ) ret_value << 'exists_malformed'
+      if( !local_node ){
+        ret_value << 'undefined_node' 
+        return ret_value
+      }
+      if( mark_node_form(local_node) == 'malformed' ){
+        ret_value << 'exists_malformed'
+      }
       if( local_node.neighbor.isEmpty() ){
         ret_value << 'defacto_leaf' // might not be `type:leaf`
         return ret_value
@@ -251,6 +304,7 @@ class AriadneGraph {
     do{
       result = markup_graph_f_descend(path_stack ,verbose)
       if('cycle_found' in result) ret_value << 'cycle_exists'
+      if('undefined_node' in result) exists_malformed = true;
       if('exists_malformed' in result) exists_malformed = true;
 
       // increment the iterator to the next leftmost path
@@ -275,22 +329,38 @@ class AriadneGraph {
      Graph traversal
   */
 
+  // given a node label, looks it up on the dependency graph, returns the node or null
   Map lookup(String node_label ,boolean verbose = true){
-    def lookup_node = this.node_map[node_label]
-    if(!lookup_node){
-      if(verbose) println "lookup:: Node ${node_label} could not be found."
-      def match_result
-      for( func in this.node_f_list ){
-        match_result = func( node_label )
-        if( match_result.status == "matched" ){
-          lookup_node = match_result
-          break
-        }
+
+    if(!node_label){
+      if(verbose) println("lookup:: given node_label is null or an empty string")
+      return null
+    }
+
+    // try the map
+    def node = this.node_map[node_label]
+    if(node){
+      node.label = node_label
+      if(verbose) println("lookup:: found from map: ${node}")
+      return node
+    }
+    // at this point node will be null
+
+    // The map lookup failed, lets try the function recognizer list ..
+    def match_result
+    for( func in this.node_f_list ){
+      match_result = func(node_label)
+      if( match_result.status == 'matched' ){
+        node = match_result
+        break
       }
     }
-    lookup_node.label = node_label
-    if(verbose) println("lookup::node: ${lookup_node}")
-    return lookup_node
+
+    if(verbose)
+      if(node) println("lookup:: found from recognizer function: ${node}")
+      else println("lookup:: failed to find label: ${node_label}")
+
+    return node
   }
 
   // mark aware lookup function
