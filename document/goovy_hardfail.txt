@@ -1,3 +1,4 @@
+
 Tried many variations, including using 'groovy' instead of java to run it.
 Also did -cp on the command line. Nothing can convince `java` to find
 the class created by groovyc.  When build is instead made into a script
