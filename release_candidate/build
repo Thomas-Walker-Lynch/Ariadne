@@ -1,6 +1,19 @@
 #!/usr/bin/env groovy
 
 // Function to load the graph class dynamically
+def include_a_class(a_class_fp) {
+  def class_loader = this.class.classLoader
+  def class_name = a_class_fp.replace('/', '.').replace('.class', '')
+  try {
+    return class_loader.loadClass(class_name)
+  } catch (Exception e) {
+    println "Error loading class '${class_name}': ${e.message}"
+    return null
+  }
+}
+
+/*
+// Function to load the graph class dynamically
 def include_a_class( a_class_fp ){
   def class_loader = this.class.classLoader
   try{
@@ -8,13 +21,14 @@ def include_a_class( a_class_fp ){
   } catch(Exception e){
     return null
   }
-}
+ }
+ */
 
 // Shell User Interface to the build function
 def build(graph_definition_fp, root_node_labels){
 
   // Print summary of what we are doing
-  println "Summary: Building targets for graph '${graph_definition_fp}.class'"
+  println "build:: Building targets for graph '${graph_definition_fp}.class'"
   if (root_node_labels.isEmpty()) {
     println "No build targets specified. Please provide root node labels to build."
     System.exit(0)
@@ -50,6 +64,5 @@ if(args.length == 0){
 // Get graph definition file and root node labels
 def graph_definition_fp = args[0]
 def root_node_labels = args.length > 1 ? args[1..-1] : []
-
 build(graph_definition_fp, root_node_labels)
 

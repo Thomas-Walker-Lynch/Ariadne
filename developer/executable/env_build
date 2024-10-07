@@ -17,10 +17,19 @@ fi
 
 export JAVA_HOME="$REPO_HOME/tool/jdk-11"
 export GROOVY_HOME="$REPO_HOME/tool/groovy-4.0.9"
+
 export PATH=\
+"$REPO_HOME"/developer/shell\
 :"$JAVA_HOME"/bin\
 :"$GROOVY_HOME"/bin\
 :"$PATH"
+
+export CLASSPATH=\
+"$REPO_HOME"/developer/jvm\
+:"$REPO_HOME"/developer/jvm/Ariadne.jar\
+:"$JAVA_HOME"/lib\
+:"$GROOVY_HOME"/lib\
+:"$CLASSPATH"
 
 export ENV_DEV_BUILD=true
 echo "${BASH_SOURCE[0]}" "complete"

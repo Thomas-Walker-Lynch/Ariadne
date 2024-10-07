@@ -5,5 +5,6 @@ if [ -z "$ENV_TESTER" ]; then
   env_error=true
 fi
 
-cd "$REPO_HOME"/tester/test0
+set -x
+
 groovyc TestGraph.groovy

@@ -1,0 +1,129 @@
+Tried many variations, including using 'groovy' instead of java to run it.
+Also did -cp on the command line. Nothing can convince `java` to find
+the class created by groovyc.  When build is instead made into a script
+with a shabang, it works. That is how test0 and test1 passed.
+
+PaintItBlack is a class created by javac run in the same environment, and it
+works fine. Not sure what I am doing wrong, if anything. This is not cool, so
+it looks like time to say goodbye to groovy.
+
+
+2024-10-07T07:56:10Z[Ariadne]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne/developer§
+> echo $CLASSPATH | tr ':' '\n'
+/var/user_data/Thomas-developer/Ariadne/developer/jvm
+/var/user_data/Thomas-developer/Ariadne/developer/jvm/Ariadne.jar
+/var/user_data/Thomas-developer/Ariadne/tool/jdk-11/lib
+/var/user_data/Thomas-developer/Ariadne/tool/groovy-4.0.9/lib
+/var/user_data/Thomas-developer/Ariadne/developer/jvm
+/var/user_data/Thomas-developer/Ariadne/developer/jvm/Ariadne.jar
+/var/user_data/Thomas-developer/Ariadne/developer/scratch_pad
+/var/user_data/Thomas-developer/Ariadne/tool/jdk-11/lib
+/var/user_data/Thomas-developer/Ariadne/tool/groovy-4.0.9/lib
+/var/user_data/Thomas-developer/Ariadne/developer/jvm
+/var/user_data/Thomas-developer/Ariadne/developer/jvm/Ariadne.jar
+/var/user_data/Thomas-developer/Ariadne/tool/jdk-11/lib
+/var/user_data/Thomas-developer/Ariadne/tool/groovy-4.0.9/lib
+
+
+2024-10-07T07:56:35Z[Ariadne]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne/developer§
+> make.sh
+Cleaning scratch_pad and jvm directories...
+Compiling files...
+Creating JAR file...
+JAR file created successfully: jvm/Ariadne.jar
+
+2024-10-07T07:56:47Z[Ariadne]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne/developer§
+> cat `which build`
+#!/bin/env bash
+
+java BuildGraph "$@"
+
+2024-10-07T07:57:04Z[Ariadne]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne/developer§
+> build
+Error: Could not find or load main class BuildGraph
+Caused by: java.lang.NoClassDefFoundError: groovy/lang/GroovyObject
+
+2024-10-07T07:57:09Z[Ariadne]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne/developer§
+> java PaintItBlack
+Paint it black.
+
+2024-10-07T07:57:28Z[Ariadne]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne/developer§
+>
+
+----
+
+
+2024-10-07T07:57:28Z[Ariadne]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne/developer§
+> printenv
+CLASSPATH=/var/user_data/Thomas-developer/Ariadne/developer/jvm:/var/user_data/Thomas-developer/Ariadne/developer/jvm/Ariadne.jar:/var/user_data/Thomas-developer/Ariadne/tool/jdk-11/lib:/var/user_data/Thomas-developer/Ariadne/tool/groovy-4.0.9/lib:/var/user_data/Thomas-developer/Ariadne/developer/jvm:/var/user_data/Thomas-developer/Ariadne/developer/jvm/Ariadne.jar:/var/user_data/Thomas-developer/Ariadne/developer/scratch_pad:/var/user_data/Thomas-developer/Ariadne/tool/jdk-11/lib:/var/user_data/Thomas-developer/Ariadne/tool/groovy-4.0.9/lib:/var/user_data/Thomas-developer/Ariadne/developer/jvm:/var/user_data/Thomas-developer/Ariadne/developer/jvm/Ariadne.jar:/var/user_data/Thomas-developer/Ariadne/tool/jdk-11/lib:/var/user_data/Thomas-developer/Ariadne/tool/groovy-4.0.9/lib:
+DISPLAY=
+EDITOR=emacs
+ENV_BASE=true
+ENV_DEV_BUILD=true
+ENV_DEV=true
+GROOVY_HOME=/var/user_data/Thomas-developer/Ariadne/tool/groovy-4.0.9
+HOME=/home/Thomas-developer
+HOSTNAME=Blossac
+INSIDE_EMACS=
+JAVA_HOME=/var/user_data/Thomas-developer/Ariadne/tool/jdk-11
+LANG=
+LC_ALL=en_DK.UTF-8
+LOGNAME=
+NO_AT_BRIDGE=1
+OLDPWD=/var/user_data/Thomas-developer/Ariadne
+PATH=/var/user_data/Thomas-developer/Ariadne/developer/shell:/var/user_data/Thomas-developer/Ariadne/tool/jdk-11/bin:/var/user_data/Thomas-developer/Ariadne/tool/groovy-4.0.9/bin:/var/user_data/Thomas-developer/Ariadne/developer/shell:/var/user_data/Thomas-developer/Ariadne/tool/jdk-11/bin:/var/user_data/Thomas-developer/Ariadne/tool/groovy-4.0.9/bin:/var/user_data/Thomas-developer/Ariadne/developer/shell:/var/user_data/Thomas-developer/Ariadne/tool/jdk-11/bin:/var/user_data/Thomas-developer/Ariadne/tool/groovy-4.0.9/bin:/var/user_data/Thomas-developer/Ariadne/developer/executable:/var/user_data/Thomas-incommon/iseq_loadable:/var/user_data/Thomas-developer/resource/development/iseq_loadable:/usr/local/bin:/usr/bin:/usr/sbin
+PPS1=\n[Ariadne]\n\u@\h§/var/user_data/Thomas-developer/Ariadne§\n> 
+PPS2=>> 
+PROJECT=Ariadne
+PS1=\n$($iseq/Z)[$PROJECT]\n\u@\h§$(pwd)§\n> 
+PS2=>> 
+PS_FORMAT=user:15,pid,%cpu,%mem,vsz,rss,tty,stat,start,time,command
+PWD=/var/user_data/Thomas-developer/Ariadne/developer
+REPO=Ariadne
+REPO_DIR=/var/user_data/Thomas-developer
+REPO_HOME=/var/user_data/Thomas-developer/Ariadne
+RESOURCE=/var/user_data/Thomas-developer/resource/development
+SHELL=/bin/bash
+SHLVL=1
+SUBU_SHARE_DIR=
+TERMCAP=
+TERM=dumb
+TIME_STYLE=long-iso
+TMP=/var/user_data/Thomas-developer/Ariadne/developer/scratch_pad
+TZ=UTC
+USER_DATA=/var/user_data/Thomas-developer
+USERNAME=Thomas-developer
+_=/usr/bin/printenv
+
+2024-10-07T07:59:25Z[Ariadne]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne/developer§
+> ls -l $REPO_HOME/tool
+total 4
+drwx------. 1 Thomas-developer Thomas-developer  88 2024-10-02 11:47 .
+drwx------. 1 Thomas-developer Thomas-developer 198 2024-10-07 02:34 ..
+drwx------. 1 Thomas-developer Thomas-developer 104 2024-10-02 11:55 document
+-rw-------. 1 Thomas-developer Thomas-developer  76 2024-10-02 09:28 .gitignore
+drwxr-x---. 1 Thomas-developer Thomas-developer  74 1980-02-01 00:00 groovy-4.0.9
+drwx------. 1 Thomas-developer Thomas-developer  86 2024-10-02 11:53 jdk-11
+drwx------. 1 Thomas-developer Thomas-developer 178 2024-10-02 11:50 upstream
+
+2024-10-07T07:59:39Z[Ariadne]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne/developer§
+> ls -l $REPO_HOME/tool/upstream/
+total 217996
+drwx------. 1 Thomas-developer Thomas-developer       178 2024-10-02 11:50 .
+drwx------. 1 Thomas-developer Thomas-developer        88 2024-10-02 11:47 ..
+-rw-------. 1 Thomas-developer Thomas-developer  29467411 2024-10-02 08:30 apache-groovy-binary-4.0.9.zip
+-rw-------. 1 Thomas-developer Thomas-developer        15 2024-10-02 08:10 .gitignore
+-rw-------. 1 Thomas-developer Thomas-developer 193752176 2022-07-21 15:13 OpenJDK11U-jdk_x64_linux_hotspot_11.0.16_8.tar.gz
+
+2024-10-07T07:59:49Z[Ariadne]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne/developer§
+> 
