@@ -1,0 +1,3 @@
+
+wellformed is a single word. Its antonym is 'malformed'. Wellformed syntax
+parses without errors.

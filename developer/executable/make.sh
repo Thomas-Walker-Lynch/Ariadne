@@ -15,7 +15,6 @@ rm -rf jvm/*
 
 # Compile all files
 echo "Compiling files..."
-groovyc groovyc/*.groovy -d scratch_pad
 javac javac/*.java -d scratch_pad
 
 if [ $? -ne 0 ]; then

@@ -3,14 +3,10 @@ import java.nio.file.Paths
 
 class AriadneGraph {
 
-  // to turn on debug checks and messages
   static Boolean debug = true
-
-  // Instance variables for graph data
   Map node_map = [:]
   List node_f_list = []
 
-  // Constructor to accept a graph definition (node_map and node_f_list)
   AriadneGraph(Map node_map ,List node_f_list){
     def accept_arg_list = true;
     if( !(node_map === null) && !(node_map instanceof Map) ) accept_arg_list = false
@@ -203,23 +199,6 @@ class AriadneGraph {
   }
 
 
-  /* 
-   Each node_label must be a string and not empty.
-
-   Subleties here because we have not yet determined if the nodes we are
-   wellformed (after all, that is what we are determining here).
-
-   Given a path stack initialized with the path root ,descends to a leaf node
-   while looking for cycles. Marks nodes as to their form.  Returns a set of
-   tokens.
-
-   If we want to attempt to build 'islands' of things that might be located on
-   the far side of cycles, then modify the cycle finder to return a list of
-   cycles (i.e. a list of lists), then use each of cycle definition (a list) as
-   the root nodes for further search.
-
-
-   */
   static Set markup_graph_f_descend_set = [
     'empty_path_stack'
     ,'cycle_found'
@@ -227,7 +206,6 @@ class AriadneGraph {
     ,'exists_malformed'
     ,'defacto_leaf'
   ] as Set
-
   def markup_graph_f_descend(path_stack ,boolean verbose = true){
     def ret_value = [] as Set
     if( path_stack.isEmpty() ){
