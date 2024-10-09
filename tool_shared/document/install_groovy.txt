@@ -1,0 +1,29 @@
+
+1. Docs
+  https://groovy-lang.org/documentation.html
+
+2. Install from source
+
+  # 1.1 Download
+
+    # https://dlcdn.apache.org/groovy/
+
+    cd $REPO_HOME/toolsmith/upstream
+    wget https://dlcdn.apache.org/groovy/4.0.23/sources/apache-groovy-src-4.0.23.zip
+
+  # 1.2 then build them ;-)
+
+2. Install binaries
+
+  #!/usr/bin/env bash
+
+  # Define version of Groovy to be installed
+  version="4.0.9"
+
+  # 2.1 Download using curl
+  cd "$REPO_HOME/toolsmith/upstream"
+  curl -o apache-groovy-binary-${version}.zip https://groovy.jfrog.io/artifactory/dist-release-local/groovy-zips/apache-groovy-binary-${version}.zip
+
+  # 2.2 Extract
+  cd "$REPO_HOME/tools"
+  unzip "$REPO_HOME/tools/upstream/apache-groovy-binary-${version}.zip" -d .

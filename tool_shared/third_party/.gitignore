@@ -1,0 +1,4 @@
+*
+!/.gitignore
+# upstream has a .gitignore file in it, edit to keep anything precious
+!/upstream
