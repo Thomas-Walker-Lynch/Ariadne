@@ -1,35 +1,45 @@
 #!/bin/env bash
 
-if [ -z "$ENV_DEV" ]; then
-  echo "make.sh:: script can only be run from the developer environment"
+if [ -z "$ENV_DEVELOPER" ]; then
+  echo "make_PaintIt:: script can only be run from the developer environment"
   return 1
 fi
 
-# Ensure we are in the right directory
+# work from the developer directory
 cd "$REPO_HOME"/developer
 
-# Clean the scratch_pad and jvm directories
-echo "Cleaning scratch_pad and jvm directories..."
-rm -rf scratch_pad/*
-rm -rf jvm/*
-
-# Compile all files
 echo "Compiling files..."
-javac -sourcepath javac:java_namespace -d scratch_pad javac/Black.java
+javac -d scratch_pad javac/*.java
 
 if [ $? -ne 0 ]; then
   echo "Compilation failed."
   exit 1
 fi
 
-# Create a JAR file from the compiled class files
 echo "Creating JAR file..."
+jar_file=jvm/Ariadne.jar
 mkdir -p jvm
-jar cf jvm/Ariadne.jar -C scratch_pad .
+jar cf $jar_file -C scratch_pad .
 
 if [ $? -eq 0 ]; then
-  echo "JAR file created successfully: jvm/Ariadne.jar"
+  echo "JAR file created successfully: $jar_file"
 else
   echo "Failed to create JAR file."
   exit 1
 fi
+
+# for these to run, the jar file must be in the CLASSPATH
+echo "Creating shell wrappers..."
+mkdir -p shell
+
+wrapper=build
+for file in $wrapper;do
+  cat > shell/$file << EOL
+  #!/bin/bash
+  java com/ReasoningTechnology/Ariadne/$file
+  EOL
+  chmod +x shell/$file
+done
+
+echo "make done"
+

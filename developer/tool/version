@@ -1,4 +1,0 @@
-#!/bin/env bash
-
-# get this from the project management level exector directory
-"$REPO_HOME"/executor/version

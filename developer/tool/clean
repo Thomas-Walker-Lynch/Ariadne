@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Ensure REPO_HOME and ENV_DEV_BUILD are set
+if [ -z "$REPO_HOME" ]; then
+  echo "release:: REPO_HOME is not set."
+  exit 1
+fi
+
+if [ -z "$ENV_DEV_BUILD" ]; then
+  echo "release:: ENV_DEV_BUILD is not set."
+  exit 1
+fi
+
+set -x
+cd "$REPO_HOME"/developer
+rm -rf scratch_pad/*
+set +x
+
+echo "clean complete."

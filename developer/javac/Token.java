@@ -1,3 +1,5 @@
+package Ariadne;
+
 /*
 An error token.
 

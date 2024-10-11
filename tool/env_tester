@@ -15,12 +15,12 @@ fi
 PROJECT="$PROJECT"_TESTER
 
 export PATH=\
-"$REPO_HOME"/tester/executor\
+"$REPO_HOME"/tester/executor/\
+:"$REPO_HOME"/tool_shared/bespoke/\
 :"$PATH"
 
-cd "$REPO_HOME"/tester
-
-
+cd "$REPO_HOME"/tester/
 export ENV_TESTER=true
-source executor/env_tester
+source tool/env
+
 echo "${BASH_SOURCE[0]}" "complete"

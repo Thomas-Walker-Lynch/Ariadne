@@ -11,19 +11,20 @@ if [ -z "$ENV_BASE" ]; then
   source "${script_path}/env_base"
 fi
 
-PROJECT="$PROJECT"_DEVELOPER
+PROJECT="$PROJECT"_developer
 
 export PATH=\
-"$REPO_HOME/developer/tool"\
+"$REPO_HOME"/developer/tool/\
+:"$REPO_HOME"/tool_shared/bespoke/\
 :"$PATH"
 
 # so the .gitignore files can be seen:
 alias ls="ls -a"
 
-cd "$REPO_HOME/developer"
+cd "$REPO_HOME"/developer/
+export ENV_DEVELOPER=true
+source tool/env
 
-export ENV_DEV=true
-source "$REPO_HOME"/developer/tool/env_build
 echo "${BASH_SOURCE[0]}" "complete"
 
 

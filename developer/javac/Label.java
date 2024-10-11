@@ -1,3 +1,5 @@
+package Ariadne;
+
 /*
 A node label.
 

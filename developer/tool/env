@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo "REOP_HOME/developer/tool/env"
+
 # The build environment. 
 #
 env_error=false
@@ -7,12 +9,12 @@ if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
   echo "env_build:: This script must be sourced, not executed."
   env_error=true
 fi
-if [ -z "$ENV_DEV" ]; then
+if [ -z "$ENV_DEVELOPER" ]; then
   echo "env_build:: script can only be run from the developer environment"
   env_error=true
 fi
 if [ "$env_error" = true ]; then
-  return 1
+  exit 1
 fi
 
 # goovy use has been deprecated
@@ -27,7 +29,6 @@ export PATH=\
 # where the tool build finds its class files:
 export CLASSPATH=\
 "$REPO_HOME"/developer/jvm\
-:"$REPO_HOME"/developer/jvm/PaintIt.jar\
 :"$REPO_HOME"/developer/jvm/Ariadne.jar\
 :"$JAVA_HOME"/lib\
 :"$CLASSPATH"
@@ -40,3 +41,7 @@ export PATH=\
 
 export ENV_DEV_BUILD=true
 echo "${BASH_SOURCE[0]}" "complete"
+
+
+
+

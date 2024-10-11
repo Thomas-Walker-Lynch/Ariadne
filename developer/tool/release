@@ -1,55 +1,57 @@
-#!/usr/bin/env groovy
+#!/bin/bash
 
-// Access the environment variable REPO_HOME
-def repo_home = System.getenv('REPO_HOME')
-def env_dev_build = System.getenv('ENV_DEV_BUILD')
-def arg_error = false
-if (!repo_home) {
-    println "release:: REPO_HOME is not set."
-    arg_error = true
+# Ensure REPO_HOME and ENV_DEV_BUILD are set
+if [ -z "$REPO_HOME" ]; then
+  echo "release:: REPO_HOME is not set."
+  exit 1
+fi
+
+if [ -z "$ENV_DEV_BUILD" ]; then
+  echo "release:: ENV_DEV_BUILD is not set."
+  exit 1
+fi
+
+# Define release directory
+release_dir="$REPO_HOME/release_candidate"
+
+# Create release directory if it doesn't exist
+if [ ! -d "$release_dir" ]; then
+  mkdir -p "$release_dir"
+fi
+
+# Function to copy and set permissions
+install_file() {
+  source_fp="$1"
+  target_dp="$2"
+  perms="$3"
+  
+  target_file="$target_dp/$(basename "$source_fp")"
+
+  if [ ! -f "$source_fp" ]; then
+    echo "install_file:: Source file '$source_fp' does not exist."
+    return 1
+  fi
+
+  if ! install -m "$perms" "$source_fp" "$target_file"; then
+    echo "Error: Failed to install $(basename "$source_fp") to $target_dp"
+    exit 1
+  else
+    echo "Installed $(basename "$source_fp") to $target_dp with permissions $perms"
+  fi
 }
-if (!env_dev_build) {
-    println "release:: ENV_DEV_BUILD is not set."
-    arg_error = true
-}
-if (arg_error) {
-    System.exit(1)
-}
+ 
+echo "Starting release process..."
 
-def release_dir = "${repo_home}/release_candidate"
-def release_dir_file = new File(release_dir)
-if (!release_dir_file.exists()) {
-    release_dir_file.mkdirs()
-}
+# Paths to shell wrappers and JAR file
+shell_dir="$REPO_HOME/developer/shell"
+Ariadne_jar_fp="$REPO_HOME/developer/jvm/Ariadne.jar"
 
-// Function to use 'install' command for copying and setting permissions
-def install_file(source_fp, target_dp, perms) {
-    def target_file = "${target_dp}/${new File(source_fp).name}"
-    try {
-        def cmd = ["install", "-m", perms, source_fp, target_file]
-        def process = cmd.execute()
-        process.waitFor()
-        if (process.exitValue() != 0) {
-            println "Error: Failed to install ${new File(source_fp).name} to ${target_dp}"
-            println process.err.text
-            System.exit(1)
-        }
-        println "Installed ${new File(source_fp).name} to ${target_dp} with permissions ${perms}"
-    } catch (Exception e) {
-        println "Error: ${e.message}"
-        System.exit(1)
-    }
-}
+# Install the JAR file
+install_file "$Ariadne_jar_fp" "$release_dir" "ug+r"
 
-println "Starting release process..."
+# Install shell wrappers
+for wrapper in black blue green; do
+  install_file "$shell_dir/$wrapper" "$release_dir" "ug+r+x"
+done
 
-def build_fp = "${repo_home}/developer/shell/build"
-def ariadne_jar_fp = "${repo_home}/developer/jvm/AriadneGraph.jar"
-
-// Install the build script
-install_file(build_fp, release_dir, "ug+r")
-
-// Install the JAR file
-install_file(ariadne_jar_fp, release_dir, "ug+r")
-
-println "Release process completed successfully."
+echo "Release process completed successfully."

@@ -13,7 +13,7 @@ fi
 
 ENV_PM=true
 
-PROJECT="$PROJECT"_PMg
+PROJECT="$PROJECT"_administrator
 
 export PATH=\
 "$REPO_HOME"/tool\
