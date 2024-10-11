@@ -11,16 +11,17 @@ if [ -z "$ENV_BASE" ]; then
   source "${script_path}/env_base"
 fi
 
-export PATH="$REPO_HOME/developer/executable":"$PATH"
+ENV_PM=true
 
-# so the .gitignore files can be seen:
+PROJECT="$PROJECT"_PMg
+
+export PATH=\
+"$REPO_HOME"/tool\
+:"$PATH"
+
+# no sneaky hidden files
 alias ls="ls -a"
 
-cd "$REPO_HOME/developer"
 
-export ENV_DEV=true
-source "$REPO_HOME"/developer/executable/env_build
+export ENV_PM=true
 echo "${BASH_SOURCE[0]}" "complete"
-
-
-

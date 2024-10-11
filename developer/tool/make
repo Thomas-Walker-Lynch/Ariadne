@@ -15,7 +15,7 @@ rm -rf jvm/*
 
 # Compile all files
 echo "Compiling files..."
-javac javac/*.java -d scratch_pad
+javac -sourcepath javac:java_namespace -d scratch_pad javac/Black.java
 
 if [ $? -ne 0 ]; then
   echo "Compilation failed."

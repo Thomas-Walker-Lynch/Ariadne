@@ -18,40 +18,40 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 
-public class AriadneGraph {
+public class Graph {
 
   /*--------------------------------------------------------------------------------
    type aliases
   */
   public class TokenSet extends HashSet<Token>{}
   public class LabelList extends ArrayList<Label> {}
-  public interface Node extends Map<Label, Object>{}
+  public interface Node extends Map<Label ,Object>{}
   public interface NodeList extends List<Node>{}
-  public interface RecognizerF extends Function<Label, Node>{}
-  public interface RecognizerFList extends List<RecognizerF>{}
-
+  public interface RecognizerF extends Function<Label ,Node>{}
+  public class RecognizerFList extends ArrayList<RecognizerF> {}
 
   /*--------------------------------------------------------------------------------
    instance data 
   */
 
-  private static Boolean debug = true;
-  private Map<Label, Node> node_map;
+  private static boolean debug = true;
+  private Map<Label ,Node> node_map;
   private RecognizerFList recognizer_f_list;
 
   /*--------------------------------------------------------------------------------
     constructors
   */
 
-  public AriadneGraph(Map<Label, Node> node_map, RecognizerFList recognizer_f_list) {
+  public AriadneGraph(Map<Label ,Node> node_map ,RecognizerFList recognizer_f_list){
     if (node_map == null && recognizer_f_list == null) {
-      System.err.println("AriadneGraph: requires one or both of 'node_map' as Map, and 'recognizer_f_list' as List.");
+      System.err.println("AriadneGraph: At least one of 'node_map' (Map) or 'recognizer_f_list' (List) must be provided.");
       System.exit(1);
     }
 
     // Initialize node_map and recognizer_f_list to empty collections if they are null
-    this.node_map = (node_map != null) ? node_map : new HashMap<Label, Node>();
-    this.recognizer_f_list = (recognizer_f_list != null) ? recognizer_f_list : new ArrayList<RecognizerF>();
+    this.node_map = (node_map != null) ? node_map : new HashMap<Label ,Node>();
+
+    this.recognizer_f_list = (recognizer_f_list != null) ? recognizer_f_list : new RecognizerFList();
   }
 
   /*--------------------------------------------------------------------------------
@@ -275,7 +275,7 @@ public class AriadneGraph {
     return ret_value;
   }
   public TokenSet wellformed_mark_node_label(Label node_label){
-    return wellformed_mark_node_label(node_label, true);
+    return wellformed_mark_node_label(node_label ,true);
   }
 
 
@@ -393,7 +393,7 @@ public class AriadneGraph {
     Marks potentially added to each node include 'cycle_member' and 'wellformed'.
     Note that these marks are independent.
   */
-  public TokenSet mark_form_graph(LabelList root_node_label_list, boolean verbose){
+  public TokenSet mark_form_graph(LabelList root_node_label_list ,boolean verbose){
     TokenSet ret_value = new HashSet<>();
     boolean exists_malformed = false;
     TokenSet result; // used variously
@@ -407,7 +407,7 @@ public class AriadneGraph {
     // iterate over left side tree descent, not ideal as it starts at the
     // root each time, but avoids complexity in the cycle detection logic.
     do{
-      result = mark_form_graph_descend(path_stack, verbose);
+      result = mark_form_graph_descend(path_stack ,verbose);
       if( result.contains("cycle_found") ) ret_value.add("cycle_exists");
       if( result.contains("undefined_node") ) exists_malformed = true;
       if( result.contains("exists_malformed") ) exists_malformed = true;
@@ -431,7 +431,7 @@ public class AriadneGraph {
     return ret_value;
   }
   public TokenSet mark_form_graph(LabelList root_node_label_list){
-    return mark_form_graph(root_node_label_list, true);
+    return mark_form_graph(root_node_label_list ,true);
   }
 
 
@@ -440,7 +440,7 @@ public class AriadneGraph {
   */
 
   // Given a node label, looks it up in the dependency graph, returns the node or null
-  public Node lookup(Label node_label, boolean verbose){
+  public Node lookup(Label node_label ,boolean verbose){
     if(node_label == null || node_label.isEmpty()){
       if(verbose) System.out.println("lookup:: given node_label is null or an empty string");
       return null;
@@ -449,7 +449,7 @@ public class AriadneGraph {
     // Try the map
     Node node = this.node_map.get(node_label);
     if(node != null){
-      node.put("label", node_label);
+      node.put("label" ,node_label);
       if(verbose) System.out.println("lookup:: found from map: " + node);
       return node;
     }
@@ -457,7 +457,7 @@ public class AriadneGraph {
 
     // The map lookup failed, let's try the function recognizer list
     Node match_result = null;
-    for (RecognizerF func : this.recognizer_f_list) {
+    for (RecognizerF func : this.recognizer_f_list){
       Node match_result = func.apply(node_label); 
       if("matched".equals(match_result.get("status"))){
         node = match_result;
@@ -473,17 +473,17 @@ public class AriadneGraph {
     return node;
   }
   public Node lookup(Label node_label){
-    return lookup(node_label, true);
+    return lookup(node_label ,true);
   }
 
   // Mark aware lookup function
-  public Node lookup_marked_good(Label node_label, boolean verbose){
-    Node node = lookup(node_label, verbose);
+  public Node lookup_marked_good(Label node_label ,boolean verbose){
+    Node node = lookup(node_label ,verbose);
     if(node != null && marked_good_q(node)) return node;
     return null;
   }
   public Node lookup_marked_good(Label node_label){
-    return lookup_marked_good(node_label, true);
+    return lookup_marked_good(node_label ,true);
   }
 
   /*
@@ -494,25 +494,25 @@ public class AriadneGraph {
     `mark_form_graph` must be run on the DAG before this function is called, or
     `lookup_marked_good` will not function correctly.
   */
-  public TokenSet all_DAG_DF(LabelList root_node_label_list, BiConsumer<Node ,TokenSet> node_function, boolean verbose) {
+  public TokenSet all_DAG_DF(LabelList root_node_label_list ,BiConsumer<Node ,TokenSet> node_function ,boolean verbose){
     if(verbose) System.out.println("all_DAG_DF::");
 
     TokenSet error_token_set = new HashSet<>();
 
     boolean accept_arg_list = true;
-    if(node_function == null) {
+    if(node_function == null){
       error_token_set.add("null_node_function");
       accept_arg_list = false;
     }
-    if(!(node_function instanceof BiFunction)) {
+    if(!(node_function instanceof BiFunction)){
       error_token_set.add("node_function_not_a_function");
       accept_arg_list = false;
     }
-    if(root_node_label_list == null) {
+    if(root_node_label_list == null){
       error_token_set.add("null_root_node_label_list");
       accept_arg_list = false;
     }
-    if(root_node_label_list.isEmpty()) {
+    if(root_node_label_list.isEmpty()){
       error_token_set.add("empty_root_node_label_list");
       accept_arg_list = false;
     }
@@ -527,8 +527,8 @@ public class AriadneGraph {
     while( !stack.isEmpty() ){
       Label node_label = stack.pop();
 
-      Node node = lookup_marked_good(node_label, verbose);
-      if(node == null) {
+      Node node = lookup_marked_good(node_label ,verbose);
+      if(node == null){
         error_token_set.add("lookup_fail");
         continue;
       }
@@ -542,14 +542,14 @@ public class AriadneGraph {
     }
 
     Collections.reverse(in_traversal_order);
-    for(Node node : in_traversal_order) {
-      node_function.apply(node, error_token_set);
+    for(Node node : in_traversal_order){
+      node_function.apply(node ,error_token_set);
     }
 
     return error_token_set;
   }
-  public TokenSet all_DAG_DF(LabelList root_node_label_list, BiConsumer<Node ,TokenSet> node_function){
-    return all_DAG_DF(root_node_label_list, node_function, true);
+  public TokenSet all_DAG_DF(LabelList root_node_label_list ,BiConsumer<Node ,TokenSet> node_function){
+    return all_DAG_DF(root_node_label_list ,node_function ,true);
   }
 
   /*--------------------------------------------------------------------------------
@@ -578,7 +578,7 @@ public class AriadneGraph {
     node label in the first argument is newer than all the files at the
     corresponding node labels in the second list.
   */
-  public boolean newer_than_all(Label node_label, LabelList node_label_list) throws IOException {
+  public boolean newer_than_all(Label node_label ,LabelList node_label_list) throws IOException {
     Path node_path = Paths.get(node_label);
     if (!Files.exists(node_path)) return false;
 
@@ -590,13 +590,13 @@ public class AriadneGraph {
           if (!Files.exists(path)) return false;
           long last_modified = Files.getLastModifiedTime(path).toMillis();
           return node_last_modified > last_modified;
-        } catch (IOException e) {
+        } catch (IOException e){
           return false;
         }
       });
   }
 
-  public boolean can_be_built_q(Node node) {
+  public boolean can_be_built_q(Node node){
     if( !marked_good_q(node) ) return false;
     if(
        ( "symbol".equals(node.get("type")) || "path".equals(node.get("type")) )
@@ -614,24 +614,24 @@ public class AriadneGraph {
   }
 
   // `can_be_build_q` must be true for this to be meaningful:
-  public boolean should_be_built_q(Node node, boolean verbose) throws IOException {
+  public boolean should_be_built_q(Node node ,boolean verbose) throws IOException {
     if ("leaf".equals(node.get("type"))) return false;
     if ("symbol".equals(node.get("type"))) return true;
-    if ("path".equals(node.get("type"))) return !newer_than_all((Label) node.get("label"), (LabelList) node.get("neighbor"));
+    if ("path".equals(node.get("type"))) return !newer_than_all((Label) node.get("label") ,(LabelList) node.get("neighbor"));
     
-    if (verbose) {
+    if (verbose){
       System.out.println("should_be_build_q:: unrecognized node type, so assuming it should not be built.");
     }
     return false;
   }
   public boolean should_be_built_q(Node node) throws IOException {
-    return should_be_built_q(node, true);
+    return should_be_built_q(node ,true);
   }
 
   /*
     Runs the build scripts, assuming the graph has been marked up already.
   */
-  public void run_build_scripts_f(LabelList root_node_label_list, boolean verbose) throws IOException {
+  public void run_build_scripts_f(LabelList root_node_label_list ,boolean verbose) throws IOException {
 
     if(root_node_label_list.isEmpty()) return;
 
@@ -639,7 +639,7 @@ public class AriadneGraph {
 
     System.out.println("run_build_script:: Checking if graph is well formed.");
     error_token_set = mark_form_graph(root_node_label_list);
-    if(error_token_set != null && !error_token_set.isEmpty()) {
+    if(error_token_set != null && !error_token_set.isEmpty()){
       System.out.println("Graph is not well-formed. Expect build problems. Errors:");
       error_token_set.forEach(token -> System.out.println("  - " + token));
     } else {
@@ -647,12 +647,12 @@ public class AriadneGraph {
     }
 
     // Define the node function
-    BiConsumer<Node, TokenSet> node_function = (node, error_token_set_2) -> {
-      if(!can_be_built_q(node)) {
+    BiConsumer<Node ,TokenSet> node_function = (node ,error_token_set_2) -> {
+      if(!can_be_built_q(node)){
         System.out.println("run_build_scripts_f:: Skipping build for " + node.get("label") + " due to problems with dependencies.");
         return;
       }
-      if(!should_be_built_q(node)) {
+      if(!should_be_built_q(node)){
         if(verbose) System.out.println("run_build_scripts_f:: " + node.get("label") + " already up to date");
         return;
       }
@@ -664,20 +664,20 @@ public class AriadneGraph {
       // node.build();
 
       // For path nodes, check if the build updated the target path
-      if("path".equals(node.get("type")) && should_be_built_q(node)) {
+      if("path".equals(node.get("type")) && should_be_built_q(node)){
         System.out.println("run_build_scripts_f:: Build failed for " + node.get("label"));
-        set_mark(node, "build_failed");
+        set_mark(node ,"build_failed");
       }
     };
 
     System.out.println("run_build_scripts_f:: running ...");
-    error_token_set = all_DAG_DF(root_node_label_list, node_function, verbose);
-    if(error_token_set != null) {
+    error_token_set = all_DAG_DF(root_node_label_list ,node_function ,verbose);
+    if(error_token_set != null){
       error_token_set.forEach(error -> System.out.println("run_build_scripts_f::all_DAG_DF:: " + error));
     }
   }
   public void run_build_scripts_f(LabelList root_node_label_list) throws IOException {
-    run_build_scripts_f(root_node_label_list, true);
+    run_build_scripts_f(root_node_label_list ,true);
   }
 
 }

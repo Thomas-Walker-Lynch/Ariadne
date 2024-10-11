@@ -15,21 +15,28 @@ if [ "$env_error" = true ]; then
   return 1
 fi
 
-export JAVA_HOME="$REPO_HOME/tool/jdk-11"
-export GROOVY_HOME="$REPO_HOME/tool/groovy-4.0.9"
+# goovy use has been deprecated
+# export GROOVY_HOME="$REPO_HOME/tool_shared/third_party/groovy-4.0.9"
 
+# third party tools we will use
+export JAVA_HOME="$REPO_HOME/tool_shared/third_party/jdk-11"
 export PATH=\
-"$REPO_HOME"/developer/shell\
-:"$JAVA_HOME"/bin\
-:"$GROOVY_HOME"/bin\
+"$JAVA_HOME"/bin\
 :"$PATH"
 
+# where the tool build finds its class files:
 export CLASSPATH=\
 "$REPO_HOME"/developer/jvm\
+:"$REPO_HOME"/developer/jvm/PaintIt.jar\
 :"$REPO_HOME"/developer/jvm/Ariadne.jar\
 :"$JAVA_HOME"/lib\
-:"$GROOVY_HOME"/lib\
 :"$CLASSPATH"
+
+# after we building the tool we might want to run it
+# the shell directory holds the bash UI wrappers
+export PATH=\
+"$REPO_HOME"/developer/shell\
+:"$PATH"
 
 export ENV_DEV_BUILD=true
 echo "${BASH_SOURCE[0]}" "complete"

@@ -1,6 +1,6 @@
-import com.ReasoningTechnology.Ariadna.*;
+package com.ReasoningTechnology.PaintIt;
 
-public class PaintItBlack {
+public class Black {
   public static void main(String[] args) {
     System.out.println("Paint it black.");
   }
