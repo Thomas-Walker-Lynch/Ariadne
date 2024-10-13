@@ -1,20 +1,23 @@
 #!/bin/bash
 
-# Ensure REPO_HOME and ENV_DEV_BUILD are set
+script_name=$(basename ${BASH_SOURCE[0]})
 if [ -z "$REPO_HOME" ]; then
-  echo "release:: REPO_HOME is not set."
+  echo "$script_name:: REPO_HOME is not set."
   exit 1
 fi
 
-if [ -z "$ENV_DEV_BUILD" ]; then
-  echo "release:: ENV_DEV_BUILD is not set."
+if [ -z "$ENV_LOCAL_DEVELOPER" ]; then
+  echo "$script_name:: ENV_DEV_BUILD is not set."
   exit 1
 fi
 
-# Define release directory
-release_dir="$REPO_HOME/release_candidate"
+release_dir="$REPO_HOME/release"
+shell_dir="$REPO_HOME/developer/shell"
+Ariadne_jar_fp="$REPO_HOME/developer/jvm/Ariadne.jar"
+wrapper=build
 
-# Create release directory if it doesn't exist
+
+
 if [ ! -d "$release_dir" ]; then
   mkdir -p "$release_dir"
 fi
@@ -42,16 +45,12 @@ install_file() {
  
 echo "Starting release process..."
 
-# Paths to shell wrappers and JAR file
-shell_dir="$REPO_HOME/developer/shell"
-Ariadne_jar_fp="$REPO_HOME/developer/jvm/Ariadne.jar"
-
 # Install the JAR file
 install_file "$Ariadne_jar_fp" "$release_dir" "ug+r"
 
 # Install shell wrappers
-for wrapper in black blue green; do
+for wrapper in $wrapper; do
   install_file "$shell_dir/$wrapper" "$release_dir" "ug+r+x"
 done
 
-echo "Release process completed successfully."
+echo "$script_name done."

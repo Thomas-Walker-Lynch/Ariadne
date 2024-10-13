@@ -1,13 +1,17 @@
 #!/bin/bash
+# remove file made by `make` and by `release`
 
-# Ensure REPO_HOME and ENV_DEV_BUILD are set
+script_name=$(basename ${BASH_SOURCE[0]})
+error=false
 if [ -z "$REPO_HOME" ]; then
-  echo "release:: REPO_HOME is not set."
-  exit 1
+  echo "$script_name:: REPO_HOME is not set."
+  error=true
 fi
-
-if [ -z "$ENV_DEV_BUILD" ]; then
-  echo "release:: ENV_DEV_BUILD is not set."
+if [ -z "$ENV_DEVELOPER_LOCAL" ]; then
+  echo "$script_name:: ENV_DEV_BUILD is not set."
+  error=true
+fi
+if [ error ]; then
   exit 1
 fi
 
@@ -24,4 +28,4 @@ rm -f "$release_dir"/Ariadne.jar
 rm -f "$release_dir"/{$wrapper}
 set +x
 
-echo "clean_dist complete."
+echo "$script_name done."

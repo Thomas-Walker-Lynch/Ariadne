@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# cp subtree at <source> under file path <destination>, and make all the copied
+# files read-only. The intended use case is for moving files to a `deprecated`
+# directory. This helps prevent subsequent accidental editing.
+
+SCRIPT_NAME=$(basename "$0")
+if [ "$#" -lt 2 ]; then
+  echo "Usage: $SCRIPT_NAME <source> <destination>"
+  exit 1
+fi
+SRC="$1"
+DEST="$2"
+
+mkdir -p "$DEST"
+mv "$SRC" "$DEST"
+
+# make stuff readonly
+cd "$DEST" || exit
+chmod -R u-w,go-rwx "$DEST"

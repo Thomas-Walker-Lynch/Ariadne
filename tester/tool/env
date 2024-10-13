@@ -13,38 +13,20 @@ if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
   exit 1
 fi
 
-## so we can do the build
-
-cd "$REPO_HOME"/developer/
+cd "$REPO_HOME"/tester/
 
 export ENV=$(script_fp)
-export PROJECT="$PROJECT"_developer
+export PROJECT="$PROJECT"_tester
 
 export PATH=\
-"$REPO_HOME"/developer/tool/\
+"$REPO_HOME"/tester/tool/\
 :"$REPO_HOME"/tool_shared/bespoke/\
 "$JAVA_HOME"/bin\
 :"$PATH"
 
-## so we can run locally the stuff we built,
-
 export CLASSPATH=\
-"$REPO_HOME"/developer/jvm\
-:"$REPO_HOME"/developer/jvm/Ariadne.jar\
+:"$REPO_HOME"/developer/release/Ariadne.jar\
 :"$JAVA_HOME"/lib\
 :"$CLASSPATH"
 
-export PATH=\
-"$REPO_HOME"/developer/shell\
-:"$PATH"
-
-## misc
-
-# make .githolder and .gitignore visible
-alias ls="ls -a"
-
 echo "$ENV complete."
-
-
-
-

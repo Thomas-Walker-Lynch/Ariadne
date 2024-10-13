@@ -1,7 +1,8 @@
 #!/bin/env bash
 
-if [ -z "$ENV_DEVELOPER" ]; then
-  echo "make_PaintIt:: script can only be run from the developer environment"
+script_name=$(basename ${BASH_SOURCE[0]})
+if [ -z "$ENV_DEVELOPER_LOCAL" ]; then
+  echo "$script_name:: script can only be run from the developer environment"
   return 1
 fi
 
@@ -34,12 +35,14 @@ mkdir -p shell
 
 wrapper=build
 for file in $wrapper;do
-  cat > shell/$file << EOL
-  #!/bin/bash
-  java com/ReasoningTechnology/Ariadne/$file
-  EOL
-  chmod +x shell/$file
+
+cat > shell/$file << EOL
+#!/bin/bash
+java com/ReasoningTechnology/Ariadne/$file
+EOL
+chmod +x shell/$file
+
 done
 
-echo "make done"
+echo "$script_name done."
 

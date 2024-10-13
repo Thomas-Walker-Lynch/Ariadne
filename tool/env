@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-# Ensure the script is sourced
+script_name=$(basename ${BASH_SOURCE[0]})
 if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
-  echo "This script must be sourced, not executed. Exiting."
-  return 1
+  echo "$script_name must be sourced, not executed. Exiting."
+  exit 1
 fi
 
 if [ -z "$ENV_BASE" ]; then
@@ -22,6 +22,6 @@ export PATH=\
 # no sneaky hidden files
 alias ls="ls -a"
 
-
 export ENV_PM=true
-echo "${BASH_SOURCE[0]}" "complete"
+echo "$script_name done."
+

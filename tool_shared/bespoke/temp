@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# Path to this script
+script_path="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
+
+# Path to the repo is two directories up
+export REPO_HOME="${script_path%/*/*}/"
+
+# script name and path relative to the top of the project
+script_fn(){
+  echo "$(basename ${BASH_SOURCE[0]})"
+}
+script_fp(){
+  echo "$(realpath --relative-to="$REPO_HOME" "$script_path")/$(script_fn)"
+}
+
+# REPO_HOME relative file path to this script
+# Calling the function correctly without braces
+export ENV=$(script_fp)
+
+# Output the values
+echo "Script path: $script_path"
+echo "Repo home: $REPO_HOME"
+echo "ENV: $ENV"
