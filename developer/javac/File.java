@@ -1,4 +1,4 @@
-package Ariadne;
+package com.ReasoningTechnology.Ariadne;
 
 import java.io.*;
 import java.nio.file.*;

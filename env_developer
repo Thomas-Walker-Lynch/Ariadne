@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+source tool_shared/bespoke/env
+source developer/tool/env
+

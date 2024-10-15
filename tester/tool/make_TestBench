@@ -13,9 +13,9 @@ set -x
 
   cd $REPO_HOME/tester
 
-  javac -d scratch_pad javac/*.java
-  jar cf jvm/AriadnaTestBench.jar -C scratch_pad .
+  javac -d scratch_pad javac/TestBench.java
+  jar cf jvm/TestBench.jar -C scratch_pad .
 
-set +x 
+set +x
 
 echo "$(script_fp) done."

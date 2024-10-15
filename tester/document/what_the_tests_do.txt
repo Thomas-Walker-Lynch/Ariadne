@@ -1,17 +1,8 @@
 
-Normally I would test individual subroutines/methods, then
-combinations. However, this code was copied over from a Gradle script.  So
-instead, the tests are graded in complexity.
+test0 - see if the tool will compile when given an empty graph.
 
-test0 - tests that the code will compile. The test itself consists
-of an empty graph. This was also the first test to make use of the
-directory structure and work flow.
+test1 - see what happens with a single symbolic node
 
-test1 - The test graph has a single symbolic node. The question is if
-the build code will run. The build code prints a message, said to
-be the title of the graph.
-
-test2  - The test graph consists of a single node abstraction function
-that builds nodes on the fly given a recognized target input.
+Remaining tests are compiled into javac/TestBenchAriande
 
 

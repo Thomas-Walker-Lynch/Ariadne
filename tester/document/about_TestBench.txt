@@ -1,0 +1,10 @@
+
+javac/TestBench does not belong here. It should have its own project.
+
+Currently it must be made first using `make_TestBench`.  It will be made again,
+redundantly as part of `make` because it is in the javac directory. This does
+not hurt anything.
+
+Later we will use an earlier version of the build tool to build the build tool,
+and cases and `make_TestBench` can be handled more gracefully if it is still
+here.

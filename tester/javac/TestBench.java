@@ -1,8 +1,19 @@
+package com.reasoningtechnology.TestBench;
 import java.util.Map;
 
 public class TestBench {
 
-  public static void runTest_Map(Map<String, Boolean> test_map){
+  // typically used to gather results before a return
+  public static boolean all(boolean[] conditions){
+    for( boolean condition : conditions ){
+      if( !condition ){
+        return false;
+      }
+    }
+    return true;
+  }
+
+  public static void run(Map<String, Boolean> test_map){
     int totalTest_Map = test_map.size();
     int passedTest_Map = 0;
     int failedTest_Map = 0;

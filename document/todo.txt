@@ -1,0 +1,3 @@
+
+1. extract TestBench as its own project. Perhaps it can replace paintit as the
+project skeleton.

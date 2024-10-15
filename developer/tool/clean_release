@@ -1,31 +1,28 @@
 #!/bin/bash
-# remove file made by `make` and by `release`
+# remove files made by `make` and by `release`
 
-script_name=$(basename ${BASH_SOURCE[0]})
-error=false
-if [ -z "$REPO_HOME" ]; then
-  echo "$script_name:: REPO_HOME is not set."
-  error=true
-fi
-if [ -z "$ENV_DEVELOPER_LOCAL" ]; then
-  echo "$script_name:: ENV_DEV_BUILD is not set."
-  error=true
-fi
-if [ error ]; then
-  exit 1
-fi
+# input guards
 
-# Define release directory
-release_dir="$REPO_HOME"/release_candidate
-wrapper=build
+  env_must_be="developer/tool/env"
+  if [ "$ENV" != "$env_must_be" ]; then
+    echo "$(script_fp):: error: must be run in the $env_must_be environment"
+    exit 1
+  fi
 
-set -x
-cd "$REPO_HOME"/developer
-rm -rf scratch_pad/*
-rm -f jvm/Ariadne.jar
-rm -f shell/"$wrapper"
-rm -f "$release_dir"/Ariadne.jar
-rm -f "$release_dir"/{$wrapper}
-set +x
+# things to clean
 
-echo "$script_name done."
+  release_dir="$REPO_HOME"/release
+  wrapper=build
+
+# remove files
+  set -x
+  cd "$REPO_HOME"/developer
+  rm -r scratch_pad/com/ReasoningTechnology/Ariadne
+  rm jvm/Ariadne.jar
+  rm shell/{$wrapper}
+  rm -f "$release_dir"/Ariadne.jar
+  rm -f "$release_dir"/{$wrapper}
+  set +x
+
+echo "$(script_fn) done."
+

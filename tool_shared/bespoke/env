@@ -1,46 +1,61 @@
 #!/usr/bin/env bash
 # environment shared by entire project
 
-# Path to this script
-script_path="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
+# number one task, establish REPO_HOME
+# this is specific to this script being in the .../tools_shared/env directory
 
+  script_path="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
+  export REPO_HOME="${script_path%/*/*}/"
+  export PROJECT=$(basename "$REPO_HOME")
 
+  ## set the shell prompt to show the project
+  PPS1="\n[$PROJECT]\n\u@\h§$(pwd)§\n> "
+  PPS2=">> "
 
-# Path to the repo is two directories up
-export REPO_HOME="${script_path%/*/*}/"
+# some useful functions for environment scripts
 
-# script name and path relative to the top of the project
-script_fn(){
-  echo "$(basename ${BASH_SOURCE[0]})"
-}
-script_fp(){
-  echo "$(realpath --relative-to="$REPO_HOME" "$script_path")/$(script_fn)"
-}
-export -f script_fn script_fp
+  ## path to script file
+  script_fp() {
+    eval "
+      local script_dp=\$(dirname \$(realpath \${BASH_SOURCE[1]}))
+      echo \$(realpath --relative-to=\"$REPO_HOME\" \"\$script_dp\")/\$(script_fn)
+    "
+  }
 
-# REPO_HOME relative file path to this script
-# Calling the function correctly without braces
-export ENV=$(script_fp)
+  ## path to script directory
+  script_dp() {
+    eval "
+      local script_dp=\$(dirname \$(realpath \${BASH_SOURCE[1]}))
+      echo \$(realpath --relative-to=\"$REPO_HOME\" \"\$script_dp\")
+    "
+  }
 
-# this script must be sourced, sort of like Python activate
-if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
-  echo "$ENV must be sourced, not executed. Exiting."
-  exit 1
-fi
+  ## an env script will be in workspace/tool/env, so
+  workspace(){
+    eval "echo \$(dirname \$(script_dp))"
+  }
 
-export PROJECT=$(basename "$REPO_HOME")
+  ## script's filename
+  script_fn() {
+    eval "echo \$(basename \${BASH_SOURCE[1]})"
+  }
 
-# Third party tool(s) that the project admin kindly installed.
-# The developer and tester should use these links to find them.
+  export -f script_fp script_dp script_fn workspace
+
+# note to the programs which environment they are running.
+
+  export ENV=$(script_fp)
+
+# The project administrator setup these tools and environment settings for all
+# on the project to use:
+
 export JAVA_HOME="$REPO_HOME/tool_shared/third_party/jdk-11"
 
-# set the shell prompt to show the project
-PPS1="\n[$PROJECT]\n\u@\h§$(pwd)§\n> "
-PPS2=">> "
+# some feedback to show all went well
 
 echo ENV "$ENV"
 echo REPO_HOME "$REPO_HOME"
 echo PROJECT "$PROJECT"
-echo "$ENV completed."
+
 
 

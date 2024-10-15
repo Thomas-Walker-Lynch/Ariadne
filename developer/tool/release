@@ -1,56 +1,61 @@
 #!/bin/bash
 
-script_name=$(basename ${BASH_SOURCE[0]})
-if [ -z "$REPO_HOME" ]; then
-  echo "$script_name:: REPO_HOME is not set."
-  exit 1
-fi
+# input guards
 
-if [ -z "$ENV_LOCAL_DEVELOPER" ]; then
-  echo "$script_name:: ENV_DEV_BUILD is not set."
-  exit 1
-fi
-
-release_dir="$REPO_HOME/release"
-shell_dir="$REPO_HOME/developer/shell"
-Ariadne_jar_fp="$REPO_HOME/developer/jvm/Ariadne.jar"
-wrapper=build
-
-
-
-if [ ! -d "$release_dir" ]; then
-  mkdir -p "$release_dir"
-fi
-
-# Function to copy and set permissions
-install_file() {
-  source_fp="$1"
-  target_dp="$2"
-  perms="$3"
-  
-  target_file="$target_dp/$(basename "$source_fp")"
-
-  if [ ! -f "$source_fp" ]; then
-    echo "install_file:: Source file '$source_fp' does not exist."
-    return 1
-  fi
-
-  if ! install -m "$perms" "$source_fp" "$target_file"; then
-    echo "Error: Failed to install $(basename "$source_fp") to $target_dp"
+  if [ -z "$REPO_HOME" ]; then
+    echo "$(script_fp):: REPO_HOME is not set."
     exit 1
-  else
-    echo "Installed $(basename "$source_fp") to $target_dp with permissions $perms"
   fi
-}
+
+  env_must_be="developer/tool/env"
+  if [ "$ENV" != "$env_must_be" ]; then
+    echo "$(script_fp):: error: must be run in the $env_must_be environment"
+    exit 1
+  fi
+
+# script local environment
+
+  release_dir="$REPO_HOME/release"
+  shell_dir="$REPO_HOME/developer/shell"
+  Ariadne_jar_fp="$REPO_HOME/developer/jvm/Ariadne.jar"
+  wrapper=build
+
+
+  if [ ! -d "$release_dir" ]; then
+    mkdir -p "$release_dir"
+  fi
+
+  # Function to copy and set permissions
+  install_file() {
+    source_fp="$1"
+    target_dp="$2"
+    perms="$3"
+
+    target_file="$target_dp/$(basename "$source_fp")"
+
+    if [ ! -f "$source_fp" ]; then
+      echo "install_file:: Source file '$source_fp' does not exist."
+      return 1
+    fi
+
+    if ! install -m "$perms" "$source_fp" "$target_file"; then
+      echo "Error: Failed to install $(basename "$source_fp") to $target_dp"
+      exit 1
+    else
+      echo "Installed $(basename "$source_fp") to $target_dp with permissions $perms"
+    fi
+  }
  
-echo "Starting release process..."
+# do the release
 
-# Install the JAR file
-install_file "$Ariadne_jar_fp" "$release_dir" "ug+r"
+  echo "Starting release process..."
 
-# Install shell wrappers
-for wrapper in $wrapper; do
-  install_file "$shell_dir/$wrapper" "$release_dir" "ug+r+x"
-done
+  # Install the JAR file
+  install_file "$Ariadne_jar_fp" "$release_dir" "ug+r"
 
-echo "$script_name done."
+  # Install shell wrappers
+  for wrapper in $wrapper; do
+    install_file "$shell_dir/$wrapper" "$release_dir" "ug+r+x"
+  done
+
+echo "$(script_fp) done."
