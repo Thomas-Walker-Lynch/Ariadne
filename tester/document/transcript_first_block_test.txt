@@ -1,0 +1,44 @@
+2024-10-16T07:05:25Z[]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer§
+> cd Ariadne
+
+2024-10-16T07:05:29Z[]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne§
+> source env_tester
+REPO_HOME /var/user_data/Thomas-developer/Ariadne/
+ENV tool_shared/bespoke/env
+PROJECT Ariadne
+ENV tester/tool/env
+
+2024-10-16T07:05:43Z[Ariadne_tester]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne/tester§
+> clean_build_directories
++ cd /var/user_data/Thomas-developer/Ariadne//tester
++ rm -r scratch_pad/com
++ rm jvm/TestBenchAriadne.jar
++ rm shell/TestBenchAriadne
++ set +x
+clean_build_directories done.
+
+2024-10-16T07:05:53Z[Ariadne_tester]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne/tester§
+> make
+Compiling files...
++ cd /var/user_data/Thomas-developer/Ariadne//tester
++ javac -d scratch_pad javac/TestBenchAriadne.java javac/TestBench.java
++ jar cf jvm/TestBenchAriadne.jar -C scratch_pad .
++ set +x
+Creating shell wrappers...
+tester/tool/environment done.
+
+2024-10-16T07:05:57Z[Ariadne_tester]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne/tester§
+> ./shell/TestBenchAriadne 
+Running Ariadne tests...
+Total test_map run: 1
+Total test_map passed: 1
+Total test_map failed: 0
+
+2024-10-16T07:06:00Z[Ariadne_tester]
+Thomas-developer@Blossac§/var/user_data/Thomas-developer/Ariadne/tester§
+> 
