@@ -34,16 +34,15 @@ echo "Creating JAR file..."
 
 echo "Creating shell wrappers..."
   mkdir -p shell
+  # wrapper is a space separated list
   wrapper=build
   for file in $wrapper;do
-
-  cat > shell/$file << EOL
+    cat > shell/$file << EOL
 #!/bin/bash
 java com/ReasoningTechnology/Ariadne/$file
 EOL
     chmod +x shell/$file
-
-done
+  done
 
 echo "$(script_fp) done."
 

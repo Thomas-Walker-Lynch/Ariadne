@@ -1,4 +1,4 @@
-package com.reasoningtechnology.TestBench;
+package com.ReasoningTechnology.TestBench;
 import java.util.Map;
 
 public class TestBench {

@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+script_path="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
+export REPO_HOME="${script_path%}/"
+echo REPO_HOME "$REPO_HOME"
+
+cd "$REPO_HOME"
 source tool_shared/bespoke/env
 source developer/tool/env
 

@@ -1,11 +1,8 @@
 #!/usr/bin/env bash
 # environment shared by entire project
-
 # number one task, establish REPO_HOME
 # this is specific to this script being in the .../tools_shared/env directory
 
-  script_path="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
-  export REPO_HOME="${script_path%/*/*}/"
   export PROJECT=$(basename "$REPO_HOME")
 
   ## set the shell prompt to show the project
@@ -54,7 +51,6 @@ export JAVA_HOME="$REPO_HOME/tool_shared/third_party/jdk-11"
 # some feedback to show all went well
 
 echo ENV "$ENV"
-echo REPO_HOME "$REPO_HOME"
 echo PROJECT "$PROJECT"
 
 

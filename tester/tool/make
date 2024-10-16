@@ -8,14 +8,24 @@
     exit 1
   fi
 
-# the build
-set -x
+echo "Compiling files..."
 
+  set -x
   cd $REPO_HOME/tester
-
   javac -d scratch_pad javac/*.java
-  jar cf jvm/AriadnaTestBench.jar -C scratch_pad .
+  jar cf jvm/TestBenchAriadne.jar -C scratch_pad .
+  set +x 
 
-set +x 
+echo "Creating shell wrappers..."
+  mkdir -p shell
+  # wrapper is a space separated list
+  wrapper=TestBenchAriadne
+  for file in $wrapper;do
+    cat > shell/$file << EOL
+#!/bin/env bash
+java com.ReasoningTechnology.Ariadne.TestBench.$file
+EOL
+    chmod +x shell/$file
+  done
 
 echo "$(script_fp) done."

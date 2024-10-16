@@ -25,7 +25,7 @@ export CLASSPATH=\
 "$JAVA_HOME"/lib\
 :"$REPO_HOME"/release/Ariadne.jar\
 :"$REPO_HOME"/tester/jvm/TestBench.jar\
-:"$REPO_HOME"/tester/jvm/AriadneTestBench.jar\
+:"$REPO_HOME"/tester/jvm/TestBenchAriadne.jar\
 :"$CLASSPATH"
 
 # misc

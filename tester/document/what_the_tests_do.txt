@@ -3,6 +3,7 @@ test0 - see if the tool will compile when given an empty graph.
 
 test1 - see what happens with a single symbolic node
 
-Remaining tests are compiled into javac/TestBenchAriande
+javac/TestBenchAriadne - the remainder of the tests.
+
 
 

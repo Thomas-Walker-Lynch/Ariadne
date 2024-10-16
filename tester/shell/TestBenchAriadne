@@ -1,0 +1,2 @@
+#!/bin/env bash
+java com.ReasoningTechnology.Ariadne.TestBench.TestBenchAriadne

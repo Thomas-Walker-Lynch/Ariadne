@@ -1,6 +1,6 @@
 package com.ReasoningTechnology.Ariadne.TestBench;
-import com.reasoningtechnology.Ariadna.*;
-import com.reasoningtechnology.TestBench.*;
+import  com.ReasoningTechnology.Ariadne.File;
+import  com.ReasoningTechnology.TestBench.*;
 import java.util.Map;
 import java.util.HashMap;
 
