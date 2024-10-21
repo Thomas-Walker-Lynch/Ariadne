@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Check if at least one file is provided
+if [ $# -eq 0 ]; then
+  echo "Usage: $0 <filename1> [filename2] ..."
+  exit 1
+fi
+
+# Loop through all the provided files
+for file in "$@"; do
+  # Check if the file exists
+  if [ ! -f "$file" ]; then
+    echo "Error: File '$file' not found!"
+    continue
+  fi
+
+  # Print 80 dashes
+  printf '%.0s-' {1..80}
+  echo
+
+  # Print the filename and a colon
+  echo "$file:"
+
+  # Print the contents of the file
+  cat "$file"
+
+  # Print a newline for spacing between files
+  echo
+done

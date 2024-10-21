@@ -1,10 +1,18 @@
 
-1. extract TestBench as its own project. Perhaps it can replace paintit as the
-project skeleton.
+2024-10-16T07:12:41Z[Ariadne_tester]
 
-2. Make a project 'skeleton' for starting other projects out of this one. `PaintIt` was a
-first draft at this, but made too early. Because this is java project I let
-`release` and `jvm` go to the repo.  Executables in other projects will be platform
-dependent, so if the directories are to be checked in, for example, `release` should
-be moved to `release_<X>` and a new empty release directory should be made.  Here
-<X> is the platform the executable can run on.
+1. TestBench should be extracted as its own project. It holds the project independent
+part of the TestBench.
+
+2. Project skeleton.
+
+  PaintIt is the current project skeleton, it needs to be updated to match the
+  structure of this project.
+
+3. Because this is a Java Project
+
+  'executables' have a standard form (the JVM) so I allowed the 'executable'
+  directories to be checked into the repo.
+
+  In the future, if we want to allow binary release, there will be multiple
+  release directories with suffixes for the target platform. 

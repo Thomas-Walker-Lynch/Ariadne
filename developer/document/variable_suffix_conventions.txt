@@ -1,0 +1,27 @@
+# Suffix Conventions
+
+## Specify interface used with variable when clarification is useful
+
+- `_set`: Indicates that the variable holds a set of items.
+
+- `_list`: Used for variables that represent a list of items.
+
+- `_f`: Refers to a function.
+
+Instead of making a variable name plural, add the interface qualifier.
+
+   e.g. names ->  name_set  or name_lisst
+
+## Always a good idea to use these when working with files
+
+- `_fp`: Refers to a file path. The part after the last slash is a file name.
+  
+- `_dp`: Refers to a directory path. By convention, the value ends in a slash.
+
+- `_fn`: Refers to a file name. Value has no slashes.
+
+- `_dn`: Refers to a directory name. Value has no slashes.
+  
+- `_fn_base`: The file name without the last dot and subsequent characters.
+  
+- `_fn_ext`: The subsequent characters after the last dot in a file name.

@@ -1,0 +1,42 @@
+--------------------------------------------------------------------------------
+javac/LabelList.java:
+package com.ReasoningTechnology.Ariadne;
+import java.util.ArrayList;
+
+  public class LabelList extends ArrayList<Label> {}
+
+--------------------------------------------------------------------------------
+javac/Node.java:
+package com.ReasoningTechnology.Ariadne;
+import java.util.Map;
+
+  public interface Node extends Map<Label ,Object>{}
+
+--------------------------------------------------------------------------------
+javac/NodeList.java:
+package com.ReasoningTechnology.Ariadne;
+import java.util.ArrayList;
+
+  public interface NodeList extends ArrayList<Node> {}
+
+--------------------------------------------------------------------------------
+javac/Production.java:
+package com.ReasoningTechnology.Ariadne;
+import java.util.function.Function;
+
+  public interface Production extends Function<Label ,Node>{}
+
+--------------------------------------------------------------------------------
+javac/ProductionList.java:
+package com.ReasoningTechnology.Ariadne;
+import java.util.ArrayList; 
+
+public class ProductionList extends ArrayList<Production> {}
+
+--------------------------------------------------------------------------------
+javac/TokenSet.java:
+package com.ReasoningTechnology.Ariadne;
+import java.util.HashSet;  
+
+public class TokenSet extends HashSet<Token>{}
+

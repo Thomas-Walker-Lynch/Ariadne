@@ -2,6 +2,7 @@ package com.ReasoningTechnology.Ariadne.TestBench;
 import  com.ReasoningTechnology.Ariadne.*;
 import  com.ReasoningTechnology.TestBench.*;
 import java.util.Map;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TestBenchAriadne extends TestBench{
@@ -32,12 +33,137 @@ public class TestBenchAriadne extends TestBench{
     return all( conditions );
   }
 
+  public static boolean test_Label_0(){
+    boolean[] conditions = new boolean[2];
+    int i = 0;
+
+    // Test input
+    Label test_label = new Label("test");
+
+    // Expected output
+    String expected_value = "test";
+
+    // Actual output
+    conditions[i++] = test_label.get().equals(expected_value);
+    conditions[i++] = test_label.toString().equals(expected_value);
+
+    return all(conditions);
+  }
+
+  public static boolean test_Token_0(){
+    boolean[] conditions = new boolean[4];
+    int i = 0;
+
+    // Test input
+    Token token = new Token("test_value");
+
+    // Check if the value is correctly stored and retrieved
+    conditions[i++] = token.get().equals("test_value");
+
+    // Check if the string representation is correct
+    conditions[i++] = token.toString().equals("test_value");
+
+    // Check equality with another Token object with the same value
+    Token another_token = new Token("test_value");
+    conditions[i++] = token.equals( another_token );
+
+    // Check the hashCode consistency
+    conditions[i++] = token.hashCode() == another_token.hashCode();
+
+    return all(conditions);
+  }
+
+  public static boolean test_LabelList_0(){
+    LabelList label_list = new LabelList();  // Use the constructor
+
+    // Add a label and check the size
+    label_list.add(new Label("test"));
+    return label_list.size() == 1;
+  }
+
+  public static boolean test_Node_0(){
+    Node node = new Node();  // Use the constructor
+
+    // Add a key-value pair and check the map
+    node.put(new Label("key"), new Object());
+    return node.containsKey(new Label("key"));
+  }
+
+  public static boolean test_NodeList_0(){
+    NodeList node_list = new NodeList();  // Use the constructor
+
+    // Add a node and check the size
+    node_list.add(new Node());  // Use Node constructor
+    return node_list.size() == 1;
+  }
+
+  public static boolean test_Production_0(){
+    Production production = label -> new Node();  // Use the Node constructor
+
+    // Apply the production function
+    Node node = production.apply(new Label("test"));
+    return node != null;
+  }
+
+  public static boolean test_ProductionList_0(){
+    ProductionList production_list = new ProductionList();  // Use the constructor
+
+    // Add a production and check the size
+    production_list.add(label -> new Node());  // Use the Node constructor
+    return production_list.size() == 1;
+  }
+
+  public static boolean test_TokenSet_0(){
+    TokenSet token_set = new TokenSet();  // Use the constructor
+
+    // Add a token and check if it's contained in the set
+    token_set.add(new Token("test"));
+    return token_set.contains(new Token("test"));
+  }
+
+  public static boolean test_Graph_0() {
+    boolean[] conditions = new boolean[3];
+    int i = 0;
+
+    // Create an empty node map and a production list
+    Map<Label, Node> node_map = new HashMap<>();
+    ProductionList production_list = new ProductionList();
+
+    // Initialize the Graph
+    Graph graph = new Graph(node_map, production_list);
+
+    // Test that lookup returns null for a non-existent node
+    Label non_existent_label = new Label("non_existent");
+    conditions[i++] = graph.lookup(non_existent_label, false) == null;
+
+    // Add a node to the map and test lookup
+    Node test_node = new Node();
+    Label test_label = new Label("test");
+    node_map.put(test_label, test_node);
+    conditions[i++] = graph.lookup(test_label, false) == test_node;
+
+    // Test lookup with verbosity
+    conditions[i++] = graph.lookup(test_label).equals(test_node);
+
+    // Return true if all conditions are met
+    return all(conditions);
+  }
+ 
   // Method to run all tests
   public static void test_Ariadne(){
     Map<String, Boolean> test_map = new HashMap<>();
 
     // Adding tests to the map
-    test_map.put( "File_unpack_file_path_0", test_File_unpack_file_path_0() );
+    test_map.put( "test_File_unpack_file_path_0", test_File_unpack_file_path_0() );
+    test_map.put( "test_Label_0", test_Label_0() );
+    test_map.put( "test_Token_0", test_Label_0() );
+    test_map.put( "test_LabelList_0", test_LabelList_0() );
+    test_map.put( "test_Node_0", test_Node_0() );
+    test_map.put( "test_NodeList_0", test_NodeList_0() );
+    test_map.put( "test_Production_0", test_Production_0() );
+    test_map.put( "test_ProductionList_0", test_ProductionList_0() );
+    test_map.put( "test_TokenSet_0", test_TokenSet_0() );
+    test_map.put("test_Graph_0", test_Graph_0());
 
     // Run the tests using TestBench
     TestBench.run( test_map );
