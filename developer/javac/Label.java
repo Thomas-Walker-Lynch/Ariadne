@@ -1,7 +1,7 @@
 package com.ReasoningTechnology.Ariadne;
 
 /*
-  A node label.
+  A value for the node.label property.
 
   This is a wrapper for a String. We can't instead use an alias by extending
   String, because String is a JavaScript 'final' type.
