@@ -26,7 +26,7 @@ A node is dictionary. Each node has a 'label', a 'build' function, and a
 'neighbor' list.  The neighbor list holds the edges.
 
 Using Java, the developer puts the nodes in a map, keyed on the node label, or
-writes functions that when given a label, return either a a node or null.
+writes functions that when given a label, return either a node or null.
 
 A node map looks a lot like classic make file.  Each node label is a target file
 path, the neighbor list can be listed next, and then we have the build code.

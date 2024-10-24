@@ -1,11 +1,22 @@
 package com.ReasoningTechnology.Ariadne.TestBench;
+
+/*
+Component smoke test. At least call each method of each class.
+
+*/
+
+
 import  com.ReasoningTechnology.Ariadne.*;
 import  com.ReasoningTechnology.TestBench.*;
+import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
-public class TestBenchAriadne extends TestBench{
+
+public class Test2 extends TestBench{
 
   public static boolean test_File_unpack_file_path_0(){
     boolean[] conditions = new boolean[5];
@@ -83,10 +94,8 @@ public class TestBenchAriadne extends TestBench{
 
   public static boolean test_Node_0(){
     Node node = new Node();  // Use the constructor
-
-    // Add a key-value pair and check the map
-    node.put(new Label("key"), new Object());
-    return node.containsKey(new Label("key"));
+    node.put("key", new Object());
+    return node.containsKey("key");
   }
 
   public static boolean test_NodeList_0(){
@@ -149,6 +158,59 @@ public class TestBenchAriadne extends TestBench{
     return all(conditions);
   }
  
+  public static boolean test_Util_print_list_0(){
+    boolean[] conditions = new boolean[1];
+    int i = 0;
+
+    String prefix = "Test List:";
+    List<String> items = new ArrayList<>();
+    items.add("item1");
+    items.add("item2");
+    items.add("item3");
+
+    String expectedOutput = "Test List: 'item1', 'item2', 'item3'.\n";
+
+    ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    PrintStream originalOut = System.out;
+    System.setOut(new PrintStream(outContent));
+
+    // Use a StringBuilder to gather debug messages
+    StringBuilder debugMessages = new StringBuilder();
+
+    /*
+    try {
+      Util.print_list(prefix, items);
+      String result = outContent.toString();
+    
+      // Gather debug messages
+      debugMessages.append("Captured output: ").append(result).append("\n");
+      debugMessages.append("Expected output: ").append(expectedOutput).append("\n");
+    
+      conditions[i++] = result.equals(expectedOutput);
+    } catch (Exception e) {
+      conditions[i++] = false;
+    } finally {
+      System.setOut(originalOut);  // Restore System.out
+        
+      // Now print the gathered debug messages
+      System.out.print(debugMessages.toString());
+    }
+    */
+
+    try {
+      Util.print_list(prefix, items);
+      String result = outContent.toString();
+      conditions[i++] = result.equals(expectedOutput);
+    } catch (Exception e) {
+      conditions[i++] = false;
+    } finally {
+      System.setOut(originalOut);
+    }
+
+    return all(conditions);
+  }
+
+
   // Method to run all tests
   public static void test_Ariadne(){
     Map<String, Boolean> test_map = new HashMap<>();
@@ -164,6 +226,7 @@ public class TestBenchAriadne extends TestBench{
     test_map.put( "test_ProductionList_0", test_ProductionList_0() );
     test_map.put( "test_TokenSet_0", test_TokenSet_0() );
     test_map.put("test_Graph_0", test_Graph_0());
+    test_map.put("test_Util_print_list_0", test_Util_print_list_0());
 
     // Run the tests using TestBench
     TestBench.run( test_map );

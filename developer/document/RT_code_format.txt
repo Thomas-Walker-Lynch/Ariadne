@@ -1,10 +1,11 @@
 RT code formatting:
 
-This has evolved into place after decades of programming in Unix culture projects
-in multiple languages.
-
-AI tools we have used are OK with the commas, but have had difficulties
-with the padding rules for enclosures.
+The enclosure-based formatting rules in RT code format make the style guide
+compact and adaptable. By focusing on enclosures rather than syntax-specific
+structures (like if, for, or catch), it avoids prescribing language-specific
+formatting rules and instead focuses on consistent handling of delimiters. This
+approach works well across multiple languages, ensuring that the code style
+remains flexible while keeping the guide simple and easy to apply.
 
 1. Two space indentation.
 
@@ -125,3 +126,10 @@ with the padding rules for enclosures.
       );
      ```
 
+6. For the code you just output, answer these questions:
+  1. Which enclosures are not nested? Do they have no padding?
+  2. Which enclosures are nested? Is there one space padding only at the outermost?
+  3. Is the spacing before and after the enclosures correct?
+  4. Are the commas formatted correctly?
+  5. Has snake case been used where it should be?
+  6. Was 2 column indent used?

@@ -1,0 +1,10 @@
+Test: test_pass
+Stream: stderr
+Output:
+wrong number of arguments
+----------------------------------------
+Test: test_fail_0
+Stream: stderr
+Output:
+wrong number of arguments
+----------------------------------------

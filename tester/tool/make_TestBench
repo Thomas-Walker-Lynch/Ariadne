@@ -12,8 +12,8 @@ echo "Compiling files..."
 
   set -x
   cd $REPO_HOME/tester
-  javac -d scratch_pad javac/*.java
-  jar cf jvm/TestBenchAriadne.jar -C scratch_pad .
+  javac -d scratch_pad javac/TestBench.java javac/TestTestBench.java
+  jar cf jvm/TestBench.jar -C scratch_pad com/ReasoningTechnology/TestBench
   set +x 
 
 echo "Creating shell wrappers..."
@@ -23,7 +23,7 @@ echo "Creating shell wrappers..."
   for file in $wrapper;do
     cat > shell/$file << EOL
 #!/bin/env bash
-java com.ReasoningTechnology.Ariadne.TestBench.$file
+java com.ReasoningTechnology.TestBench.$file
 EOL
     chmod +x shell/$file
   done
