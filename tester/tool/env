@@ -21,10 +21,12 @@ export PATH=\
 "$REPO_HOME"/tester/tool/\
 :"$REPO_HOME"/tool_shared/bespoke/\
 :"$JAVA_HOME"/bin\
+:"$MOSAIC_HOME"\
 :"$PATH"
 
 export CLASSPATH=\
 "$JAVA_HOME"/lib\
+:"$MOSAIC_HOME"/Mosaic.jar\
 :"$REPO_HOME"/release/"$PROJECT".jar\
 :"$REPO_HOME"/tester/jvm/Test_"$PROJECT".jar\
 :"$CLASSPATH"
