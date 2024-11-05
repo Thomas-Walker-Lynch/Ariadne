@@ -1,0 +1,51 @@
+# ssh login will fail if .bashrc writes to stdout, so we write to "bash_error.txt"
+# set -x
+# in F37 something seems to be caching PATH, which can be annoying
+
+# If not running interactively, don't do anything
+  case $- in
+      *i*) ;;
+        *) return;;
+  esac
+
+# This should also be the default from login.defs, because gnome ignores 
+# .login, .profile, etc. and uses systemd to launch applications from the desktop,
+  umask 0077
+
+# - note the variable $PROMPT_DECOR, that is how the project name ends up in the prompt.
+# - without -i bash will clear PS1, just because, so we set PPS1, ,PPS2 to not lose the profit.
+# - use $(pwd) instead of \w or it will prefix '~' which confuses dirtrack when the
+#   user is changed using su
+  export PPS1='\n$($iseq/Z)[$PROMPT_DECOR]\n\u@\h§$(pwd)§\n> '
+  export PPS2='>> '
+  export PS1="$PPS1"
+  export PS2="$PPS2"
+
+# sort the output of printenv, show newlines as environment variable values as \n
+  alias printenv='printenv | awk '\''{gsub(/\n/, "\\n")}1'\'' | sort'
+
+# iso time in ls -l, show hidden files, human readable sizes
+  alias ls='ls -a -h --time-style=long-iso' 
+
+# iso time for all Linux programs, which they will all ignore, but at least we
+# tried, perhaps someday ...
+  export TZ=UTC
+  export TIME_STYLE=long-iso
+  export LC_ALL=en_DK.UTF-8
+
+# -l don't truncate long lins
+# -p show pids
+  alias pstree='pstree -lp'
+
+# - make bash gp to sleep, revealing the calling shell
+# - useful for job control of multiple bash shells from a controlling shell
+  alias zzz="kill -STOP \$\$"
+
+# The one true operating system.
+# Proof that an OS can be as small as an editor.
+  export EDITOR=emacs
+
+# check the window size after each command and, if necessary, update the values
+# of LINES and COLUMNS.
+  shopt -s checkwinsize
+

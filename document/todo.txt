@@ -1,7 +1,7 @@
 
 2024-10-16T07:12:41Z[Ariadne_tester]
 
-1. TestBench should be extracted as its own project. It holds the project independent
+[done] 1. TestBench should be extracted as its own project. It holds the project independent
 part of the TestBench.
 
 2. Project skeleton.
@@ -9,10 +9,27 @@ part of the TestBench.
   PaintIt is the current project skeleton, it needs to be updated to match the
   structure of this project.
 
-3. Because this is a Java Project
+  [Will circle back to PaintIt when Ariadne is done.]
 
-  'executables' have a standard form (the JVM) so I allowed the 'executable'
-  directories to be checked into the repo.
+3. Implementation in additional languges.
 
-  In the future, if we want to allow binary release, there will be multiple
-  release directories with suffixes for the target platform. 
+  It is a one language build environment. Currently that language is Java.  The
+  graph definition is a Java map, the productions are Java functions, and the
+  triggered build functions are Java code.
+
+  The build code could build anything that can be built by running Java code, so
+  this could be projects in other languages. Still after doing everything else
+  in Java it feels natural to use the tool to build Java programs.
+
+  There is no reason this could not all be done in nodejs, for example, though
+  nodejs is not compiled, so there is no point in this.
+
+  I think it could be a C++ program, though there is a dynamic portion to it, as
+  the graph definition is read by the running program, and the running program
+  expects to read the map, and call the loaded production functions.
+
+  This would be an easy program to write to write in nodejs, or Lisp, but
+  development in those languages do not need this tool, as it already exists in
+  Java, it is not clear that benefits of having a 'cleaner' implementation would
+  justify the work.
+

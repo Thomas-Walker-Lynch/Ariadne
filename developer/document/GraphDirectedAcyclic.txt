@@ -1,0 +1,77 @@
+Comment that was on the cycle detector code. Was useful for defining
+the problem and limitations when defining the code. Might turn
+into a list of constraints the user needs to adhere for the algorithm
+to be guaranteed to function per spec.  Has potential
+to be turned into a proof of the algorithm.  Begins by laying
+out the assumptions the code is working under.
+
+
+/*
+Our build tool graph is directed from targets to dependencies.
+
+It must be cycle free. This class extends `Graph` by marking
+cycles that are found when descending from root nodes. Then
+`lookup` will not return these nodes.
+
+If:
+
+ 1. The production functions produce the same output given the
+ same input. (Which is a given for the map definition portion of
+ the graph).
+
+ 2. There are a finite number of states.
+
+ 3. Any input values that are used in the definition of the graph are not
+ changed after some point in time when the graph is said to have been 'defined'.
+
+ 4. No computed values are used for changing the graph definition.
+
+ 5. No computed values direct graph traversal.
+
+Then:
+
+  We can write an algorithm that in turn starts at each node
+  in the graph and searches for cycles, and will find all
+  cycles.
+
+  Our GraphDirectedAcyclic constructor would then not need
+  to know the root nodes of the traversal.
+
+However:
+
+  Had the graph definition been limited to the map object, and there is no
+  interaction with the build functions, we would meet the criteria.
+
+  However, our bestowed upon the user the ability to define 'production'
+  functions, which are used to build the graph dynamically at run time.
+
+  With such production functions is possible that a a graph definition would
+  emerge after a finite number of calls to the build function, and thus we still
+  meet the above criteria, and do not need to give a root node list to the
+  GraphDirectedAcyclic.
+
+  When a graph is to be used with the build tool, it is required that the graph
+  meet the criteria above ** when starting from the root nodes **.  However, it
+  is not generally required. Hence, we provide the root nodes to this function.
+
+  It is possible that the user defines one or more production functions,
+  intentionally nor not, that results in building an unbounded graph definition.
+  Further it is possible for a user to define a production that has an unbounded
+  nature that results in the cycle marking method of this class from never
+  finishing.
+
+  As examples, suppose that the a production follows the digits of pi, giving
+  a different node definition each time it is fed a label to recognize. Or
+  suppose that a production returns an ever longer node label each time it
+  is called. Such a production would cause the graph definition to be open,
+  and potentially for this cycle detection algorithm to never complete.
+
+  A production for a conventional build environment will not do these things,
+  However, a buggy production for build environment, or an unconventional
+  build environment not imagined at this time, could.
+
+  A breadth first search combined programmed as a generator would be able
+  to handle such cases without hanging. Where as this algorithm plunges
+  down depth first, and returns when it has the answer.
+
+*/
