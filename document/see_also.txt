@@ -1,0 +1,10 @@
+See also these important documents at the single point
+of maintenance: Mosaic/developer/document:
+
+
+  https://git.reasoningtechnology.com/proem/home/?p=Mosaic;a=tree;f=document;h=81c6bc00c1b9ecfe41bd1b896908351ba0f49f85;hb=refs/heads/core_developer_branch
+
+  https://github.com/Thomas-Walker-Lynch/Mosaic/blob/release_v1.0/document
+    bash_name_of_script.txt - about the functions to get the current bash script name
+    directory_naming.html - how to name directories in the project
+    work_flow.txt - definition of roles, directions for making a release
