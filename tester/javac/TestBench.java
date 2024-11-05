@@ -11,6 +11,22 @@ import java.util.Map;
 
 public class TestBench{
 
+  /* --------------------------------------------------------------------------------
+    Static Data
+  */
+
+  private static PrintStream original_out;
+  private static PrintStream original_err;
+  private static InputStream original_in;
+  
+  private static ByteArrayOutputStream out_content;
+  private static ByteArrayOutputStream err_content;
+  private static InputStream in_content;
+
+  /* --------------------------------------------------------------------------------
+    Test utility methods
+  */
+
   // typically used to gather results before a return
   public static boolean all(boolean[] conditions){
     for( boolean condition : conditions ){
@@ -21,26 +37,18 @@ public class TestBench{
     return true;
   }
 
-  public static void flush_stdin() throws IOException{
-    while(System.in.available() > 0){
-      System.in.read();
-    }
-  }
-
-  public static void set_test_input(String input_data){
-    ByteArrayInputStream test_in = new ByteArrayInputStream(input_data.getBytes());
-    System.setIn(test_in);
-  }
-
-  public static void log_output(String test_name ,String stream ,String output_data) throws IOException{
-    // Only log if there is actual content to log
-    if(output_data != null && !output_data.isEmpty()){
-      try(FileWriter log_writer = new FileWriter("test_log.txt" ,true)){  // Append mode
-        log_writer.write("Test: " + test_name + "\n");
-        log_writer.write("Stream: " + stream + "\n");
-        log_writer.write("Output:\n" + output_data + "\n");
-        log_writer.write("----------------------------------------\n");
-      }
+  /* --------------------------------------------------------------------------------
+    Test run helpers
+  */
+  public static void log_output(String test_name ,String stream ,String output_data){
+    try(FileWriter log_writer = new FileWriter("test_log.txt" ,true)){  // Append mode
+      log_writer.write("Test: " + test_name + "\n");
+      log_writer.write("Stream: " + stream + "\n");
+      log_writer.write("Output:\n" + output_data + "\n");
+      log_writer.write("----------------------------------------\n");
+    } catch(IOException e) {
+      System.err.println("Error writing to log for test: " + test_name + ", stream: " + stream);
+      e.printStackTrace(System.err);
     }
   }
 
@@ -70,8 +78,20 @@ public class TestBench{
 
     return true;
   }
+  
+  public static void flush_stdin() throws IOException{
+    while(System.in.available() > 0){
+      System.in.read();
+    }
+  }
 
-  public static void run(Object test_suite ,String[] stdin_array){
+  public static void set_test_input(String input_data){
+    ByteArrayInputStream test_in = new ByteArrayInputStream(input_data.getBytes());
+    System.setIn(test_in);
+  }
+
+
+  public static void run(Object test_suite){
 
     int failed_test = 0;
     int passed_test = 0;
@@ -95,15 +115,23 @@ public class TestBench{
         continue;
       }
 
+      PrintStream original_out = null;
+      PrintStream original_err = null;
+      InputStream original_in  = null;
+
+      ByteArrayOutputStream out_content = null;
+      ByteArrayOutputStream err_content = null;
+      ByteArrayInputStream in_content = null;
+
       try{
         // Redirect the I/O channels so the tests can manipulate them as data.
-        PrintStream original_out = System.out;
-        PrintStream original_err = System.err;
-        InputStream original_in = System.in;
+        original_out = System.out;
+        original_err = System.err;
+        original_in = System.in;
   
-        ByteArrayOutputStream out_content = new ByteArrayOutputStream();
-        ByteArrayOutputStream err_content = new ByteArrayOutputStream();
-        ByteArrayInputStream in_content = new ByteArrayInputStream(String.join("\n" ,stdin_array).getBytes());
+        out_content = new ByteArrayOutputStream();
+        err_content = new ByteArrayOutputStream();
+        in_content = new ByteArrayInputStream();
 
         System.setOut(new PrintStream(out_content));
         System.setErr(new PrintStream(err_content));
@@ -116,13 +144,13 @@ public class TestBench{
         System.setIn(original_in);
 
         // Report the error
-        System.out.println("TestBench:: when redirecting i/o in preparation for running test \'" + test.getName() + "\' ,test bench itself throws error: " + e.toString());
+        System.out.println("TestBench:: when redirecting i/o in preparation for running test \'" + method.getName() + "\' ,test bench itself throws error: " + e.toString());
         failed_test++;
         continue;
       }
 
       // Capture detritus 
-      Exception exception_string = "";
+      String exception_string = "";
       String stdout_string = "";
       String stderr_string = "";
 
@@ -146,7 +174,7 @@ public class TestBench{
         fail_exception = true;
 
         // We keep it to report it
-        exception = e;
+        exception_string = e.toString();
 
       } finally{
         
@@ -156,6 +184,7 @@ public class TestBench{
         System.setIn(original_in);
       }
 
+      // Report the test result.
       if(
          fail_reported 
          || fail_exception 
@@ -182,7 +211,7 @@ public class TestBench{
 
     }
 
-    // Report summary of results
+    // Summarize all the test results
     System.out.println("Total tests run: " + (passed_test + failed_test));
     System.out.println("Total tests passed: " + passed_test);
     System.out.println("Total tests failed: " + failed_test);

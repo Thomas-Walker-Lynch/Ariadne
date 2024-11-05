@@ -1,0 +1,24 @@
+#!/bin/env bash
+script_afp=$(realpath "${BASH_SOURCE[0]}")
+
+# try both running and sourcing this test
+
+echo
+echo "--------------------------------------------------------------------------------"
+echo "from within test_shared/bespoke/test_env:"
+echo
+echo "REPO_HOME:" "$REPO_HOME"
+echo "PROJECT:" "$PROJECT"
+echo "script_afp:" "$script_afp"
+echo "script_adp:" "$(script_adp)"
+echo "script_fn:" "$(script_fn)"
+echo "script_fp:" "$(script_fp)"
+echo "script_dp:" "$(script_dp)"
+echo "ENV:" "$ENV"
+echo "-----------------------"
+echo "the BASH_SOURCE stack:"
+
+	  top_index=$(( ${#BASH_SOURCE[@]} - 1 ))
+	  for (( i=0; i<=top_index; i++ )); do
+	    echo "$i: ${BASH_SOURCE[$i]}"
+	  done

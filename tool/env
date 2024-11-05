@@ -1,27 +1,29 @@
 #!/usr/bin/env bash
+script_afp=$(realpath "${BASH_SOURCE[0]}")
 
-script_name=$(basename ${BASH_SOURCE[0]})
-if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
-  echo "$script_name must be sourced, not executed. Exiting."
-  exit 1
-fi
+# input guards
 
-if [ -z "$ENV_BASE" ]; then
-  script_path="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
-  source "${script_path}/env_base"
-fi
-
-ENV_PM=true
-
-PROJECT="$PROJECT"_administrator
+  env_must_be="tool_shared/bespoke/env"
+  error=false
+  if [ "$ENV" != "$env_must_be" ]; then
+    echo "$(script_fp):: error: must be run in the $env_must_be environment"
+    error=true
+  fi
+  if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+    echo "$script_afp:: This script must be sourced, not executed."
+    error=true
+  fi
+  if $error; then exit 1; fi
 
 export PATH=\
-"$REPO_HOME"/tool\
+"$REPO_HOME"/tool_shared/bespoke/\
 :"$PATH"
 
-# no sneaky hidden files
+# expose sneaky hidden files
 alias ls="ls -a"
 
-export ENV_PM=true
-echo "$script_name done."
+# some feedback to show all went well
 
+  export PROMPT_DECOR="$PROJECT"_administrator
+  export ENV=$(script_fp)
+  echo ENV "$ENV"

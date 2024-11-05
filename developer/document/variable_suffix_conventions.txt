@@ -15,8 +15,12 @@ Instead of making a variable name plural, add the interface qualifier.
 ## Always a good idea to use these when working with files
 
 - `_fp`: Refers to a file path. The part after the last slash is a file name.
+
+- `_afp`: Refers to an absolute file path.
   
 - `_dp`: Refers to a directory path. By convention, the value ends in a slash.
+
+- `_adp`: Refers to an absolute directory path. 
 
 - `_fn`: Refers to a file name. Value has no slashes.
 

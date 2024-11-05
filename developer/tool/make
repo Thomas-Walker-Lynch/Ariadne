@@ -1,4 +1,5 @@
 #!/bin/env bash
+script_afp=$(realpath "${BASH_SOURCE[0]}")
 
 # input guards
 
@@ -12,7 +13,7 @@
 
 echo "Compiling files..."
   set -x
-  javac -d scratch_pad javac/*.java
+  javac -g -d scratchpad javac/*.java
   set +x
   if [ $? -ne 0 ]; then
     echo "Compilation failed."
@@ -21,9 +22,9 @@ echo "Compiling files..."
 
 echo "Creating JAR file..."
   set -x
-  jar_file=jvm/Ariadne.jar
+  jar_file=jvm/"$PROJECT".jar
   mkdir -p jvm
-  jar cf $jar_file -C scratch_pad .
+  jar cf $jar_file -C scratchpad .
   set +x
   if [ $? -eq 0 ]; then
     echo "JAR file created successfully: $jar_file"
@@ -35,11 +36,11 @@ echo "Creating JAR file..."
 echo "Creating shell wrappers..."
   mkdir -p shell
   # wrapper is a space separated list
-  wrapper=build
+  wrapper=$(shell_wrapper_list)
   for file in $wrapper;do
     cat > shell/$file << EOL
 #!/bin/bash
-java com/ReasoningTechnology/Ariadne/$file
+java com.ReasoningTechnology."$PROJECT".$file
 EOL
     chmod +x shell/$file
   done

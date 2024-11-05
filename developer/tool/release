@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+script_afp=$(realpath "${BASH_SOURCE[0]}")
 
 # input guards
 
@@ -17,8 +18,8 @@
 
   release_dir="$REPO_HOME/release"
   shell_dir="$REPO_HOME/developer/shell"
-  Ariadne_jar_fp="$REPO_HOME/developer/jvm/Ariadne.jar"
-  wrapper=build
+  project_jar_fp="$REPO_HOME/developer/jvm/"$PROJECT".jar"
+  wrapper=$(shell_wrapper_list)
 
 
   if [ ! -d "$release_dir" ]; then
@@ -51,7 +52,7 @@
   echo "Starting release process..."
 
   # Install the JAR file
-  install_file "$Ariadne_jar_fp" "$release_dir" "ug+r"
+  install_file "$project_jar_fp" "$release_dir" "ug+r"
 
   # Install shell wrappers
   for wrapper in $wrapper; do

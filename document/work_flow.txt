@@ -9,7 +9,7 @@
 
 #### 2. Developer
 
-2.1. From the Ariadne directory, run `> source env_developer` to set up the
+2.1. From the Mosaic directory, run `> source env_developer` to set up the
      developer environment.
 2.2. Use `> make` to build the project, and `> release` to copy relevant files
      to `$REPO_HOME/release` for testing.
@@ -17,7 +17,7 @@
 
 #### 3. Tester
 
-3.1. From the Ariadne directory, run `> source env_tester` to set up the tester
+3.1. From the Mosaic directory, run `> source env_tester` to set up the tester
      environment.
 3.2. Use `> make` to build the tests, and `> shell/test_<name>` to run a test.
      Alternatively, you can cd into one of the test directories, source the
@@ -29,7 +29,7 @@
 
 4.1. The release candidate is located in the `$REPO_HOME/release` directory and
      has passed testing.
-4.2. Check that the program `$REPO_HOME/tool_shared/bespoke/release` outputs the
+4.2. Check that the program `$REPO_HOME/tool_shared/bespoke/version` outputs the
      correct information. If necessary, modify it.
 4.3. A new branch is created in the project for the release, named
      `release_v<n>.0`, where `v<n>.0` is the version number from the `version`

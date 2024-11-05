@@ -1,8 +1,9 @@
 #!/bin/env bash
+script_afp=$(realpath "${BASH_SOURCE[0]}")
 
 # 0.1 pulled groovy files from GQL_to_Cypher build.gradle
 # 0.2 conversion to Java
 # 0.3 refactored, split into smaller pieces, made into package
 
-echo 0.3
+echo v0.3
 

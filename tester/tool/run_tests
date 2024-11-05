@@ -1,0 +1,23 @@
+#!/bin/env bash
+
+# Ensure REPO_HOME is set
+if [ -z "$REPO_HOME" ]; then
+  echo "Error: REPO_HOME is not set."
+  exit 1
+fi
+
+# Navigate to the shell directory
+cd "$REPO_HOME/tester/shell" || exit
+
+# Get the list of test scripts in the specific order from shell_wrapper_list
+test_list=$(shell_wrapper_list)
+
+# Execute each test in the specified order
+for file in $test_list; do
+  if [[ -x "$file" && ! -d "$file" ]]; then
+    echo -n "Running $file..."
+    ./"$file"
+  else
+    echo "Skipping $file (not executable or is a directory)"
+  fi
+done

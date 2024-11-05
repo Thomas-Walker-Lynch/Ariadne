@@ -1,7 +1,0 @@
-
-javac/TestBench is the non-project specific part of the test bench. (It does not
-belong here, rather it should be its own project.)
-
-javac/TestBenchAriadne Has the project specific tests.
-
-

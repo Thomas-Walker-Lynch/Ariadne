@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+script_afp=$(realpath "${BASH_SOURCE[0]}")
 # remove files made by `make` and by `release`
 
 # input guards
@@ -12,15 +13,15 @@
 # things to clean
 
   release_dir="$REPO_HOME"/release
-  wrapper=build
+  wrapper=$(shell_wrapper_list)
 
 # remove files
   set -x
   cd "$REPO_HOME"/developer
-  rm -r scratch_pad/com/ReasoningTechnology/Ariadne
-  rm jvm/Ariadne.jar
+  rm -r scratchpad/com/ReasoningTechnology/"$PROJECT"
+  rm jvm/"$PROJECT".jar
   rm shell/{$wrapper}
-  rm -f "$release_dir"/Ariadne.jar
+  rm -f "$release_dir"/"$PROJECT".jar
   rm -f "$release_dir"/{$wrapper}
   set +x
 

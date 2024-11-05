@@ -1,4 +1,5 @@
 #!/bin/env bash
+script_afp=$(realpath "${BASH_SOURCE[0]}")
 
 # input guards
 
@@ -12,18 +13,18 @@ echo "Compiling files..."
 
   set -x
   cd $REPO_HOME/tester
-  javac -d scratch_pad javac/*.java
-  jar cf jvm/TestBenchAriadne.jar -C scratch_pad .
+  javac -g -d scratchpad javac/*.java
+  jar cf jvm/Test_"$PROJECT".jar -C scratchpad .
   set +x 
 
 echo "Creating shell wrappers..."
   mkdir -p shell
   # wrapper is a space separated list
-  wrapper=TestTestBench
+  wrapper=$(shell_wrapper_list)
   for file in $wrapper;do
     cat > shell/$file << EOL
 #!/bin/env bash
-java com.ReasoningTechnology.Ariadne.TestBench.$file
+java $file
 EOL
     chmod +x shell/$file
   done

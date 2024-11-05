@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+script_afp=$(realpath "${BASH_SOURCE[0]}")
 # vl 'vertical list'
 
 # Check if the command is provided

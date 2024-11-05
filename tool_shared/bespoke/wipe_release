@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+script_afp=$(realpath "${BASH_SOURCE[0]}")
 # remove all files in the release directory
 set -e
 

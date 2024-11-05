@@ -13,7 +13,7 @@
 
   body {
     font-family: 'Noto Sans JP', Arial, sans-serif;
-    background-color: hsl(0, 0%, 10%);
+    background-color: hsl(0, 0%, 0%);
     color: hsl(42, 100%, 80%);
     padding: 2rem;
     margin: 0;
@@ -84,7 +84,7 @@
     <h2>Reference</h2>
 
     <ul>
-      <li>Ariadne/<span class="description">aka REPO_HOME, top level owned by the project administrator.</span></li>
+      <li>Mosaic/<span class="description">aka REPO_HOME, top level owned by the project administrator.</span></li>
       <ul>
         <li>developer/ <span class="description">Workspace for the developer. Has the source code, build scripts, and development-specific tools.</span></li>
         <ul>
@@ -92,19 +92,17 @@
           <li>document/ <span class="description">Documentation on developing and building the project.</span></li>
           <li>javac/ <span class="description">Java source files for compilation.</span></li>
           <li>jvm/ <span class="description">Compiled Java bytecode files for the project, typically a jar for a Java project.</span></li>
-          <li>scratch_pad/ <span class="description">Temporary storage typically for intermediate files created during build.</span></li>
+          <li>scratchpad/ <span class="description">Temporary storage typically for intermediate files created during build.</span></li>
           <li>shell/ <span class="description">Shell scripts intended to be part of the project release. (These are not tools.)</span></li>
           <li>tool/ <span class="description">Tools created by the developer, used for development tasks.</span></li>
         </ul>
         <li>document/ <span class="description">General documentation about the project.</span></li>
         <li>release/ <span class="description">Release candidate for testing. Becomes the release on the release branch.</span></li>
-        <li>scratch_pad/ <span class="description">Temporary storage for project administration tasks.</span></li>
+        <li>scratchpad/ <span class="description">Temporary storage for project administration tasks.</span></li>
         <li>tester/ <span class="description">Workspace for the tester. Has the test bench, tests, and test scripts.</span></li>
         <ul>
           <li>document/ <span class="description">Test-specific documentation.</span></li>
-          <li>test0/ <span class="description">Test case 0 environment and associated scripts.</span></li>
-          <li>test1/ <span class="description">Test case 1 environment and associated scripts.</span></li>
-          <li>test2/ <span class="description">Test case 2 environment and associated scripts.</span></li>
+          <li>javac/ <span class="description">The tests of the test bench sources.</span></li>
           <li>tool/ <span class="description">Tools needed for testing and managing the test environment.</span></li>
         </ul>
         <li>tool/ <span class="description">Project administration specific tools.</span></li>
@@ -150,14 +148,14 @@
       
     <p>When attempting to apply the <code>is-for</code> property in practice it
       became apparent that using this sole property was insufficient.  Consider
-      the directories <code>deprecated/</code> and <code>scratch_pad/</code>. There is no
-      <em>Mr. Deprecated</em> or <em>Mr. Scratch_Pad</em> who the contained
+      the directories <code>deprecated/</code> and <code>scratchpad/</code>. There is no
+      <em>Mr. Deprecated</em> or <em>Mr. Scratchpad</em> who the contained
       files are for. (And this conclusion is not for the lack of trying. Even
       mythological beings did not suffice as agents.) Rather than being for an
       agent, the files collected in such a directory have in common a state of
       being that was imposed upon them by decree.  Perhaps the developer, has
       decreed that a file is now deprecated, or a build script has decreed that
-      it is a scratch_pad file. Such decrees are typically more dynamic than the
+      it is a scratchpad file. Such decrees are typically more dynamic than the
       relationship properties. Also, these properties are disconnected from the
       contents of the file.  When, for example, a file has the property of being
       for the java compiler, we gain some information about its contents. In the

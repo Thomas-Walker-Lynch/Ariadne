@@ -1,9 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
+script_afp=$(realpath "${BASH_SOURCE[0]}")
 
 # Removes all files found in the build directories. It asks no questions as to
-# how or why the files got there. Be especially careful with the 'shell' directory
-# if you added scripts to it for release with the project they will be deleted.
-# consider adding a `shell-leaf` directory instead of adding scripts to `shell`.
+# how or why the files got there. Be especially careful with the 'shell'
+# directory if you have authored scripts for release, add a `shell-leaf`
+# directory instead of putting them in `shell`.
 
 # input guards
   env_must_be="developer/tool/env"
@@ -15,7 +16,7 @@
 # remove files
   set -x
   cd "$REPO_HOME"/developer
-  rm -r scratch_pad/*
+  rm -r scratchpad/*
   rm jvm/*
   rm shell/*
   set +x

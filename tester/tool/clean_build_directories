@@ -1,8 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
+script_afp=$(realpath "${BASH_SOURCE[0]}")
 
-# Caveat: the 'shell' directory is for built wrapper functions. `clean_build_directories` will
-# remove all the files in this directory. For bespoke scripts used by the tester, put
-# them in the `tool` directory.
+# Caveat: the 'shell' directory is for built wrapper
+# functions. `clean_build_directories` will remove all the files in this
+# directory. For bespoke scripts used by the tester, put them in the `tool`
+# directory.
 
 # input guards
   env_must_be="tester/tool/env"
@@ -14,7 +16,7 @@
 # remove files
   set -x
   cd "$REPO_HOME"/tester
-  rm -r scratch_pad/*
+  rm -r scratchpad/*
   rm jvm/*
   rm shell/*
   set +x
