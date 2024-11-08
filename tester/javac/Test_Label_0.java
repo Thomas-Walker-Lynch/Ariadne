@@ -1,5 +1,3 @@
-import com.ReasoningTechnology.Ariadne.Label;
-import com.ReasoningTechnology.Mosaic.*;
 
 public class Test_Label_0 {
 

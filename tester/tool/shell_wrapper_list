@@ -18,6 +18,7 @@ echo \
   Test_Token_0 \
   Test_TokenSet_0 \
   Test_Util_0 \
+  Test_Graph_0 \
   ""
 
  

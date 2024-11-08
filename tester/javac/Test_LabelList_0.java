@@ -1,9 +1,3 @@
-import java.util.List;
-import java.util.Arrays;
-
-import com.ReasoningTechnology.Ariadne.Label;
-import com.ReasoningTechnology.Ariadne.LabelList;
-import com.ReasoningTechnology.Mosaic.*;
 
 public class Test_LabelList_0 {
 

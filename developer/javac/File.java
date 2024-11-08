@@ -5,7 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import com.ReasoningTechnology.Mosaic.IO;
+import com.ReasoningTechnology.Mosaic.Mosaic_IO;
 
 public class File {
   static boolean debug = false;

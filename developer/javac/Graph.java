@@ -60,7 +60,4 @@ public class Graph{
     return lookup(node_label ,true);
   }
 
-
-  
-
 }
