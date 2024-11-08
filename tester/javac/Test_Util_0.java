@@ -1,15 +1,24 @@
+import com.ReasoningTechnology.Mosaic.Mosaic_IO;
+import com.ReasoningTechnology.Mosaic.Mosaic_Util;
+import com.ReasoningTechnology.Mosaic.Mosaic_Testbench;
+
+import com.ReasoningTechnology.Ariadne.Ariadne_Label;
+import com.ReasoningTechnology.Ariadne.Ariadne_Util;
+
+import java.util.List;
+import java.util.Arrays;
 
 public class Test_Util_0 {
 
   public class TestSuite {
 
-    public Boolean print_list_0(IO io) {
+    public Boolean print_list_0(Mosaic_IO io) {
       Boolean[] conditions = new Boolean[3];
       int i = 0;
 
       // Test with a non-empty list and a prefix
-      List<Label> itemList1 = Arrays.asList(new Label("first"), new Label("second"), new Label("third"));
-      Util.print_list("Items:", itemList1);
+      List<Ariadne_Label> itemList1 = Arrays.asList(new Ariadne_Label("first"), new Ariadne_Label("second"), new Ariadne_Label("third"));
+      Ariadne_Util.print_list("Items:", itemList1);
 
       // Capture and check stdout content
       String stdoutContent1 = io.get_out_content();
@@ -19,8 +28,8 @@ public class Test_Util_0 {
       io.clear_buffers();
 
       // Test with an empty list (no output expected)
-      List<Label> itemList2 = Arrays.asList();
-      Util.print_list("Empty:", itemList2);
+      List<Ariadne_Label> itemList2 = Arrays.asList();
+      Ariadne_Util.print_list("Empty:", itemList2);
       String stdoutContent2 = io.get_out_content();
       conditions[i++] = stdoutContent2.isEmpty(); // Expect no output for empty list
 
@@ -28,18 +37,18 @@ public class Test_Util_0 {
       io.clear_buffers();
 
       // Test with a null list (no output expected)
-      Util.print_list("Null:", null);
+      Ariadne_Util.print_list("Null:", null);
       String stdoutContent3 = io.get_out_content();
       conditions[i++] = stdoutContent3.isEmpty(); // Expect no output for null list
 
       // Return true if all conditions are met
-      return MU.all(conditions);
+      return Mosaic_Util.all(conditions);
     }
   }
 
   public static void main(String[] args) {
     TestSuite suite = new Test_Util_0().new TestSuite();
-    int result = TestBench.run(suite); 
+    int result = Mosaic_Testbench.run(suite); 
     System.exit(result);
   }
 

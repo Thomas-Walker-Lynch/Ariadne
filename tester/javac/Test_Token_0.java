@@ -1,16 +1,21 @@
+import com.ReasoningTechnology.Mosaic.Mosaic_IO;
+import com.ReasoningTechnology.Mosaic.Mosaic_Util;
+import com.ReasoningTechnology.Mosaic.Mosaic_Testbench;
+
+import com.ReasoningTechnology.Ariadne.Ariadne_Token;
 
 public class Test_Token_0 {
 
   public class TestSuite {
 
-    public Boolean token_creation_0(IO io) {
+    public Boolean token_creation_0(Mosaic_IO io) {
       Boolean[] conditions = new Boolean[4];
       int i = 0;
 
       // Test input
-      Token token1 = new Token("error");
-      Token token2 = new Token("warning");
-      Token token3 = new Token("error");
+      Ariadne_Token token1 = new Ariadne_Token("error");
+      Ariadne_Token token2 = new Ariadne_Token("warning");
+      Ariadne_Token token3 = new Ariadne_Token("error");
 
       // Check that the value is correctly set
       conditions[i++] = token1.get().equals("error"); // Expect true
@@ -19,28 +24,27 @@ public class Test_Token_0 {
       conditions[i++] = !token1.equals(token2); // Expect false, as values differ
 
       // Return true if all conditions are met
-      return MU.all(conditions);
+      return Mosaic_Util.all(conditions);
     }
 
-    public Boolean token_hashCode_0(IO io) {
+    public Boolean token_hashCode_0(Mosaic_IO io) {
       Boolean[] conditions = new Boolean[1];
       int i = 0;
 
-      Token token1 = new Token("error");
-      Token token2 = new Token("error");
+      Ariadne_Token token1 = new Ariadne_Token("error");
+      Ariadne_Token token2 = new Ariadne_Token("error");
 
       // Check that two identical tokens have the same hashCode
       conditions[i++] = token1.hashCode() == token2.hashCode(); // Expect true
 
       // Return true if all conditions are met
-      return MU.all(conditions);
+      return Mosaic_Util.all(conditions);
     }
   }
 
   public static void main(String[] args) {
     TestSuite suite = new Test_Token_0().new TestSuite();
-    int result = TestBench.run(suite); 
+    int result = Mosaic_Testbench.run(suite); 
     System.exit(result);
   }
-
 }

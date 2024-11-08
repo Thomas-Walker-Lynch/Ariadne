@@ -1,16 +1,23 @@
 
+import com.ReasoningTechnology.Mosaic.Mosaic_IO;
+import com.ReasoningTechnology.Mosaic.Mosaic_Util;
+import com.ReasoningTechnology.Mosaic.Mosaic_Testbench;
+
+import com.ReasoningTechnology.Ariadne.Ariadne_Label;
+
+
 public class Test_Label_0 {
 
   public class TestSuite {
 
-    public Boolean label_creation_0(IO io) {
+    public Boolean label_creation_0(Mosaic_IO io) {
       Boolean[] conditions = new Boolean[4];
       int i = 0;
 
       // Test input
-      Label label1 = new Label("test");
-      Label label2 = new Label("");
-      Label label3 = new Label("test");
+      Ariadne_Label label1 = new Ariadne_Label("test");
+      Ariadne_Label label2 = new Ariadne_Label("");
+      Ariadne_Label label3 = new Ariadne_Label("test");
 
       // Check that the value is correctly set
       conditions[i++] = label1.get().equals("test"); // Expect true
@@ -19,14 +26,14 @@ public class Test_Label_0 {
       conditions[i++] = label1.hashCode() == label3.hashCode(); // Expect true, as hash should match for equal labels
 
       // Return true if all conditions are met
-      return MU.all(conditions);
+      return Mosaic_Util.all(conditions);
     }
 
   }
 
   public static void main(String[] args) {
     TestSuite suite = new Test_Label_0().new TestSuite();
-    int result = TestBench.run(suite); 
+    int result = Mosaic_Testbench.run(suite); 
     System.exit(result);
   }
 

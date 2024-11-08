@@ -1,32 +1,38 @@
+import com.ReasoningTechnology.Mosaic.Mosaic_IO;
+import com.ReasoningTechnology.Mosaic.Mosaic_Util;
+import com.ReasoningTechnology.Mosaic.Mosaic_Testbench;
+
+import com.ReasoningTechnology.Ariadne.Ariadne_Token;
+import com.ReasoningTechnology.Ariadne.Ariadne_TokenSet;
 
 public class Test_TokenSet_0 {
 
   public class TestSuite {
 
-    public Boolean tokenSet_creation_0(IO io) {
+    public Boolean tokenSet_creation_0(Mosaic_IO io) {
       Boolean[] conditions = new Boolean[2];
       int i = 0;
 
       // Test default constructor (expecting an empty TokenSet)
-      TokenSet tokenSet = new TokenSet();
+      Ariadne_TokenSet tokenSet = new Ariadne_TokenSet();
       conditions[i++] = tokenSet.isEmpty(); // Expect true for empty set
 
       // Add a token and verify presence
-      Token token = new Token("error");
+      Ariadne_Token token = new Ariadne_Token("error");
       tokenSet.add(token);
       conditions[i++] = tokenSet.size() == 1 && tokenSet.contains(token); // Expect true for correct size and content
 
       // Return true if all conditions are met
-      return MU.all(conditions);
+      return Mosaic_Util.all(conditions);
     }
 
-    public Boolean tokenSet_uniqueness_0(IO io) {
+    public Boolean tokenSet_uniqueness_0(Mosaic_IO io) {
       Boolean[] conditions = new Boolean[1];
       int i = 0;
 
-      TokenSet tokenSet = new TokenSet();
-      Token token1 = new Token("error");
-      Token token2 = new Token("error");
+      Ariadne_TokenSet tokenSet = new Ariadne_TokenSet();
+      Ariadne_Token token1 = new Ariadne_Token("error");
+      Ariadne_Token token2 = new Ariadne_Token("error");
 
       // Add two tokens with identical values and verify only one is stored
       tokenSet.add(token1);
@@ -34,14 +40,13 @@ public class Test_TokenSet_0 {
       conditions[i++] = tokenSet.size() == 1 && tokenSet.contains(token1) && tokenSet.contains(token2); // Expect true for single entry despite duplicate addition
 
       // Return true if all conditions are met
-      return MU.all(conditions);
+      return Mosaic_Util.all(conditions);
     }
   }
 
   public static void main(String[] args) {
     TestSuite suite = new Test_TokenSet_0().new TestSuite();
-    int result = TestBench.run(suite); 
+    int result = Mosaic_Testbench.run(suite); 
     System.exit(result);
   }
-
 }

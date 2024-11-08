@@ -1,0 +1,84 @@
+  /*--------------------------------------------------------------------------------
+    Interface
+
+    1. nodes are referenced by label.
+
+    2. A list is a kind of sequence. It consists of a leftmost item, subsequent
+    items, and a rightmost item.
+
+    3. A node list consists of a leftmost node, subsequent nodes, and a rightmost node.
+
+    4. `path_stack`
+        
+        The `path_stack` is a list. Each item in the stack is a node list.
+
+        The rightmost items is the top of the stack.
+
+        The leftmost item is a list of root nodes, where traversal of the graph
+        starts.
+
+        Given two adjacent items on the path stack, say e0 and e1:
+
+            Say k0 is the leftmost node on the node list e0.
+            
+            The e1 will be the neighbor (child) list from node k0.
+
+            Hence, the path stack consists of the child lists of nodes along
+            a traversal. We chose a leftmost traversal.
+
+                e0:   k_0       k_1    ... k_2  
+
+                e1:   k_0_0    k_0_1   ... k_0_2   ; children of k_0
+
+                e2:   K_0_0_0  k_0_0_1 ... k_0_0_2 ; children of k_0_0
+                
+
+    5. `path`
+
+        A list of the leftmost nodes from a path stack.  
+
+        Given that e0 is a root node, `path` will consist of 
+
+            k_0, k_0_0, k_0_0_0 ... k_0_0..._0
+
+        Within the context of a path, k_0 is the leftmost item, and k_n is the
+        rightmost item.
+
+
+    6. removing a cycle
+
+       This is a build tool. Each node corresponds to a build objective, and the
+       neighbor nodes are dependencies. A neighbor node is a child node in our
+       tree descent, and is a dependency to our build tool.
+
+       This routine is called as part of the analysis phase. Nothing is
+       built here, rather we are merely marking dependency cycles that we
+       find when descending from the root nodes.
+
+       When we find a cycle, we remove those nodes from the current traversal
+       path, because we do not went the analysis to do in circles.  It is
+       possible that there are spurs that emanate from the cycle, and following
+       these might lead to finding more cycles.
+
+       Our build tool (which is not in this file) will stop descending through
+       the graph upon finding a cycle, and the effects of this will cause
+       upstream nodes to also not be built. Hence, the cycles hidden behind
+       other cycles are irrelevant.  
+
+       However, if we want to make routine of more general use, then the
+       discovered cycles should be pushed on to a cycle stack, and then each
+       item on the cycle stack would be used as root nodes for a new cycle
+       search. Note the leftmost cycle on each recursive search on the leftmost
+       node, will be the original cycle.
+  */
+
+  /*
+    Given a path to a node in the graph, `left_path`.
+
+    Checks if the rightmost node (referenced by label) recurs earlier in the path.
+    Presumably the rightmost node has been recently appended to the path.
+
+    If there is no cycle, returns null, otherwise returns the interval [i ,n],
+    of indexes into the path where the cycle is found. `n` will always be
+    the index of the rightmost node in the path list.
+  */

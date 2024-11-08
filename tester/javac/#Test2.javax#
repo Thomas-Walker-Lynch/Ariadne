@@ -1,4 +1,4 @@
-package com.ReasoningTechnology.Ariadne.TestBench;
+package com.ReasoningTechnology.Ariadne.Testbench;
 
 /*
 Component smoke test. At least call each method of each class.
@@ -7,7 +7,7 @@ Component smoke test. At least call each method of each class.
 
 
 import  com.ReasoningTechnology.Ariadne.*;
-import  com.ReasoningTechnology.TestBench.*;
+import  com.ReasoningTechnology.Testbench.*;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 
-public class Test2 extends TestBench{
+public class Test2 extends Testbench{
 
   public static boolean test_Label_0(){
     boolean[] conditions = new boolean[2];
@@ -202,8 +202,8 @@ public class Test2 extends TestBench{
     test_map.put("test_Graph_0", test_Graph_0());
     test_map.put("test_Util_print_list_0", test_Util_print_list_0());
 
-    // Run the tests using TestBench
-    TestBench.run( test_map );
+    // Run the tests using Testbench
+    Testbench.run( test_map );
   }
 
   // Main function to provide a shell interface for running tests

@@ -4,16 +4,17 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
-import com.ReasoningTechnology.Mosaic.Mosaic_IO;
+import java.util.Map;
 
-public class File {
+public class Ariadne_File {
   static boolean debug = false;
 
   public static Map<String, String> unpack_file_path(String file_fp) {
     if (debug) System.out.println("unpack_file_path::file_fp: " + file_fp);
 
-    // Use java.io.File explicitly to avoid conflict with the custom File class
+    // Use java.io.File explicitly to avoid conflict with the custom Ariadne_File class
     java.io.File file = new java.io.File(file_fp);
     String parent_dp = (file.getParent() != null) ? file.getParent() : "";
 
@@ -50,10 +51,10 @@ public class File {
   }
 
   /*
-    Given a target_fp and a list of list of dependency_fp.
+    Given a target_fp and a list of dependency_fp.
 
-    Returns false if either the target is newer than all the dependencies, or one
-    of the specified files is missing. Otherwise returns true.
+    Returns false if the target is newer than all dependencies or if a file is missing;
+    otherwise, returns true.
   */
   public static boolean newer_than_all(String target_fp_string, List<String> dependency_fp_list) throws IOException {
     Path target_fp_object = Paths.get(target_fp_string);
@@ -72,5 +73,4 @@ public class File {
       }
     });
   }
-
 }
