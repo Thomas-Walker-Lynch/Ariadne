@@ -1,0 +1,63 @@
+#!/bin/env /bin/bash
+
+# Description: Descends from $1, or pwd, looking for empty directories and adds a `.githolder` to them.
+# does not descend into hidden directories.
+
+# examples:
+#   > git_holder
+#   > git_holder --dry-run
+
+set -e
+
+find_empty_dirs() {
+  local dir="$1"
+  local dry_run="$2"
+
+  # Skip `.git` specifically
+  if [[ "$(basename "$dir")" == ".git" ]]; then
+    return
+  fi
+
+  # Check if the directory is empty (including hidden files, excluding `.` and `..`)
+  if [[ -z $(find "$dir" -mindepth 1 -maxdepth 1 -print -quit) ]]; then
+    if [[ "$dry_run" == "true" ]]; then
+      echo "Dry-run: Would add .githolder in $dir"
+    else
+      echo "Adding .githolder to $dir"
+      touch "$dir/.githolder"
+    fi
+  else
+    # Recurse into subdirectories
+    for subdir in "$dir"/*/ "$dir"/.[!.]/; do
+      if [[ -d "$subdir" && "$subdir" != "$dir/.[!.]/" ]]; then
+        find_empty_dirs "$subdir" "$dry_run"
+      fi
+    done
+  fi
+}
+
+# Default parameters
+dry_run="false"
+target_dir="."
+
+# Parse arguments
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --dry-run)
+      dry_run="true"
+      shift
+      ;;
+    *)
+      if [[ -d "$1" ]]; then
+        target_dir="$1"
+        shift
+      else
+        echo "Invalid argument: $1 is not a directory"
+        exit 1
+      fi
+      ;;
+  esac
+done
+
+# Run the function
+find_empty_dirs "$target_dir" "$dry_run"

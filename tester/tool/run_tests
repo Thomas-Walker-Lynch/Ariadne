@@ -15,7 +15,8 @@ test_list=$(shell_wrapper_list)
 # Execute each test in the specified order
 for file in $test_list; do
   if [[ -x "$file" && ! -d "$file" ]]; then
-    echo -n "Running $file..."
+    echo
+    echo "Running $file..."
     ./"$file"
   else
     echo "Skipping $file (not executable or is a directory)"

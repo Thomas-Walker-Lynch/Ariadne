@@ -8,3 +8,83 @@ Stream: stderr
 Output:
 wrong number of arguments
 ----------------------------------------
+
+2024-12-02T05:55:58.032644Z -----------------------------------------------------------
+Test: path_find_cycle_0
+Message:
+Test logic error: com.sun.proxy.$Proxy0.path_find_cycle(com.ReasoningTechnology.Ariadne.Ariadne_LabelList)
+
+2024-12-02T06:02:01.242181Z -----------------------------------------------------------
+Test: path_find_cycle_0
+Message:
+Test logic error: com.sun.proxy.$Proxy0.path_find_cycle(com.ReasoningTechnology.Ariadne.Ariadne_LabelList)
+
+2024-12-02T06:04:46.092722Z -----------------------------------------------------------
+Test: path_find_cycle_0
+Message:
+Test logic error: com.sun.proxy.$Proxy0.path_find_cycle(com.ReasoningTechnology.Ariadne.Ariadne_LabelList)
+
+2024-12-02T06:10:34.729080Z -----------------------------------------------------------
+Test: path_find_cycle_0
+Message:
+Test logic error: com.sun.proxy.$Proxy0.path_find_cycle(com.ReasoningTechnology.Ariadne.Ariadne_LabelList)
+
+2024-12-02T06:12:34.226099Z -----------------------------------------------------------
+Test: path_find_cycle_0
+Message:
+Test logic error: com.sun.proxy.$Proxy0.path_find_cycle(com.ReasoningTechnology.Ariadne.Ariadne_LabelList)
+
+2024-12-02T06:12:34.237210Z -----------------------------------------------------------
+Test: path_find_cycle_0
+Stream: stdout
+Output:
+path_find_cycle_0 method called
+
+
+2024-12-02T06:22:30.107089Z -----------------------------------------------------------
+Test: path_find_cycle_0
+Message:
+Test logic error: com.sun.proxy.$Proxy0.path_find_cycle(com.ReasoningTechnology.Ariadne.Ariadne_LabelList)
+
+2024-12-02T06:22:30.119855Z -----------------------------------------------------------
+Test: path_find_cycle_0
+Stream: stdout
+Output:
+path_find_cycle_0 method called
+
+
+2024-12-02T06:22:58.368281Z -----------------------------------------------------------
+Test: path_find_cycle_0
+Message:
+Test logic error: com.sun.proxy.$Proxy0.path_find_cycle(com.ReasoningTechnology.Ariadne.Ariadne_LabelList)
+
+2024-12-02T06:22:58.381072Z -----------------------------------------------------------
+Test: path_find_cycle_0
+Stream: stdout
+Output:
+path_find_cycle_0 method called
+
+
+2024-12-02T06:26:59.743703Z -----------------------------------------------------------
+Test: path_find_cycle_0
+Message:
+Test logic error: com.sun.proxy.$Proxy0.path_find_cycle(com.ReasoningTechnology.Ariadne.Ariadne_LabelList)
+
+2024-12-02T06:26:59.756441Z -----------------------------------------------------------
+Test: path_find_cycle_0
+Stream: stdout
+Output:
+path_find_cycle_0 method called
+
+
+2024-12-02T06:35:07.484479Z -----------------------------------------------------------
+Test: path_find_cycle_0
+Message:
+Test logic error: com.sun.proxy.$Proxy0.path_find_cycle(com.ReasoningTechnology.Ariadne.Ariadne_LabelList)
+
+2024-12-02T06:35:07.497273Z -----------------------------------------------------------
+Test: path_find_cycle_0
+Stream: stdout
+Output:
+path_find_cycle_0 method called
+
