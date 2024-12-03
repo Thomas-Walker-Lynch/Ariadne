@@ -1,0 +1,20 @@
+
+The project is originally configured to be used with emacs as an IDE.  I have
+added an IntelliJ IDEA configuration, so if you want a modern IDE it is probably best
+to go with this.
+
+I've not run Eclipse on the project, if you do perhaps you can update the notes here.
+These things will probably increase your odds of making it work:
+  1. open a shell
+  2. cd to Ariadne, and source the env_developer
+  3. run the tool 'distribute_source'
+  3. run eclipse from the command line
+  4. give eclipse the 'scratchpad' directory as its source
+
+Be sure to run `release` after development, to update what the
+tester sees.
+
+Do the analogous steps if you contribute as a 'tester'.  I.e. from
+the shell source env_tester instead. Also, you will need to add
+distribute_source to tester/tool, as it is currently not there.
+
