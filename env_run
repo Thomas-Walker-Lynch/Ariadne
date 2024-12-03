@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+# Centralized environment executor. Typically used by IDEs to run developer/tool
+# or tester/tool commands in the correct environment. Shell users are encouraged
+# to source the appropriate environment file into their shell instead of
+# running commands through this executor.
+
+if [ "$#" -lt 2 ]; then
+    echo "Usage: $0 <environment> <command> [args...]"
+    echo "Example: $0 developer make"
+    exit 1
+fi
+
+# extract the environment and the command
+environment=$1
+shift
+command=$1
+shift
+command_args="$@"
+
+# Determine the path to the environment script based on the environment
+case "$environment" in
+    developer)
+        env_script="env_developer"
+        ;;
+    tester)
+        env_script="env_tester"
+        ;;
+    *)
+        echo "Error: Unknown environment '$environment'. Supported environments are: developer, tester."
+        exit 1
+        ;;
+esac
+
+# check if the environment script exists and is readable
+if [ ! -f "$env_script" ] || [ ! -r "$env_script" ]; then
+    echo "Error: Environment script '$env_script' not found or not readable."
+    exit 1
+fi
+
+source "$env_script"
+exec "$command" "$command_args"
