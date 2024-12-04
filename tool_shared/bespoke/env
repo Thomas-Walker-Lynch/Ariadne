@@ -29,8 +29,9 @@ fi
 # --------------------------------------------------------------------------------
 # The project administrator sets up the following tools for all roles to use:
 #
-  export JAVA_HOME="$REPO_HOME/tool_shared/third_party/jdk-11"
-  export MOSAIC_HOME="$REPO_HOME/tool_shared/third_party/Mosaic/release"
+#  export JAVA_HOME="$REPO_HOME/tool_shared/third_party/jdk-11"
+ export JAVA_HOME="$REPO_HOME/tool_shared/third_party/jdk-23.0.1"
+ export MOSAIC_HOME="$REPO_HOME/tool_shared/third_party/Mosaic/release"
 
 # --------------------------------------------------------------------------------
 # the following functions are provided for other scripts to use.

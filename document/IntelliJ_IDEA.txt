@@ -2,6 +2,10 @@
 This file describes the local install and configuration of IntelliJ_IDEA for
 the Ariadne project.
 
+The project was/is originally configured to be used with Emacs as an IDE. The tools
+can all be run from a shell inside of emacs. Even when using an IDE what the
+shell environment scripts and tools do should be understood.
+
 --------------------------------------------------------------------------------
 Some notes
 
@@ -45,8 +49,8 @@ The [OK] button at the bottom of dialogs:
 
    To apply changes hit [Apply].
 
-   Will [OK] apply changes before closing?  Not sure. It does at least
-   sometimes.
+   [OK] will not save what is on the dialog if [Apply] would fail, but
+   it still closes it.
 
 --------------------------------------------------------------------------------
 To install ItelliJ

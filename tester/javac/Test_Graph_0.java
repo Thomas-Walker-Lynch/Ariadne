@@ -59,23 +59,7 @@ public class Test_Graph_0 {
       Boolean[] conditions = new Boolean[1];
       Mosaic_Util.all_set_false( conditions );
       int i = 0;
-      /*
-      try {
-        Ariadne_Label label = new Ariadne_Label( "nonexistent" );
-        Ariadne_Node node = (Ariadne_Node) GraphDirectedAcyclic_proxy.getClass().getMethod(
-          "lookup"
-         ,Ariadne_Label.class
-        ).invoke( GraphDirectedAcyclic_proxy ,label );
-
-        conditions[i++] = node == null;
-      } catch (Exception e) {
-        Mosaic_Util.log_message("lookup_0", "Test logic error: " + e.getMessage());
-        return false;
-      }
-
-      return Mosaic_Util.all( conditions );
-      */
-      return true;
+        return true;
     }
   }
 
