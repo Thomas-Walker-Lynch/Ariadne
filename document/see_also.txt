@@ -1,6 +1,0 @@
-See also these important documents at the resource project, a single point
-of maintenance for documents and scripts shared among the projects:
-
-  https://github.com/Thomas-Walker-Lynch/resource/tree/core_developer_branch/document
-
-  https://git.reasoningtechnology.com/?p=resource;a=tree;f=document;h=098de7aa481fa7950bd56a7a7858c616c6be9ea5;hb=refs/heads/core_developer_branch

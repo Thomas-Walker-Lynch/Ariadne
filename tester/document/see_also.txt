@@ -1,8 +1,0 @@
-
-See also these documents located at a single point of maintenance:
-
-  https://git.reasoningtechnology.com/proem/home/?p=Mosaic;a=tree;f=tester/document;h=51b10aaa2d43d4ac591a83844471eb4093f988a4;hb=refs/heads/core_developer_branch
-
-  https://github.com/Thomas-Walker-Lynch/Mosaic/tree/release_v1.0/tester/document
-
-      jdb.txt - how to use jdb with the project
