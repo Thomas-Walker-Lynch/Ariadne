@@ -1,0 +1,45 @@
+
+System requirements:
+
+dnf install libX11-devel libXpm-devel libjpeg-devel libpng-devel libtiff-devel 
+dnf install gtk3-devel giflib-devel gnutls-devel
+dnf install ncurses-devel texinfo
+dnf install libacl-devel libattr-devel libgccjit libgccjit-devel
+
+# install and build script:
+
+cd "$REPO_HOME"/tool_shared/third_party
+mkdir -p emacs/{src,build,bin}
+
+# We sought stability, and now this. What can I say? It has 'visual-wrap-prefix-mode'.
+pushd upstream
+curl -L -O https://alpha.gnu.org/gnu/emacs/pretest/emacs-30.0.92.tar.xz
+popd
+
+tar -xf upstream/emacs-30.0.92.tar.xz -C emacs/src --strip-components=1
+
+# need to clear the environment
+env -i bash
+
+pushd emacs/src
+./configure --prefix="$REPO_HOME"/tool_shared/third_party/emacs
+
+  I gather this warning is unavaoidable?
+  "configure: WARNING: Your version of Gtk+ will have problems with"
+
+
+# replace nproc with number of processors:
+make -j$(nproc)
+
+# make install installs locally due to the `--prefix` option `./configure` above
+make install 
+make clean
+
+popd
+rm -r emacs/{src,build}
+
+# Find emacs in the emacs/in directory.  Be sure to add it to the path
+# in the tool_shared/bespoke/env file:
+#     PATH="$REPO_HOME/tool_shared/third_party/emacs/bin:$PATH"
+
+

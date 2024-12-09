@@ -1,0 +1,12 @@
+
+2024-12-09T04:25:18.053085602Z -----------------------------------------------------------
+Test: path_find_cycle_0
+Message:
+Test logic error: jdk.proxy1.$Proxy0.path_find_cycle(com.ReasoningTechnology.Ariadne.Ariadne_LabelList)
+
+2024-12-09T04:25:18.061014789Z -----------------------------------------------------------
+Test: path_find_cycle_0
+Stream: stdout
+Output:
+path_find_cycle_0 method called
+

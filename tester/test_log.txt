@@ -196,3 +196,39 @@ Stream: stdout
 Output:
 path_find_cycle_0 method called
 
+
+2024-12-09T04:07:54.684532266Z -----------------------------------------------------------
+Test: path_find_cycle_0
+Message:
+Test logic error: jdk.proxy1.$Proxy0.path_find_cycle(com.ReasoningTechnology.Ariadne.Ariadne_LabelList)
+
+2024-12-09T04:07:54.695557006Z -----------------------------------------------------------
+Test: path_find_cycle_0
+Stream: stdout
+Output:
+path_find_cycle_0 method called
+
+
+2024-12-09T04:20:55.682148373Z -----------------------------------------------------------
+Test: path_find_cycle_0
+Message:
+Test logic error: jdk.proxy1.$Proxy0.path_find_cycle(com.ReasoningTechnology.Ariadne.Ariadne_LabelList)
+
+2024-12-09T04:24:22.045170508Z -----------------------------------------------------------
+Test: path_find_cycle_0
+Stream: stdout
+Output:
+path_find_cycle_0 method called
+
+
+2024-12-09T07:16:25.530710606Z -----------------------------------------------------------
+Test: path_find_cycle_0
+Message:
+Test logic error: jdk.proxy1.$Proxy0.path_find_cycle(com.ReasoningTechnology.Ariadne.Ariadne_LabelList)
+
+2024-12-09T07:16:25.539373169Z -----------------------------------------------------------
+Test: path_find_cycle_0
+Stream: stdout
+Output:
+path_find_cycle_0 method called
+

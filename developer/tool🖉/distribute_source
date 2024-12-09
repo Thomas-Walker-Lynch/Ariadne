@@ -1,0 +1,53 @@
+#!/bin/env bash
+script_afp=$(realpath "${BASH_SOURCE[0]}")
+
+# This script links the sources in javac🖉 into the directory tree that parallels
+# the package name in scratch_pad.  If the `-nolink` option is specified,
+# it makes a copy instead of a link.
+
+# Input guards
+env_must_be="developer/tool🖉/env"
+if [ "$ENV" != "$env_must_be" ]; then
+  echo "$script_afp:: error: must be run in the $env_must_be environment"
+  exit 1
+fi
+
+cd "$REPO_HOME"/developer || exit 1
+
+# Parse options
+nolink=false
+while [[ "$1" == -* ]]; do
+  case "$1" in
+    -nolink) nolink=true ;;
+    *) echo "$script_afp:: error: unknown option $1" && exit 1 ;;
+  esac
+  shift
+done
+
+# Set up package tree
+package_tree="scratchpad/com/ReasoningTechnology/$PROJECT"
+mkdir -p "$package_tree"
+echo "Package: $package_tree"
+
+# Process files
+echo -n "$([[ $nolink == true ]] && echo "Copying" || echo "Linking"):"
+for source_file in javac🖉/*.java; do
+  echo -n " $(basename "$source_file")"
+  link_target="$package_tree/$(basename "$source_file")"
+  # Copy the file if -nolink option is provided, otherwise create a link
+  if [[ $nolink == true ]]; then
+   # Remove link if present, otherwise copy will try to overwrite the link target (and fail).
+    rm -f "$link_target"
+    cp "$source_file" "$link_target"
+  else
+    # Create a symbolic link if -nolink is not provided
+    if [ ! -L "$link_target" ]; then
+      ln -s "$(realpath --relative-to="$package_tree" "$source_file")" "$link_target"
+    fi
+  fi
+done
+echo "."
+
+echo "$script_afp done."
+
+

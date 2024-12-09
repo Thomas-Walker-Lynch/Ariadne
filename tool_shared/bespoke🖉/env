@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+script_afp=$(realpath "${BASH_SOURCE[0]}")
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+  echo "$script_afp:: This script must be sourced, not executed."
+  exit 1
+fi
+
+# --------------------------------------------------------------------------------
+# project definition
+
+# actual absolute director path for this script file
+
+  script_adp(){
+    dirname "$script_afp"
+  }
+
+# assume this script is located  $REPO_HOME/tools_shared/bespoke and work backwards
+# to get $REPO_HOME, etc.
+
+  REPO_HOME=$(dirname "$(dirname "$(script_adp)")")
+  echo REPO_HOME "$REPO_HOME"
+
+  PROJECT=$(basename "$REPO_HOME")
+  echo PROJECT "$PROJECT"
+
+  # set the prompt decoration to the name of the project
+  PROMPT_DECOR=$PROJECT
+
+  # include the project bespoke tools
+  PATH="$REPO_HOME"/tool_shared/bespoke🖉:"$PATH"
+
+  export REPO_HOME PROJECT PROMPT_DECOR PATH
+
+# --------------------------------------------------------------------------------
+# The project administrator sets up the following tools for all roles to use:
+#
+  PATH="$REPO_HOME/tool_shared/third_party/RT-project-share/release/bash:$PATH"
+  PATH="$REPO_HOME/tool_shared/third_party/RT-project-share/release/amd64:$PATH"
+  PATH="$REPO_HOME/tool_shared/third_party/emacs/bin:$PATH"
+  JAVA_HOME="$REPO_HOME/tool_shared/third_party/jdk-23.0.1"
+  MOSAIC_HOME="$REPO_HOME/tool_shared/third_party/Mosaic"
+
+  export PATH JAVA_HOME MOSAIC_HOME
+
+# --------------------------------------------------------------------------------
+# the following functions are provided for other scripts to use.
+# at the top of files that make use of these functions put the following line:
+#  script_afp=$(realpath "${BASH_SOURCE[0]}")
+#
+
+  ## script's filename
+  script_fn(){
+    basename "$script_afp"
+  }
+
+  ## script's dirpath relative to $REPO_HOME
+  script_fp(){
+    realpath --relative-to="${REPO_HOME}" "$script_afp"
+  }
+
+  ## script's dirpath relative to $REPO_HOME
+  script_dp(){
+    dirname "$(script_fp)"
+  }
+
+  export -f script_adp script_fn script_dp script_fp
+
+# --------------------------------------------------------------------------------
+# closing
+#
+
+  export ENV=$(script_fp)
+  echo ENV "$ENV"
+

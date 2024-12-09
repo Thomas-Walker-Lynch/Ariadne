@@ -1,0 +1,105 @@
+#!/usr/bin/env bash
+script_afp=$(realpath "${BASH_SOURCE[0]}")
+
+# input guards
+
+  env_must_be="tool_shared/bespoke🖉/env"
+  error_bad_env=false
+  error_not_sourced=false
+  if [ "$ENV" != "$env_must_be" ]; then
+    echo "$(script_fp):: error: must be run in the $env_must_be environment"
+    error_bad_env=true
+  fi
+  if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+    echo "$script_afp:: This script must be sourced, not executed."
+    error_not_sourced=true
+  fi
+  if $error_not_sourced; then exit 1; fi
+  if $error_bad_env; then return 1; fi
+
+# so we can do testing
+
+export PATH=\
+"$REPO_HOME"/tester/tool🖉/\
+:"$JAVA_HOME"/bin\
+:"$MOSAIC_HOME"\
+:"$PATH"
+
+# Use this when leaving open the option to check in edits to the third party project
+#   sources.  (after cloning/pulling the project, build it with sources, the
+#   classes and sources will be in the scratchpad directory)
+#
+# And, when leaving open the option to edit Ariadne sources directly (some
+# development workflows might not accommodate this. Be sure that Ariadne was built
+# with sources and the scratchpad directory has not been cleaned)
+#
+export CLASSPATH=\
+"$JAVA_HOME"/lib\
+:"$MOSAIC_HOME"/developer/scratchpad\
+:"$REPO_HOME"/developer/scratchpad\
+:"$REPO_HOME"/tester/scratchpad\
+:"$CLASSPATH"
+
+export SOURCEPATH=\
+"$JAVA_HOME"/lib\
+:"$MOSAIC_HOME"/developer/scratchpad\
+:"$REPO_HOME"/developer/scratchpad\
+:"$REPO_HOME"/tester/javac🖉\
+:"$SOURCEPATH"
+
+# For projects who's sources are not be edited, directly expand the project into
+# $REPO_HOME/tester/scratchpad before testing.
+#
+#   When Mosaic sources are not to edited then checked back in.
+#     Be sure to use `Mosaic.jar` that has sources included.
+#       (cd tester/scratchpad && jar -xf $REPO_HOME/tool_shared/third_party/Mosaic.jar)
+#   When Ariadne developers source are not to be edited directly
+#     Be sure to use `release Ariadne.jar` has sources included.
+#        (cd scratchpad && jar xf $REPO_HOME/release/Ariadne.jar)
+#
+# export CLASSPATH=\
+# "$JAVA_HOME"/lib\
+# :"$REPO_HOME"/tester/javac🖉\
+# :"$REPO_HOME"/tester/scratchpad\
+# :"$CLASSPATH"
+
+# export SOURCEPATH=\
+# "$JAVA_HOME"/lib\
+# :"$REPO_HOME"/tester/javac🖉\
+# :"$REPO_HOME"/tester/scratchpad\
+# :"$SOURCEPATH"
+
+# The 'normal' case When outside sources are not viewed in the debugger. This is
+# common when the tester's responsibility is to find failed tests, and the
+# tester is not debugging anything but the test code.
+#
+# export CLASSPATH=\
+# "$JAVA_HOME"/lib\
+# :"$MOSAIC_HOME"/Mosaic.jar\
+# :"$REPO_HOME"/release/"$PROJECT".jar\
+# :"$REPO_HOME"/tester/jvm/Test_"$PROJECT".jar\
+# :"$CLASSPATH"
+
+# export SOURCEPATH=\
+# "$REPO_HOME"/tester/javac🖉\ 
+# :"$SOURCEPATH"
+
+
+# so we can run individual built test wrappers
+export PATH=\
+"$REPO_HOME"/tester/bash🖉\
+"$REPO_HOME"/tester/bash\
+:"$PATH"
+
+
+# misc
+
+  # make .githolder and .gitignore visible
+  alias ls="ls -a --time-style=full-iso"
+
+# some feedback to show all went well
+
+  export PROMPT_DECOR="$PROJECT"_tester
+  export ENV=$(script_fp)
+  echo ENV "$ENV"
+  cd "$REPO_HOME"/tester/

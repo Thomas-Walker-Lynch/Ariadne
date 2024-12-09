@@ -1,0 +1,67 @@
+----------------------------------------
+env_administrator
+
+For mucking around with the tools install and config, cd to the top of
+the project and source the env_administrator environment.
+
+  git clone <project>
+  cd project
+  source env_administrator
+
+----------------------------------------
+RT-project-share 
+
+This pulls in documents and commonly used scripts. The project has symbolic links
+into RT-icommon, so this is not optional.
+
+  cd "$REPO_HOME/tool_shared/third_party/"
+  git clone https://github.com/Thomas-Walker-Lynch/RT-project-share.git
+
+  note this link should already be present:
+    ln -s "$REPO_HOME/tool_shared/third_party/resource/document" see_also
+
+----------------------------------------
+jdk-23
+
+  cd "$REPO_HOME/tool_shared/third_party/upstream"
+
+  # source for the 11 version used before, now upgraded to 23
+  #curl -C - -o OpenJDK11U-jdk_x64_linux_hotspot_11.0.16_8.tar.gz https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.16+8/OpenJDK11U-jdk_x64_linux_hotspot_11.0.16_8.tar.gz
+  curl -L -C - -b "oraclelicense=accept-securebackup-cookie" -O https://download.oracle.com/java/23/latest/jdk-23_linux-x64_bin.tar.gz
+
+  cd ..
+  tar -xzf upstream/jdk-23_linux-x64_bin.tar.gz
+
+  edit $REPO_HOME/tool_shared/bespoke/env, and update JAVA_HOME:
+    export JAVA_HOME="$REPO_HOME/tool_shared/third_party/jdk-23.0.1"
+
+
+----------------------------------------
+Mosaic - for testing
+
+  > cd $REPO_HOME/tool_shared/third_party
+  > git clone https://github.com/Thomas-Walker-Lynch/Mosaic.git
+
+ This will have already been done:
+
+    $REPO_HOME/tool_shared/bespoke/env will have:
+       export MOSAIC_HOME="$REPO_HOME/tool_shared/third_party/Mosaic/release"
+
+    $REPO_HOME/tester/tool/env, will have Mosaic
+
+    export PATH=\
+    "$REPO_HOME"/tester/tool/\
+    :"$JAVA_HOME"/bin\
+    :"$MOSAIC_HOME"\
+    :"$PATH"
+
+    export CLASSPATH=\
+    "$JAVA_HOME"/lib\
+    :"$MOSAIC_HOME"/Mosaic.jar\
+    :"$REPO_HOME"/release/"$PROJECT".jar\
+    :"$REPO_HOME"/tester/jvm/Test_"$PROJECT".jar\
+    :"$CLASSPATH"
+
+
+
+
