@@ -27,7 +27,7 @@ export PATH=\
 
 # Use this when leaving open the option to check in edits to the third party project
 #   sources.  (after cloning/pulling the project, build it with sources, the
-#   classes and sources will be in the scratchpad directory)
+#   classes and links to the sources will be in the scratchpad directory)
 #
 # And, when leaving open the option to edit Ariadne sources directly (some
 # development workflows might not accommodate this. Be sure that Ariadne was built
