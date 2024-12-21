@@ -1,25 +1,19 @@
-Comment that was on the cycle detector code. Was useful for defining
-the problem and limitations when defining the code. Might turn
-into a list of constraints the user needs to adhere for the algorithm
-to be guaranteed to function per spec.  Has potential
-to be turned into a proof of the algorithm.  Begins by laying
-out the assumptions the code is working under.
 
 
-/*
+Each node in the build graph 
+
+
 Our build tool graph is directed from targets to dependencies.
-
-It must be cycle free. This class extends `Graph` by marking
-cycles that are found when descending from root nodes. Then
-`lookup` will not return these nodes.
 
 If:
 
  1. The production functions produce the same output given the
- same input. (Which is a given for the map definition portion of
- the graph).
+ same input.
 
- 2. There are a finite number of states.
+ 2. There are a finite number of nodes
+
+ 3. At some point, stay t0, the graph no longer changes.
+     -input values 
 
  3. Any input values that are used in the definition of the graph are not
  changed after some point in time when the graph is said to have been 'defined'.

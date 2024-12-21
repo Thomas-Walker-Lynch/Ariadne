@@ -5,7 +5,7 @@ import com.ReasoningTechnology.Mosaic.Mosaic_Testbench;
 import com.ReasoningTechnology.Ariadne.Ariadne_Node;
 import com.ReasoningTechnology.Ariadne.Ariadne_NodeList;
 
-public class Test_NodeList_0 {
+public class NodeList_0 {
 
   public class TestSuite {
 
@@ -28,7 +28,7 @@ public class Test_NodeList_0 {
   }
 
   public static void main(String[] args) {
-    TestSuite suite = new Test_NodeList_0().new TestSuite();
+    TestSuite suite = new NodeList_0().new TestSuite();
     int result = Mosaic_Testbench.run(suite); 
     System.exit(result);
   }

@@ -37,6 +37,10 @@ fi
   PATH="$REPO_HOME/tool_shared/third_party/RT-project-share/release/bash:$PATH"
   PATH="$REPO_HOME/tool_shared/third_party/RT-project-share/release/amd64:$PATH"
   PATH="$REPO_HOME/tool_shared/third_party/emacs/bin:$PATH"
+
+  # after having installed Itellij IDEA
+  PATH="$REPO_HOME/tool_shared/third_party/idea-IC-243.21565.193/bin:$PATH"
+
   JAVA_HOME="$REPO_HOME/tool_shared/third_party/jdk-23.0.1"
   MOSAIC_HOME="$REPO_HOME/tool_shared/third_party/Mosaic"
 

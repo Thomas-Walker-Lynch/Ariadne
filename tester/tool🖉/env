@@ -17,88 +17,125 @@ script_afp=$(realpath "${BASH_SOURCE[0]}")
   if $error_not_sourced; then exit 1; fi
   if $error_bad_env; then return 1; fi
 
+#--------------------------------------------------------------------------------
+# arguments
+
+  if [[ -x "$1" ]]; then MODE=$1; else MODE=release; fi
+  export MODE
+  echo "MODE: $MODE"
+
+#--------------------------------------------------------------------------------
 # so we can do testing
 
 export PATH=\
 "$REPO_HOME"/tester/tool🖉/\
+:"$MOSAIC_HOME"/release/\
 :"$JAVA_HOME"/bin\
-:"$MOSAIC_HOME"\
 :"$PATH"
 
-# Use this when leaving open the option to check in edits to the third party project
-#   sources.  (after cloning/pulling the project, build it with sources, the
-#   classes and links to the sources will be in the scratchpad directory)
-#
-# And, when leaving open the option to edit Ariadne sources directly (some
-# development workflows might not accommodate this. Be sure that Ariadne was built
-# with sources and the scratchpad directory has not been cleaned)
-#
-export CLASSPATH=\
+# so we can run individual built tests wrappers
+export PATH=\
+"$REPO_HOME"/tester/jvm\
+:"$PATH"
+
+#--------------------------------------------------------------------------------
+# class/source paths
+
+BASE_CLASSPATH=\
 "$JAVA_HOME"/lib\
-:"$MOSAIC_HOME"/developer/scratchpad\
-:"$REPO_HOME"/developer/scratchpad\
-:"$REPO_HOME"/tester/scratchpad\
-:"$CLASSPATH"
+:"$MOSAIC_HOME"/release/Mosaic.jar\
+:"$REPO_HOME"/tester/log\
+""
+
+BASE_SOURCEPATH=\
+"$REPO_HOME"/tester/javac🖉\
+""
+
+case "$MODE" in
+
+# Classes, and other-than-tester sources if present, come from the release candidate. This is the normal MODE for regression testing.
+#  
+# Release candidate sources, if present, are for viewing only. If sources are present in the release, but can not be read directly from the jar file, expand the jar file onto the scratchpad and replace that include line with this one:
+#
+# :$REPO_HOME/release/scratchpad\
+#
+  release)
+
+export CLASSPATH=\
+"$BASE_CLASSPATH\
+:$REPO_HOME/tester/scratchpad\
+:$REPO_HOME/release/${PROJECT}.jar\
+:$CLASSPATH"
 
 export SOURCEPATH=\
-"$JAVA_HOME"/lib\
-:"$MOSAIC_HOME"/developer/scratchpad\
-:"$REPO_HOME"/developer/scratchpad\
-:"$REPO_HOME"/tester/javac🖉\
-:"$SOURCEPATH"
+"$BASE_SOURCEPATH\
+:$REPO_HOME/release/${PROJECT}.jar\
+:$SOURCEPATH"
 
-# For projects who's sources are not be edited, directly expand the project into
-# $REPO_HOME/tester/scratchpad before testing.
+    ;;
+
+
+# Classes and other-than-tester sources come from developer/scratchpad. This is the normal MODE for the developer when debugging test failures.
 #
-#   When Mosaic sources are not to edited then checked back in.
-#     Be sure to use `Mosaic.jar` that has sources included.
-#       (cd tester/scratchpad && jar -xf $REPO_HOME/tool_shared/third_party/Mosaic.jar)
-#   When Ariadne developers source are not to be edited directly
-#     Be sure to use `release Ariadne.jar` has sources included.
-#        (cd scratchpad && jar xf $REPO_HOME/release/Ariadne.jar)
+# While in env_developer, the developer must make the project and gather third party
+# tools and sources into the scratchpad for this to work.
 #
-# export CLASSPATH=\
-# "$JAVA_HOME"/lib\
-# :"$REPO_HOME"/tester/javac🖉\
-# :"$REPO_HOME"/tester/scratchpad\
-# :"$CLASSPATH"
+  developer)
 
-# export SOURCEPATH=\
-# "$JAVA_HOME"/lib\
-# :"$REPO_HOME"/tester/javac🖉\
-# :"$REPO_HOME"/tester/scratchpad\
-# :"$SOURCEPATH"
+export CLASSPATH=\
+"$BASE_CLASSPATH\
+:$REPO_HOME/tester/scratchpad\
+:$REPO_HOME/developer/scratchpad\
+:$CLASSPATH"
 
-# The 'normal' case When outside sources are not viewed in the debugger. This is
-# common when the tester's responsibility is to find failed tests, and the
-# tester is not debugging anything but the test code.
+export SOURCEPATH=\
+"$BASE_SOURCEPATH\
+:$REPO_HOME/developer/scratchpad\
+:$SOURCEPATH"
+
+    ;;
+
+# Classes and other-than-tester sources come from tester/scratchpad. This MODE gives the tester complete control over what to include in the test environment.
 #
-# export CLASSPATH=\
-# "$JAVA_HOME"/lib\
-# :"$MOSAIC_HOME"/Mosaic.jar\
-# :"$REPO_HOME"/release/"$PROJECT".jar\
-# :"$REPO_HOME"/tester/jvm/Test_"$PROJECT".jar\
-# :"$CLASSPATH"
+# Tester expands everything to be included into the test environment into the scratchpad.
+# 
+# Any changes made to must be exported to the environment the files came from if they are to persist.
+#
+  local)
 
-# export SOURCEPATH=\
-# "$REPO_HOME"/tester/javac🖉\ 
-# :"$SOURCEPATH"
+export CLASSPATH=\
+"$BASE_CLASSPATH
+:$REPO_HOME/tester/scratchpad\
+:$CLASSPATH"
 
+export SOURCEPATH=\
+"$BASE_SOURCEPATH\
+:$REPO_HOME/tester/scratchpad\
+:$SOURCEPATH"
 
-# so we can run individual built test wrappers
-export PATH=\
-"$REPO_HOME"/tester/bash🖉\
-"$REPO_HOME"/tester/bash\
-:"$PATH"
+    ;;
 
+# default
+  
+  *)
+    echo "Unknown MODE: $MODE"
+    return 1
+    ;;
+  
+  esac
 
+echo CLASSPATH:
+vl echo "$CLASSPATH"
+echo SOURCEPATH:
+vl echo "$SOURCEPATH"
+echo PATH:
+vl echo $PATH
+
+#--------------------------------------------------------------------------------
 # misc
 
   # make .githolder and .gitignore visible
-  alias ls="ls -a --time-style=full-iso"
-
-# some feedback to show all went well
-
+  alias ls="ls -a"
   export PROMPT_DECOR="$PROJECT"_tester
   export ENV=$(script_fp)
   echo ENV "$ENV"

@@ -6,7 +6,7 @@ import com.ReasoningTechnology.Mosaic.Mosaic_Testbench;
 import com.ReasoningTechnology.Ariadne.Ariadne_Label;
 
 
-public class Test_Label_0 {
+public class Label_0 {
 
   public class TestSuite {
 
@@ -32,7 +32,7 @@ public class Test_Label_0 {
   }
 
   public static void main(String[] args) {
-    TestSuite suite = new Test_Label_0().new TestSuite();
+    TestSuite suite = new Label_0().new TestSuite();
     int result = Mosaic_Testbench.run(suite); 
     System.exit(result);
   }

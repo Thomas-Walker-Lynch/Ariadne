@@ -11,6 +11,10 @@ public class Ariadne_GraphDirectedAcyclic extends Ariadne_Graph {
     Constructors
   */
 
+  public Ariadne_GraphDirectedAcyclic() {
+    super(new HashMap<>(), null);
+  }
+
   public Ariadne_GraphDirectedAcyclic(Map<Ariadne_Label, Ariadne_Node> node_map, Ariadne_ProductionList recognizer_f_list, Ariadne_LabelList root_node_list, int max_depth, boolean verbose) {
     super(node_map, recognizer_f_list);
     Ariadne_TokenSet cycle_detection_result = graph_mark_cycles(root_node_list, max_depth, verbose);

@@ -7,16 +7,17 @@ if [ -z "$REPO_HOME" ]; then
 fi
 
 # Navigate to the bash directory
-cd "$REPO_HOME/tester/bash" || exit
+cd "$REPO_HOME/tester/jvm" || exit
 
 # Get the list of test scripts in the specific order from bash_wrapper_list
-test_list=$(bash_wrapper_list)
+list=$(list)
+echo list: $list
 
 # Execute each test in the specified order
-for file in $test_list; do
+for file in $list; do
+  echo
   if [[ -x "$file" && ! -d "$file" ]]; then
-    echo
-    echo "Running $file..."
+    echo "... Running $file"
     ./"$file"
   else
     echo "Skipping $file (not executable or is a directory)"

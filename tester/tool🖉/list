@@ -10,15 +10,14 @@ fi
 
 # space separated list of bash interface wrappers
 echo \
-  Test_File_0 \
-  Test_Label_0 \
-  Test_LabelList_0 \
-  Test_Node_0 \
-  Test_NodeList_0 \
-  Test_Token_0 \
-  Test_TokenSet_0 \
-  Test_Util_0 \
-  Test_Graph_0 \
-  ""
+  File_0 \
+  Label_0 \
+  LabelList_0 \
+  Node_0 \
+  NodeList_0 \
+  Token_0 \
+  TokenSet_0 \
+  Util_0 \
+""
 
  

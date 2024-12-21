@@ -3,6 +3,7 @@ import java.util.Map;
 import java.util.List;
 import java.lang.reflect.Method;
 
+import com.ReasoningTechnology.Mosaic.Mosaic_Dispatch;
 import com.ReasoningTechnology.Mosaic.Mosaic_IO;
 import com.ReasoningTechnology.Mosaic.Mosaic_Testbench;
 import com.ReasoningTechnology.Mosaic.Mosaic_Util;
@@ -14,7 +15,7 @@ import com.ReasoningTechnology.Ariadne.Ariadne_LabelList;
 import com.ReasoningTechnology.Ariadne.Ariadne_Node;
 import com.ReasoningTechnology.Ariadne.Ariadne_ProductionList;
 
-public class Test_Graph_0 {
+public class Graph_0 {
 
   public class TestSuite {
     private final Object GraphDirectedAcyclic_proxy;
@@ -64,7 +65,7 @@ public class Test_Graph_0 {
 
   public static void main(String[] args) {
     // no command line arguments, nor options to be parsed.
-    TestSuite suite = new Test_Graph_0().new TestSuite();
+    TestSuite suite = new Graph_0().new TestSuite();
     int result = Mosaic_Testbench.run(suite); 
     System.exit(result);
   }

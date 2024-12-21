@@ -16,7 +16,7 @@ import com.ReasoningTechnology.Mosaic.Mosaic_Util;
 import com.ReasoningTechnology.Ariadne.Ariadne_File;
 
 
-public class Test_File_0 {
+public class File_0 {
 
     public class TestSuite {
 
@@ -51,8 +51,8 @@ public class Test_File_0 {
             int i = 0;
 
             String repoHome = System.getenv("REPO_HOME");
-            String existingFilePath = repoHome + "/tester/data_Test_File_0/I_exist";
-            String nonExistentFilePath = repoHome + "/tester/data_Test_File_0/I_do_not_exist";
+            String existingFilePath = repoHome + "/tester/data_File_0/I_exist";
+            String nonExistentFilePath = repoHome + "/tester/data_File_0/I_do_not_exist";
 
             conditions[i++] = Ariadne_File.file_exists_q(existingFilePath);
             conditions[i++] = !Ariadne_File.file_exists_q(nonExistentFilePath);
@@ -65,11 +65,11 @@ public class Test_File_0 {
             int i = 0;
 
             String repoHome = System.getenv("REPO_HOME");
-            String file_0 = repoHome + "/tester/data_Test_File_0/file_0";
-            String file_1 = repoHome + "/tester/data_Test_File_0/file_1";
-            String file_2 = repoHome + "/tester/data_Test_File_0/file_2";
-            String file_3 = repoHome + "/tester/data_Test_File_0/file_3";
-            String missing_file_0 = repoHome + "/tester/data_Test_File_0/missing_file_0";
+            String file_0 = repoHome + "/tester/data_File_0/file_0";
+            String file_1 = repoHome + "/tester/data_File_0/file_1";
+            String file_2 = repoHome + "/tester/data_File_0/file_2";
+            String file_3 = repoHome + "/tester/data_File_0/file_3";
+            String missing_file_0 = repoHome + "/tester/data_File_0/missing_file_0";
 
             // Setting modification times
             Files.setLastModifiedTime(Path.of(file_3), FileTime.fromMillis(System.currentTimeMillis() - 20000));
@@ -96,7 +96,7 @@ public class Test_File_0 {
 
     public static void main(String[] args) {
         try {
-            TestSuite suite = new Test_File_0().new TestSuite();
+            TestSuite suite = new File_0().new TestSuite();
             int result = Mosaic_Testbench.run(suite);
             System.exit(result);
         } catch (Exception e) {

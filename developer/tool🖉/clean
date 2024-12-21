@@ -16,9 +16,12 @@ script_afp=$(realpath "${BASH_SOURCE[0]}")
 # remove files
   set -x
   cd "$REPO_HOME"/developer
+
+  # rm_na currently does not handle links correctly 
   rm -r scratchpad/*
-  rm jvm/*
-  rm bash/*
+
+  rm_na jvm/*
+  rm_na bash/*
   set +x
 
 echo "$(script_fn) done."

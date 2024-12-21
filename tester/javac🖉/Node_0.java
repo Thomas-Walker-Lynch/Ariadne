@@ -10,7 +10,7 @@ import com.ReasoningTechnology.Ariadne.Ariadne_Token;
 import com.ReasoningTechnology.Ariadne.Ariadne_TokenSet;
 
 
-public class Test_Node_0 {
+public class Node_0 {
 
   public class TestSuite {
 
@@ -67,7 +67,7 @@ public class Test_Node_0 {
   }
 
   public static void main(String[] args) {
-    TestSuite suite = new Test_Node_0().new TestSuite();
+    TestSuite suite = new Node_0().new TestSuite();
     int result = Mosaic_Testbench.run(suite); 
     System.exit(result);
   }

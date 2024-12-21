@@ -1,0 +1,22 @@
+<configuration>
+
+  <!-- 
+       <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" /> 
+  -->
+
+  <!-- File Appender -->
+  <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+    <!-- Log file path -->
+    <file>/var/user_data/Thomas-developer/Mosaic/tester/log/log.txt</file>
+    <append>true</append>
+    <encoder>
+      <pattern>%d{yyyy-MM-dd'T'HH:mm:ss.SSS'Z'} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <!-- Root Logger -->
+  <root level="info">
+    <appender-ref ref="FILE" />
+  </root>
+
+</configuration>

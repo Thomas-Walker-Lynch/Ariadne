@@ -1,0 +1,29 @@
+
+Ariadne is itself a build tool.  Plans are that once there is a stable
+version, that version will be used to build later versions of Ariadne.
+For now, we use naive build scripts.  When run, they build everything,
+edited or not.
+
+1. start with a clean release directory
+
+  wipe_release 
+
+2a. when including sources in the .jar, or when debugging sources
+via the `env_tester developer` environment, or through an IDE.
+
+  clean
+  gather_source_links
+  make
+  release
+
+
+2b. when not including the sources:
+
+  clean
+  make
+  release
+
+3. check to see what was released:
+
+   jar -tf ../release/Ariadne.jar
+

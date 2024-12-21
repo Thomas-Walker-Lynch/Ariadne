@@ -8,7 +8,7 @@ import com.ReasoningTechnology.Mosaic.Mosaic_Testbench;
 import com.ReasoningTechnology.Ariadne.Ariadne_Label;
 import com.ReasoningTechnology.Ariadne.Ariadne_LabelList;
 
-public class Test_LabelList_0 {
+public class LabelList_0 {
 
   public class TestSuite {
 
@@ -32,7 +32,7 @@ public class Test_LabelList_0 {
   }
 
   public static void main(String[] args) {
-    TestSuite suite = new Test_LabelList_0().new TestSuite();
+    TestSuite suite = new LabelList_0().new TestSuite();
     int result = Mosaic_Testbench.run(suite); 
     System.exit(result);
   }
