@@ -26,48 +26,103 @@
 
 package com.ReasoningTechnology.Ariadne;
 
-public class Ariadne_SRM<T>{
+import java.util.ArrayList;
+import java.util.List;
 
-  // Tape Topology
-  public enum Topology{
-    NO_CELLS
-    ,SEGMENT
-    ,CIRCLE
-    ,INFINITE_RIGHT
-    ,INFINITE_LEFT
-    ,INFINITE
-    ,UNKNOWN
-    ,UNDEFINED
-    ;
+public class Ariadne_SRM_LabelList extends Ariadne_SRM<Ariadne_Label>{
+
+  // owned by the class
+  public static Ariadne_LabelList make(){
+    return new Ariadne_LabelList();
   }
 
-  // Machine Status
-  public enum Status{
-    TAPE_NOT_MOUNTED
-    ,LEFTMOST
-    ,INTERIM
-    ,RIGHTMOST
-    ;
+  public static Ariadne_LabelList make( Object...label_list ){
+    Ariadne_LabelList instance = new Ariadne_LabelList();
+    instance.add( List.of( label_list ) );
+    return instance;
   }
 
-  public static <T> Ariadne_SRM<T> make(){
-    return new Ariadne_SRM<>();
-  }
-  protected Ariadne_SRM(){}
+  // data owned by the instance
+  private ArrayList<Ariadne_Label> list;
+  private int current_index;
 
+  // constructors
+  protected Ariadne_LabelList(){
+    super();
+    this.list = new ArrayList<>();
+    this.current_index = -1; // No label mounted initially
+  }
+
+  // instance interface
+  @Override
   public Topology topology(){
-    return Topology.UNDEFINED; // Default topology
+    return list.isEmpty() ? Topology.NO_CELLS : Topology.SEGMENT;
   }
 
+  @Override
   public Status status(){
-    return Status.TAPE_NOT_MOUNTED; // Default status
+    if( list.isEmpty() ){
+      return Status.TAPE_NOT_MOUNTED;
+    }
+    if( current_index == 0 ){
+      return Status.LEFTMOST;
+    }
+    if( current_index == list.size() - 1 ){
+      return Status.RIGHTMOST;
+    }
+    return Status.INTERIM;
   }
 
-  public T read(){
-    throw new UnsupportedOperationException("Ariadne_SRM::can't read unmounted tape.");
+  @Override
+  public Ariadne_Label read(){
+    if( current_index < 0 || current_index >= list.size() ){
+      throw new UnsupportedOperationException( "Ariadne_SRM::read, out of bounds or unmounted tape." );
+    }
+    return list.get( current_index );
   }
 
+  @Override
   public boolean step(){
-    throw new UnsupportedOperationException("Ariadne_SRM::can't step unmounted tape.");
+    if( current_index + 1 < list.size() ){
+      current_index++;
+      return true;
+    }
+    return false; // Cannot step further
+  }
+
+  public boolean add( List<Object> obj_list ){
+    boolean modified = false;
+    if( obj_list != null ){
+      for( Object obj : obj_list ){
+        modified |= add_one( obj );
+      }
+    }
+    return modified;
+  }
+
+  @Override
+  public String toString(){
+    return list.toString();
+  }
+
+  // private helpers
+  private boolean add_one( Object obj ){
+    if( obj instanceof String ){
+      return add_one( (String) obj );
+    } else if( obj instanceof Ariadne_Label ){
+      return add_one( (Ariadne_Label) obj );
+    }
+    throw new IllegalArgumentException(
+      "Ariadne_LabelList::add_one, cannot make label from object of type: " + obj.getClass().getName()
+    );
+  }
+
+  private boolean add_one( String string ){
+//    return list.add( Ariadne_Label.make( string ) );
+    return false;
+  }
+
+  private boolean add_one( Ariadne_Label label ){
+    return list.add( label );
   }
 }

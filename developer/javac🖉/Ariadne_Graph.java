@@ -1,18 +1,19 @@
-package com.ReasoningTechnology.Ariadne;
-
 /*
-  To define a graph, extend this class and define `start` and `lookup`.
+  User defines a graph by implementing this interface.  For the build tool, the defined
+  graph is dynamically loaded.
 
-  For a wellformed graph, each start label will be a label for a node found in the graph.
+  In a wellformed graph, the labels returned by `start()` will be in the graph. This
+  can be checked by calling `lookup`.
 */
 
-public interface Ariadne_Graph{
+package com.ReasoningTechnology.Ariadne;
 
-  public static Ariadne_Graph make(Object...obj_list){
-    return new Ariadne_Graph();
-  }
+public interface Ariadne_Graph {
 
-  public Ariadne_SRM<Ariadne_Label> start();
-  public Ariadne_Node lookup(String label);
+  // one or more nodes for starting graph traversals
+  Ariadne_SRM<Ariadne_Label> start();
+
+  // Method to look up a node by label
+  Ariadne_Node lookup( Ariadne_Label label );
 
 }
