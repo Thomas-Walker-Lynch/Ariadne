@@ -1,0 +1,33 @@
+--------------------------------------------------------------------------------
+General Comments about Graphs
+
+Conceptually a graph is a set with two members, vertices and edges, both also being sets.In Ariadne land we refer to a vertex as a 'node'. Hence, we say that each edge is a pair of nodes. In a directed graph, one of the nodes in an edge pair is said to be the tail, while the other is said to be the head.
+
+A leaf node is unusual in that it is not the tail of any edge.
+
+When a node is selected, a set is implied that contains each and every edge that has the selected node as its tail, if any. These are the outgoing edges for the selected node.Each outgoing edge then has a head. We say that the set of head nodes are distance one from the selected node. (The selected node itself is at distance zero.) Distance one nodes are said to be 'neighbor' nodes.
+
+Deterministic traversal is an algorithm that is given two arguments when it is started, a graph definition, and a start node. The start node is then assigned to a state variable. At each step of the algorithm, the node in the state variable is selected on the graph, then the state variable is re-assigned to be one of the distance one nodes.
+
+Deterministic search for a node is an example of an algorithm that makes use of traversal.Deterministic search begins with a graph, a start node, a predicate that is said to recognize the searched for node, and a function that guides the traversal.
+
+A self cycle in a graph consists of a node and an edge, where said edge has the node as both its tail and its head. There is no change in the traversal state variable when taking a traversal step through such an edge.In general, a cycle consists of a start node and all nodes and edges traversed up until arriving back at said start node.
+
+It is a bad thing to have cycles in a build graph, as cycles will correspond to circular dependencies.Hence Ariadne looks for these and reports them.
+
+--------------------------------------------------------------------------------
+The Ariadne Build Graph
+
+An Ariadne graph definition contains a 'graph definition function' list.A graph definition function is given a node label, and returns a node, or null if it can not find a node with such a label. A common graph definition function contains a map where each entry is a node label and a node.
+
+An Ariadne node is dictionary that maps a string key to a value. The type of the value is implied by the string key. Depending on the Ariadne tool being used, each node map will typically have entries for the keys "label", "build", and "neighbor".
+
+A "label" value is a string that is unique among the nodes in the graph. The "build" value is a function that a build tool will call when a file corresponding to a node is to be built.The "neighbor" value is a list of neighbor nodes.
+
+The Ariadne graph definition is optimized to be a run time data structure used for traversal, so the neighbor list is held directly in the node. Also, there is only one edge property, that of 'dependency'. As a consequence, there is no need for a separate edge table.
+
+--------------------------------------------------------------------------------
+Ariadne Build Tool
+
+For the default Ariadne build tool, each node label is either symbolic, or is a file path. The tool descends into the graph, based on file modification dates, and builds nodes that are modified less recently than their dependencies.
+

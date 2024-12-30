@@ -1,5 +1,5 @@
 import com.ReasoningTechnology.Mosaic.Mosaic_IO;
-import com.ReasoningTechnology.Mosaic.Mosaic_Util;
+import com.ReasoningTechnology.Mosaic.Mosaic_Quantifier;
 import com.ReasoningTechnology.Mosaic.Mosaic_Testbench;
 
 import com.ReasoningTechnology.Ariadne.Ariadne_Token;
@@ -24,7 +24,7 @@ public class Token_0 {
       conditions[i++] = !token1.equals(token2); // Expect false, as values differ
 
       // Return true if all conditions are met
-      return Mosaic_Util.all(conditions);
+      return Mosaic_Quantifier.all(conditions);
     }
 
     public Boolean token_hashCode_0(Mosaic_IO io) {
@@ -38,7 +38,7 @@ public class Token_0 {
       conditions[i++] = token1.hashCode() == token2.hashCode(); // Expect true
 
       // Return true if all conditions are met
-      return Mosaic_Util.all(conditions);
+      return Mosaic_Quantifier.all(conditions);
     }
   }
 

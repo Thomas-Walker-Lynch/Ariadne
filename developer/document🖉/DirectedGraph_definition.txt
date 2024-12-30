@@ -1,0 +1,26 @@
+
+To create a directed graph, extend the class `Ariadne_DirectedGraph`.
+
+In Ariadne a graph is defined by the `start` and `lookup` functions.
+
+`start` returns a list of start nodes.  We require that `start` returns
+the same list of nodes, no matter when it is called.  It 
+
+
+
+
+
+The graph is not wellformed if `start` returns a label that `lookup` fails to find.
+
+`lookup` is a function. It accepts a node label, and returns the node that has that label. A possible implementation of `lookup` is to lookup the node in a map, but there are many other possible implementations. 
+
+Because lookup is a function who's definition is left to the user, it is not possible in general to analyze `lookup` to know which nodes are in the graph. Even when `lookup` has a definition that is analyzable in theory, it is typically not practical to analyze it to discover the possible node labels. Hence, the user also provides the build tool with a list of possible `start` labels, where graph traversal can start.
+
+After extending `Ariadne_DirectedGraph` the user might want to structure `lookup` by calling a number of helper functions.  These helper functions play the same role as do separate make file rules when using `make`.
+
+
+
+
+
+
+

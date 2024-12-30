@@ -1,5 +1,5 @@
 import com.ReasoningTechnology.Mosaic.Mosaic_IO;
-import com.ReasoningTechnology.Mosaic.Mosaic_Util;
+import com.ReasoningTechnology.Mosaic.Mosaic_Quantifier;
 import com.ReasoningTechnology.Mosaic.Mosaic_Testbench;
 
 import com.ReasoningTechnology.Ariadne.Ariadne_Label;
@@ -42,7 +42,7 @@ public class Util_0 {
       conditions[i++] = stdoutContent3.isEmpty(); // Expect no output for null list
 
       // Return true if all conditions are met
-      return Mosaic_Util.all(conditions);
+      return Mosaic_Quantifier.all(conditions);
     }
   }
 

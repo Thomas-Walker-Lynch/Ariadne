@@ -29,7 +29,7 @@ public class Ariadne_Node extends HashMap<String, Object>{
     return this.label;
   }
 
-  public Ariadne_StepRightMachine<Ariadne_Label> neighbor_set();
+  public Ariadne_StepRightMachine<Ariadne_Label> neighbor_set(); 
 
   public void mark(Ariadne_Token token){
     mark_set.add(token);

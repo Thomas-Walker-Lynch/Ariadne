@@ -1,5 +1,5 @@
 import com.ReasoningTechnology.Mosaic.Mosaic_IO;
-import com.ReasoningTechnology.Mosaic.Mosaic_Util;
+import com.ReasoningTechnology.Mosaic.Mosaic_Quantifier;
 import com.ReasoningTechnology.Mosaic.Mosaic_Testbench;
 
 import com.ReasoningTechnology.Ariadne.Ariadne_Node;
@@ -23,7 +23,7 @@ public class NodeList_0 {
       conditions[i++] = nodeList.size() == 1 && nodeList.contains(node); // Expect true for correct size and content
 
       // Return true if all conditions are met
-      return Mosaic_Util.all(conditions);
+      return Mosaic_Quantifier.all(conditions);
     }
   }
 

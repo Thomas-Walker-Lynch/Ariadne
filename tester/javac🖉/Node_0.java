@@ -1,6 +1,6 @@
 
 import com.ReasoningTechnology.Mosaic.Mosaic_IO;
-import com.ReasoningTechnology.Mosaic.Mosaic_Util;
+import com.ReasoningTechnology.Mosaic.Mosaic_Quantifier;
 import com.ReasoningTechnology.Mosaic.Mosaic_Testbench;
 
 import com.ReasoningTechnology.Ariadne.Ariadne_Node;
@@ -26,7 +26,7 @@ public class Node_0 {
       conditions[i++] = node.get("mark") == null; // Expect true
 
       // Return true if all conditions are met
-      return Mosaic_Util.all(conditions);
+      return Mosaic_Quantifier.all(conditions);
     }
 
     public Boolean node_marking_0(Mosaic_IO io) {
@@ -47,7 +47,7 @@ public class Node_0 {
       conditions[i++] = markSet != null && markSet.contains(token1); // Expect true
 
       // Return true if all conditions are met
-      return Mosaic_Util.all(conditions);
+      return Mosaic_Quantifier.all(conditions);
     }
 
     public Boolean node_neighbor_0(Mosaic_IO io) {
@@ -62,7 +62,7 @@ public class Node_0 {
       conditions[i++] = neighbors.size() == 2 && neighbors.get(0).get().equals("neighbor1") && neighbors.get(1).get().equals("neighbor2"); // Expect true
 
       // Return true if all conditions are met
-      return Mosaic_Util.all(conditions);
+      return Mosaic_Quantifier.all(conditions);
     }
   }
 

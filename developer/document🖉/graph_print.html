@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
+  <title>Tree Shell-Based Printout</title>
+  <style>
+    body {
+      font-family: 'Noto Sans JP', Arial, sans-serif;
+      background-color: hsl(0, 0%, 0%);
+      color: hsl(42, 100%, 80%);
+      padding: 2rem;
+    }
+    .page {
+      padding: 3rem;
+      margin: 1.25rem auto;
+      max-width: 46.875rem;
+      background-color: hsl(0, 0%, 0%);
+      box-shadow: 0 0 0.625rem hsl(42, 100%, 50%);
+    }
+    h1 {
+      font-size: 1.5rem;
+      text-align: center;
+      color: hsl(42, 100%, 84%);
+      text-transform: uppercase;
+      margin-top: 1.5rem;
+    }
+    h2 {
+      font-size: 1.25rem;
+      color: hsl(42, 100%, 84%);
+      text-align: center;
+      margin-top: 2rem;
+    }
+    h3 {
+      font-size: 1.125rem;
+      color: hsl(42, 100%, 75%);
+      margin-top: 1.5rem;
+    }
+    p, li {
+      color: hsl(42, 100%, 90%);
+      text-align: justify;
+      margin-bottom: 1rem;
+    }
+    code {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: hsl(0, 0%, 25%);
+      padding: 0.125rem 0.25rem;
+      color: hsl(42, 100%, 90%);
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <h1>Tree Shell-Based Printout</h1>
+    <p>Exploring the systematic traversal and printing of unbounded trees using shell concepts.</p>
+  </header>
+
+  <h2>Introduction</h2>
+
+  <p>The Ariadne Graph is generated from the `lookup` function. Hence for any traversal of the graph, we can not know the dimensions of the traversal tree. It can even be unbounded in depth or number of nodes at a given depth, i.e. breadth. This makes it challenging to print the graph.</p>
+
+  <h2>Grid Traversal Techniques</h2>
+  
+  <h3>Diagonal Shell Traversal</h3>
+  <p> A two dimensional grid is also open in two dimensions, but it can be reduced to a linear enumeration by viewing the quarter plain as a stack of
+    diagonal shells.</p>
+  <pre><code>n = x + y</code></pre>
+  <p>Points are then traversed shell-by-shell, starting from the top-left corner. For example:</p>
+  <p>(0,0), (0,1), (1,0), (2,0), (1,1), (0,2), ...</p>
+
+  <h3>Rectangular Shell Traversal</h3>
+  <p>An variation of the diagonal shell approach is the rectangular shell traversal, where shells cover all points within a rectangle defined by:</p>
+  <pre><code>max(x, y) = n</code></pre>
+  <p>Rectangular Shell Traversal fills out the n by n grid at each step. For example:</p>
+  <ul>
+    <li>Rectangular shell n=0: (0,0)</li>
+    <li>Rectangular shell n=1: (0,1), (1,0), (1,1)</li>
+    <li>Rectangular shell n=2: (0,2), (1,2), (2,2), (2,1), (2,0)</li>
+  </ul>
+
+  <h2>Mapping Trees to a Grid</h2>
+
+  <p>A node in a tree can also be given two co-ordinates, that of its depth
+    in the tree, and the node count from the left at that depth, which we
+    call its breadth, giving coordinates (d, b):</p>
+
+  <p>Then nodes on diagonal shell n satisfy the condition:</p>
+  <pre><code>d + b = n</code></pre>
+
+  <p>While those on rectangle shell n satisfy:</p>
+  <pre><code>max(d, b) = n</code></pre>
+  
+
+  <h3>Missing Topology</h3>
+
+  <p>On a two dimensional grid, each point has four distance one neighbors. when the grid nodes are enumerated on shells, each point will have two neighbors; however, we if need be, the other two neighbors can be identified through functions of the index into the enumeration.<p>
+
+  <p>When the nodes on the tree are enumerated, the parent connection information is lost.  As each node in the tree can have a different number of children, we can not compute this information from the enumeration index. However, node labels in the graph are unique, so we can annotate each
+    node in the enumeration with the name of its parent.</p>
+
+  <p>However, such annotations will not always reference nodes that have already been visited in the enumeration. I.e the enumeration does not
+    preserve forward referencing of parent nodes annotations.</p>
+
+  <h4>Example</h4>
+  <p>Consider this tree, subscripts being (d,b):</p>
+  <pre><code>
+                A(0,0)
+           /   /      \    \
+    B(1,0)  C(1,1)  D(1,2)  E(1,3)
+                           /  |   \
+                      F(2,0) G(2,1) H(2,2)
+  </code></pre>
+
+  <p>If printed successive rectangular shell per line:</p>
+  <ul>
+    <li>n=0: A</li>
+    <li>n=1: B(A) C(A)</li>
+    <li>n=2: D(A) F(E) G(E) H(E)
+    <li>n=3: E(A)
+  </ul>
+
+  <p>In this scenario, nodes like E(D), F(D), and G(D) reference their
+    parent D(A), but D(A) is found on the same line. If lower d values
+  are printed first, then </p>
+
+  <p>The same example using diagonal shells</p>
+
+  <p>Traversal using diagonal shells would produce the following order:</p>
+  <ul>
+    <li>n=0: A</li>
+    <li>n=1: B(A)</li>
+    <li>n=2: C(A) F(E)</li>
+    <li>n=3: D(A) G(E)</li>
+    <li>n=4: E(A) H(E)</li>
+  </ul>
+  <p>Note that on shell 3, G references parent E which is on shell 4.</p>
+
+  <h3>Another Example</h3>
+
+  <pre><code>
+         A
+      /  |  \
+     B   C   D
+    /|    \
+   E F     G
+         /   \
+        H     I
+  </code></pre>
+
+  <p>The following grid representation provides a structured view of the tree following the rectangular shell approach. When n is incremented, the grid can grow by a row and a column. 
+  <table>
+    <thead>
+      <tr>
+        <th>Label</th>
+        <th>(d, b) Coordinates</th>
+        <th>Rectangular Shell</th>
+        <th>Diagonal Shell</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>A</td>
+        <td>(0, 0)</td>
+        <td>0</td>
+        <td>0</td>
+      </tr>
+      <tr>
+        <td>B</td>
+        <td>(1, 0)</td>
+        <td>1</td>
+        <td>1</td>
+      </tr>
+      <tr>
+        <td>C</td>
+        <td>(1, 1)</td>
+        <td>1</td>
+        <td>2</td>
+      </tr>
+      <tr>
+        <td>D</td>
+        <td>(1, 2)</td>
+        <td>2</td>
+        <td>3</td>
+      </tr>
+      <tr>
+        <td>E</td>
+        <td>(2, 0)</td>
+        <td>2</td>
+        <td>2</td>
+      </tr>
+      <tr>
+        <td>F</td>
+        <td>(2, 1)</td>
+        <td>2</td>
+        <td>3</td>
+      </tr>
+      <tr>
+        <td>G</td>
+        <td>(2, 2)</td>
+        <td>2</td>
+        <td>4</td>
+      </tr>
+      <tr>
+        <td>H</td>
+        <td>(3, 0)</td>
+        <td>3</td>
+        <td>3</td>
+      </tr>
+      <tr>
+        <td>I</td>
+        <td>(3, 1)</td>
+        <td>3</td>
+        <td>4</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>However such a grid cannot be directly printed to a stream.  It is a simple matter to add a row by emitting a new line character, but adding a column would require editing downstream data.</p>
+
+  <p>A grid or ASCII-art view of the tree can be generated from a
+    line per shell output stream, though a new diagram will be required
+    for each new line found on the stream.</p>
+
+  <p>Here is a streamable rectangular shell per line output for the
+    tree.</p>
+  <pre><code>
+  Shell 0: A
+  Shell 1: B(A) C(A)
+  Shell 2: D(A) E(B) F(B) G(C)
+  Shell 3: H(G) I(G)
+  </code></pre>
+
+  <p>And here it is as a diagonal shell per line.</p>
+  <pre><code>
+  Shell 0: A
+  Shell 1: B(A) 
+  Shell 2: C(A) E(B) 
+  Shell 3: D(A) F(B) H(G)
+  Shell 4: G(C) I(G)
+  </code></pre>
+
+  <p>Note in this latter example, node H on shell 3 refers to parent G, but
+  G is not output until the next line. This is an example of a forward referencing problem while using diagonal shells.</p>
+
+
+<!--
+
+    A node is
+    a) belongs to a child list of its parent
+    c) can have children
+
+
+    We keep two lists:
+    a) list_of__unopened_node
+    b) list_of__opened_incomplete_child_list
+
+    initially: 
+
+      print root node
+      if root node has children queue on list_of__unopened_node
+
+    At each step:
+
+    1.  each node on list_of__unopened_node
+
+      1.1. open(node) -> child_list
+      1.2. if not null, queue child_list list_of__opened_incomplete_child_list
+
+    2. each list on list_of__opened_incomplete_child_list
+
+      2.1 yield node from list
+      2.2 on list empty, dequeue list
+      2.3 print node
+      2.4 if node has child list -> queue node on list_of__unopened_node
+
+
+
+    -->
+    
+<h2>Algorithm 3: Unbounded Graph Iteration Without Forward Referencing</h2>
+<p>
+This algorithm avoids forward referencing by ensuring that nodes are processed along with their child lists in a structured manner. It uses two lists to manage nodes:
+</p>
+<ul>
+  <li><strong>list_of__unopened_node</strong>: Nodes that have not yet been processed to discover their child lists.</li>
+  <li><strong>list_of__opened_incomplete_child_list</strong>: Partially processed child lists of nodes.</li>
+</ul>
+
+<h3>Initial Setup</h3>
+<p>
+1. Print the root node.
+2. If the root node has children, add its child list to <code>list_of__unopened_node</code>.
+</p>
+
+<h3>Iteration Steps</h3>
+<p>At each step:</p>
+<ul>
+  <li>
+    For each node in <code>list_of__unopened_node</code>:
+    <ul>
+      <li>Open the node to retrieve its child list.</li>
+      <li>If the child list is not null, add it to <code>list_of__opened_incomplete_child_list</code>.</li>
+    </ul>
+  </li>
+  <li>
+    For each child list in <code>list_of__opened_incomplete_child_list</code>:
+    <ul>
+      <li>Yield a node from the list (one at a time).</li>
+      <li>If the list becomes empty, remove it from <code>list_of__opened_incomplete_child_list</code>.</li>
+      <li>Print the node.</li>
+      <li>If the node has its own child list, add it to <code>list_of__unopened_node</code>.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3>End Condition</h3>
+<p>
+The process ends when both <code>list_of__unopened_node</code> and <code>list_of__opened_incomplete_child_list</code> are empty, ensuring all nodes are processed without forward referencing issues.
+</p>
+
+
+
+</div>
+</body>
+</html>

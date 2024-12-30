@@ -1,5 +1,5 @@
 import com.ReasoningTechnology.Mosaic.Mosaic_IO;
-import com.ReasoningTechnology.Mosaic.Mosaic_Util;
+import com.ReasoningTechnology.Mosaic.Mosaic_Quantifier;
 import com.ReasoningTechnology.Mosaic.Mosaic_Testbench;
 
 import com.ReasoningTechnology.Ariadne.Ariadne_Token;
@@ -23,7 +23,7 @@ public class TokenSet_0 {
       conditions[i++] = tokenSet.size() == 1 && tokenSet.contains(token); // Expect true for correct size and content
 
       // Return true if all conditions are met
-      return Mosaic_Util.all(conditions);
+      return Mosaic_Quantifier.all(conditions);
     }
 
     public Boolean tokenSet_uniqueness_0(Mosaic_IO io) {
@@ -40,7 +40,7 @@ public class TokenSet_0 {
       conditions[i++] = tokenSet.size() == 1 && tokenSet.contains(token1) && tokenSet.contains(token2); // Expect true for single entry despite duplicate addition
 
       // Return true if all conditions are met
-      return Mosaic_Util.all(conditions);
+      return Mosaic_Quantifier.all(conditions);
     }
   }
 

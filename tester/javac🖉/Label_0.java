@@ -1,6 +1,6 @@
 
 import com.ReasoningTechnology.Mosaic.Mosaic_IO;
-import com.ReasoningTechnology.Mosaic.Mosaic_Util;
+import com.ReasoningTechnology.Mosaic.Mosaic_Quantifier;
 import com.ReasoningTechnology.Mosaic.Mosaic_Testbench;
 
 import com.ReasoningTechnology.Ariadne.Ariadne_Label;
@@ -26,7 +26,7 @@ public class Label_0 {
       conditions[i++] = label1.hashCode() == label3.hashCode(); // Expect true, as hash should match for equal labels
 
       // Return true if all conditions are met
-      return Mosaic_Util.all(conditions);
+      return Mosaic_Quantifier.all(conditions);
     }
 
   }

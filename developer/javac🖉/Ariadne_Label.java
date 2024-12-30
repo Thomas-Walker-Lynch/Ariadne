@@ -1,5 +1,7 @@
 package com.ReasoningTechnology.Ariadne;
 
+
+
 /*
   A value for the node.label property.
 
@@ -8,18 +10,27 @@ package com.ReasoningTechnology.Ariadne;
 
 */
 public class Ariadne_Label{
-  private final String value;
 
-  public Ariadne_Label(String value){
-    this.value = value;
+  // owned by class
+
+
+  // data owned by instance
+
+    private final String value;
+
+  // constructors
+
+
+  private Ariadne_Label(String s){
+    this.value = s;
+  }
+
+  Ariadne_Label make(String s){
+    return  new Ariadne_Label(s);
   }
 
   public boolean isEmpty(){
     return value.isEmpty();
-  }
-
-  public String get(){
-    return value;
   }
 
   @Override
@@ -39,4 +50,5 @@ public class Ariadne_Label{
   public int hashCode(){
     return value.hashCode();
   }
+
 }

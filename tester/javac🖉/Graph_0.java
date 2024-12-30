@@ -6,7 +6,7 @@ import java.lang.reflect.Method;
 import com.ReasoningTechnology.Mosaic.Mosaic_Dispatch;
 import com.ReasoningTechnology.Mosaic.Mosaic_IO;
 import com.ReasoningTechnology.Mosaic.Mosaic_Testbench;
-import com.ReasoningTechnology.Mosaic.Mosaic_Util;
+import com.ReasoningTechnology.Mosaic.Mosaic_Quantifier;
 
 import com.ReasoningTechnology.Ariadne.Ariadne_Graph;
 import com.ReasoningTechnology.Ariadne.Ariadne_GraphDirectedAcyclic;
@@ -22,12 +22,12 @@ public class Graph_0 {
 
     public TestSuite() {
       this.GraphDirectedAcyclic_proxy =
-        Mosaic_Util.make_all_public_methods_proxy( Ariadne_GraphDirectedAcyclic.class );
+        Mosaic_Quantifier.make_all_public_methods_proxy( Ariadne_GraphDirectedAcyclic.class );
     }
 
     public Boolean path_find_cycle_0( Mosaic_IO io ) {
       Boolean[] conditions = new Boolean[1];
-      Mosaic_Util.all_set_false( conditions );
+      Mosaic_Quantifier.all_set_false( conditions );
       int i = 0;
       try {
         Ariadne_LabelList path = new Ariadne_LabelList(
@@ -47,17 +47,17 @@ public class Graph_0 {
         conditions[i++] = cycle_indices != null && cycle_indices.size() == 2;
         */
       } catch (Exception e) {
-        Mosaic_Util.log_message("path_find_cycle_0", "Test logic error: " + e.getMessage());
+        Mosaic_Quantifier.log_message("path_find_cycle_0", "Test logic error: " + e.getMessage());
         return false;
       }
 
       return true;
-//      return Mosaic_Util.all( conditions );
+//      return Mosaic_Quantifier.all( conditions );
     }
 
     public Boolean lookup_0( Mosaic_IO io ) {
       Boolean[] conditions = new Boolean[1];
-      Mosaic_Util.all_set_false( conditions );
+      Mosaic_Quantifier.all_set_false( conditions );
       int i = 0;
         return true;
     }

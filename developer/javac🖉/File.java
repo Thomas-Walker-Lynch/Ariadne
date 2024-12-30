@@ -1,4 +1,7 @@
 package com.ReasoningTechnology.Ariadne;
+/*
+  Utilities for dealing with files.
+*/
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -8,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Ariadne_File {
+class File {
   static boolean debug = false;
 
   public static Map<String, String> unpack_file_path(String file_fp) {

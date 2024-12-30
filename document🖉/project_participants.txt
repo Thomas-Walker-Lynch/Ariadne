@@ -1,0 +1,49 @@
+--------------------------------------------------------------------------------
+For Developers/Testers
+
+The project has three entry points, one for each project role: developer, tester, and administrator. To enter the project, source the environment appropriate for the role, either `env_developer`, `env_tester`, or `env_administrator`.
+
+1. Production 
+
+  1.1. development
+
+  cd Ariadne
+  . env_developer
+
+  [do work]
+
+  make
+  release
+
+  1.2 regression testing
+
+  cd Ariadne
+  . env_tester
+  make
+  run
+
+2. Debugging
+
+  cd Ariadne
+  . env_developer
+  make
+  # puts links to source files on the `scratchpad`
+  gather_source_links 
+
+  [change to tester module]
+
+  cd Ariadne
+  # the developer parameter links in the actual source in the developer module
+  . env_tester developer
+  make
+  run
+
+The `make` command you see above is a bash script. Version 1.0 of Ariadne uses a direct 'build it all every time' approach. Perhaps in version 2.0 or so, we will use a prior version of Ariadne for the build environment.
+
+In IntelliJ IDEA there are two modules, developer and tester. The output for each module is 'scratchpad' tests are added through the `run edit-configuration` menu. See tool_shared/third_party/document🖉 directory for more information.
+
+Using Ariadne
+-------------
+
+After it is built and released the tool will appear in the Ariadne/release directory where it can be regression tested or imported into another project.
+
