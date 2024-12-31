@@ -26,59 +26,57 @@ We should take a closer look at the possibility of unifying these later.
 
 */
 
-
 package com.ReasoningTechnology.Ariadne;
 
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class Ariadne_Node extends HashMap<String ,Object>{
+public class Ariadne_Node<T> extends HashMap<String, Object> {
 
-  // owned by the class
-  public static Ariadne_Node make(Ariadne_Label label){
-    return new Ariadne_Node(label);
+  // Owned by the class
+  public static <T> Ariadne_Node<T> make(T label) {
+    return new Ariadne_Node<>(label) ;
   }
 
-  // data owned by the instance
-  private Ariadne_Label label;
-  private HashSet<Ariadne_Token> mark_set;
-  private static final String neighbor_property_name = "neighbor_property";
+  // Data owned by the instance
+  private final T label ;
+  private final HashSet<Ariadne_Token> markSet ;
+  private static final String NEIGHBOR_PROPERTY_NAME = "neighbor_property" ;
 
-  // constructors
-  public Ariadne_Node(Ariadne_Label label){
-    super();
-    this.label = label;
-    this.mark_set = new HashSet<Ariadne_Token>();
+  // Constructors
+  public Ariadne_Node(T label) {
+    super() ;
+    this.label = label ;
+    this.markSet = new HashSet<>() ;
   }
 
-  // instance interface
-  public Ariadne_Label label(){
-    return this.label;
+  // Instance interface
+  public T label() {
+    return this.label ;
   }
 
-  public Ariadne_SRM<Ariadne_Label> neighbor(){
-    return Ariadne_SRM.make();
+  public Ariadne_SRM<T> neighbors() {
+    return Ariadne_SRM.make() ;
   }
 
-  public void mark(Ariadne_Token token){
-    mark_set.add(token);
+  public void mark(Ariadne_Token token) {
+    markSet.add(token) ;
   }
 
-  public boolean has_mark(Ariadne_Token token){
-    return mark_set.contains(token);
+  public boolean hasMark(Ariadne_Token token) {
+    return markSet.contains(token) ;
   }
 
-  public void mark_remove(Ariadne_Token token){
-    mark_set.remove(token);
+  public void removeMark(Ariadne_Token token) {
+    markSet.remove(token) ;
   }
 
   // Object interface
   @Override
-  public String toString(){
+  public String toString() {
     return "Ariadne_Node{"
            + "label=" + label
-           + " ,mark_set=" + mark_set
-           + "}";
+           + ", markSet=" + markSet
+           + "}" ;
   }
-
 }
