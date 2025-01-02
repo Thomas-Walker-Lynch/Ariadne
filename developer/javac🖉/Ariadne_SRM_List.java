@@ -1,34 +1,36 @@
 /*
-Suitable for attaching to a linked list structure. Something that
-does not have fast random access ability.
+  The Ariadne_SRM_List class provides a Step Right Machine (SRM) for linked lists.
+  This implementation relies on Java's ListIterator, which lacks a direct method
+  to read the current element without advancing the iterator. 
 
+  To address this, the `read` method temporarily moves the iterator back to access 
+  the current element, then restores its position. This approach, referred to as the 
+  "wiggle" method, is safe under the assumption of single-threaded execution. 
+
+  In multi-threaded environments, external synchronization would be required to 
+  ensure the list remains consistent during the wiggle operation.
 */
-
 
 package com.ReasoningTechnology.Ariadne;
 
 import java.util.List;
 import java.util.ListIterator;
 
-public class Ariadne_SRMI_List<T> extends Ariadne_SRM<T> {
+public class Ariadne_SRM_List<T> extends Ariadne_SRM<T> {
 
-  private final List<T> list;        // The attached linked list
-  private ListIterator<T> iterator;       // Iterator for traversal
-  private T currentElement;               // Tracks the current element
+  private final List<T> list;  // The attached linked list
+  private ListIterator<T> iterator;  // Iterator for traversal
 
-  // Factory method to attach SRM to a linked list
-  public static <T> Ariadne_SRMI_List<T> attach( List<T> list ){
-    return new Ariadne_SRMI_List<>( list );
+  public static <T> Ariadne_SRM_List<T> mount(List<T> list){
+    return new Ariadne_SRM_List<>(list);
   }
 
-  // Private constructor to enforce factory usage
-  private Ariadne_SRMI_List( List<T> list ){
-    if( list == null ){
-      throw new IllegalArgumentException( "Ariadne_SRMI_List::list cannot be null" );
+  protected Ariadne_SRM_List(List<T> list){
+    if (list == null){
+      throw new IllegalArgumentException("Ariadne_SRM_List::list cannot be null");
     }
     this.list = list;
     this.iterator = list.listIterator();
-    this.currentElement = iterator.hasNext() ? iterator.next() : null;
   }
 
   @Override
@@ -38,40 +40,46 @@ public class Ariadne_SRMI_List<T> extends Ariadne_SRM<T> {
 
   @Override
   public Status status(){
-    if( list.isEmpty() ){
+    if (list.isEmpty()){
       return Status.TAPE_NOT_MOUNTED;
     }
-    if( !iterator.hasPrevious() ){
+    if (!iterator.hasPrevious() && iterator.hasNext()){
       return Status.LEFTMOST;
     }
-    if( !iterator.hasNext() ){
+    if (!iterator.hasNext() && iterator.hasPrevious()){
       return Status.RIGHTMOST;
     }
-    return Status.INTERIM;
+    if (iterator.hasNext() && iterator.hasPrevious()){
+      return Status.INTERIM;
+    }
+    return Status.TAPE_NOT_MOUNTED;  // Fallback, should not occur
   }
 
   @Override
   public T read(){
-    if( currentElement == null ){
-      throw new UnsupportedOperationException( "Ariadne_SRMI_List::read, no current element." );
+    if (status() == Status.TAPE_NOT_MOUNTED){
+      throw new UnsupportedOperationException("Ariadne_SRM_List::read, tape not mounted.");
     }
-    return currentElement;
+    if (!iterator.hasPrevious()){
+      throw new UnsupportedOperationException("Ariadne_SRM_List::read, no cell to read at the leftmost position.");
+    }
+    // Wiggle: Move back to read the current element, then restore position
+    T previous = iterator.previous();
+    iterator.next();  // Restore iterator to the current position
+    return previous;
   }
 
   @Override
-  public boolean step(){
-    if( iterator.hasNext() ){
-      currentElement = iterator.next();
-      return true;
+  public void step(){
+    if (!iterator.hasNext()){
+      throw new UnsupportedOperationException("Ariadne_SRM_List::step, no next cell.");
     }
-    currentElement = null; // Reached the end
-    return false;
+    iterator.next();
   }
 
   // Optional: Reset to the beginning of the list
   public void reset(){
     this.iterator = list.listIterator();
-    this.currentElement = iterator.hasNext() ? iterator.next() : null;
   }
 
   // Optional: Get the underlying linked list

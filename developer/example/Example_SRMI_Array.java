@@ -1,9 +1,10 @@
-package com.ReasoningTechnology.Ariadne;
+import com.ReasoningTechnology.Ariadne.Ariadne_SRM;
+import com.ReasoningTechnology.Ariadne.Ariadne_SRMI_Array;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class Main {
+public class Example_SRMI_Array {
   public static void main( String[] args ) {
     // Create a list
     List<String> labels = Arrays.asList( "A" ,"B" ,"C" ,"D" );

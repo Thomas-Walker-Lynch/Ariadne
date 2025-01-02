@@ -25,8 +25,8 @@ public class CountingNumber extends Ariadne_SRM<BigInteger>{
 
   @Override
   public Status status(){
-    if( i.equals(BigInteger.ZERO) ) return Status.AT_LEFTMOST;
-    else return Status.AT_MIDWAY;
+    if( i.equals(BigInteger.ZERO) ) return Status.LEFTMOST;
+    else return Status.INTERIM;
   }
   
   @Override

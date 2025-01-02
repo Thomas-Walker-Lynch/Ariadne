@@ -8,12 +8,12 @@
 
 package com.ReasoningTechnology.Ariadne;
 
-public interface Ariadne_Graph {
+public interface Ariadne_Graph<T> {
 
-  // one or more nodes for starting graph traversals
-  Ariadne_SRM<Ariadne_Label> start();
+  // One or more nodes for starting graph traversals
+  Ariadne_SRM<T> start();
 
   // Method to look up a node by label
-  Ariadne_Node lookup( Ariadne_Label label );
+  Ariadne_Node<T> lookup(T label);
 
 }

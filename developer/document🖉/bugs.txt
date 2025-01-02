@@ -1,0 +1,5 @@
+
+
+2024-12-31T01:47:53Z
+
+The pencil on file names has been working well .. until yesterday.  The jvm doesn't like the `example🖉` directory and refuses to run code in it, so I had to change it to `example`.

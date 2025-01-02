@@ -1,34 +1,29 @@
 /*
-  A 'tape' as a model for computation is a sequence of cells, where something can be written or read from each cell. We talk about the sequence as though written on paper, running from left to right.  The elements in the sequence have neighbors, so the sequence of cells can be said to be mutually connected. This is to say that if cell B is to the right of cell A in the sequence, then cell A is to the left of cell B; Also if cell A is to the left of cell B, then cell B is to the right of cell A.
+Step Right Machine
 
-  One of the cells on the tape is specially marked as being the 'mounted cell'. This is the cell that can be written or read after the tape is mounted on a 'tape machine', and before any steps have been taken. 
+This is a mostly abstract base class.
 
-  Information from the `topology` method will remain valid for as long as the topology of
-  the tape is not modified.  
+The SRM is for a single traversal through a bound resources.
 
-  A finite tape will have a leftmost cell, which has no left neighbor, and a rightmost cell, which has no right neighbor. All other cells will have two neighbors.
+In Java it is possible to declare a variable of the SRM type long before it is used
+for traversal. This complicates managing ownwership of the resource being traversed.
 
-  A tape can have an infinite number of cells to the left of the mount point, to the right of the mount point, or in both directions. Hence it is possible that two, one, or zero cells on a tape have only one neighbor, where the zero neighbor case is for finite tapes, and the latter cases are for infinite tapes.
+The SRM model is that of 'mount' and 'dismount'.  When the resource is mounted,
+the SRM requests ownership of it. When it is dismounted, the SRM relinquishes
+ownership.
 
-  An algorithm running on a tape machine that has a left going tape can be translated into an algorithm for a right going tape simply by swapping `step_right` for `step_left`. Hence there is no utility to be had by keeping both models.
 
-  Another isomorphism can be setup between a single ended tape and a double direction tape by replacing each step by two steps, and then placing odd cell into correspondence with the right going tape, and even cells with left going tape.  Hence an algorithm implemented over the top of either can be mechanically transformed to an algorithm for the other.
 
-  However, what we can not do without affecting the power of our computation machine is to
-  eliminate 'step-left', yet this is a common simplification in data structures. The Lisp language is based on single linked lists for example.
+mount and unmount are used for handling shared memory scenarios.  See
+the Ariadne_Access class. For single threaded execution pass in an
+Ariadne_Access_Single instance.
 
-  This 'Step Right Machine' (SRM) defined here can only be stepped to the right. Thus whether cells are mutually connected, or not, becomes irrelevant.  Also, saying 'leftmost' is a feature of the tape, becomes muddled, as the mount point cell will be the leftmost cell that is ever visited.
-
-  A SRM can be defined using functions, or it can be used as an iterator for traversing through a container.
-
-  The property methods defined here are kept general so that they can be used with other tape machines.
 */
 
 package com.ReasoningTechnology.Ariadne;
 
 public class Ariadne_SRM<T>{
 
-  // Tape Topology
   public enum Topology{
     NO_CELLS
     ,SEGMENT
@@ -41,7 +36,6 @@ public class Ariadne_SRM<T>{
     ;
   }
 
-  // Machine Status
   public enum Status{
     TAPE_NOT_MOUNTED
     ,LEFTMOST
@@ -50,24 +44,68 @@ public class Ariadne_SRM<T>{
     ;
   }
 
-  public static <T> Ariadne_SRM<T> make(){
-    return new Ariadne_SRM<>();
-  }
-  protected Ariadne_SRM(){}
+  private final LockManagerDelegate<T> delegate;
 
-  public Topology topology(){
-    return Topology.UNDEFINED; // Default topology
-  }
-
-  public Status status(){
-    return Status.TAPE_NOT_MOUNTED; // Default status
+  public static <T> Ariadne_SRM<T> make(LockManagerDelegate<T> delegate){
+    if(delegate == null){
+      throw new IllegalArgumentException("Ariadne_SRM::make delegate cannot be null.");
+    }
+    return new Ariadne_SRM<>(delegate);
   }
 
-  public T read(){
-    throw new UnsupportedOperationException("Ariadne_SRM::can't read unmounted tape.");
+  private Ariadne_SRM(LockManagerDelegate<T> delegate){
+    this.delegate = delegate;
   }
 
-  public boolean step(){
-    throw new UnsupportedOperationException("Ariadne_SRM::can't step unmounted tape.");
+  public synchronized void mount(){
+    if(status() != Status.TAPE_NOT_MOUNTED){
+      throw new IllegalStateException("Ariadne_SRM::mount already mounted.");
+    }
+    delegate.request(this);
+  }
+  public void mount_lenient() {
+    if(status() != Status.TAPE_NOT_MOUNTED) {
+      dismount(); // Ensure the current tape is dismounted first
+    }
+    mount(); // Proceed to mount the new tape
+  }
+
+
+  public synchronized void dismount(){
+    if(status() == Status.TAPE_NOT_MOUNTED){
+      throw new IllegalStateException("Ariadne_SRM::dismount not mounted.");
+    }
+    delegate.relinquish(this);
+  }
+  public void dismount_lenient() {
+    if(status() != Status.TAPE_NOT_MOUNTED) {
+      dismount(); // Only dismount if a tape is currently mounted
+    }
+  }
+
+  public synchronized Topology topology(){
+    return Topology.UNDEFINED;
+  }
+
+  public synchronized Status status(){
+    throw new UnsupportedOperationException("Ariadne_SRM::status not implemented.");
+  }
+
+  public synchronized boolean can_step(){
+    return 
+      status() == Status.LEFTMOST
+      || status() == Status.INTERIM;
+  }
+
+  public synchronized boolean can_read(){
+    return status() != Status.TAPE_NOT_MOUNTED;
+  }
+
+  public synchronized T read(){
+    throw new UnsupportedOperationException("Ariadne_SRM::read not implemented.");
+  }
+
+  public synchronized void step(){
+    throw new UnsupportedOperationException("Ariadne_SRM::step not implemented.");
   }
 }

@@ -13,8 +13,10 @@ script_afp=$(realpath "${BASH_SOURCE[0]}")
     exit 1
   fi
 
-# remove files
-  set -x
+set -x
+
+# remove main build files
+
   cd "$REPO_HOME"/developer
 
   # rm_na currently does not handle links correctly 
@@ -22,7 +24,13 @@ script_afp=$(realpath "${BASH_SOURCE[0]}")
 
   rm_na jvm/*
   rm_na bash/*
-  set +x
+
+
+# remove example class files
+
+  rm_na example/*.class
+
+set +x
 
 echo "$(script_fn) done."
 

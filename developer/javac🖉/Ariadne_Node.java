@@ -55,7 +55,7 @@ public class Ariadne_Node<T> extends HashMap<String, Object> {
     return this.label ;
   }
 
-  public Ariadne_SRM<T> neighbors() {
+  public Ariadne_SRM<T> neighbor() {
     return Ariadne_SRM.make() ;
   }
 
@@ -76,7 +76,7 @@ public class Ariadne_Node<T> extends HashMap<String, Object> {
   public String toString() {
     return "Ariadne_Node{"
            + "label=" + label
-           + ", markSet=" + markSet
+           + " ,markSet=" + markSet
            + "}" ;
   }
 }

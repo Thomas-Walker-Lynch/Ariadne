@@ -8,7 +8,7 @@ import java.math.BigInteger;
 
 public class Ariadne_SRMI<T> extends Ariadne_SRM<T>{
 
-  private BigInteger index;
+  protected BigInteger index;
 
   public static <T> Ariadne_SRMI<T> make(){
     return new Ariadne_SRMI<T>();

@@ -25,7 +25,7 @@ echo "Compiling example .java files..."
 
 echo "Creating bash wrappers..."
   # wrapper is a space separated list
-  wrapper=Example_Ariadne_SRM
+  wrapper=Example_*.class
   for file in $wrapper;do
     cat > $file << EOL
 #!/bin/bash

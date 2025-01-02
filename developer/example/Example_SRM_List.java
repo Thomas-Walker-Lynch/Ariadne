@@ -1,8 +1,9 @@
-package com.ReasoningTechnology.Ariadne;
+import com.ReasoningTechnology.Ariadne.Ariadne_SRM;
+import com.ReasoningTechnology.Ariadne.Ariadne_SRM_List;
 
 import java.util.List;
 
-public class Main {
+public class Example_SRM_List {
   public static void main( String[] args ) {
     // Create a linked list
     List<String> labels = new List<>();

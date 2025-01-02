@@ -1,9 +1,8 @@
 import com.ReasoningTechnology.Ariadne.Ariadne_SRM;
-import com.ReasoningTechnology.Ariadne.Ariadne_Graph;
 
 import java.math.BigInteger;
 
-public class Example_Ariadne_SRM{
+public class Example_SRM_0{
 
   public static void main(String[] args){
     CountingNumber counting_number = CountingNumber.make();
