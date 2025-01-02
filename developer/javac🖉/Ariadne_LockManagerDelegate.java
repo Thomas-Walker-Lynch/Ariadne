@@ -1,6 +1,6 @@
 package com.ReasoningTechnology.Ariadne;
 
-public interface Ariadne_Arbiter{
+public interface Ariadne_LockManagerDelegate{
   void request();
   void relinquish();
 }
