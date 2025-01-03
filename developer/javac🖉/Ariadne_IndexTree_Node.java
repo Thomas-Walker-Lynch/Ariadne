@@ -14,8 +14,15 @@ public class Ariadne_IndexTree_Node extends Ariadne_Node<BigInteger[]> {
   }
 
   @Override
-  public Ariadne_IndexTree_SRM neighbor(){
-    return new Ariadne_IndexTree_SRM(label());
+  public Ariadne_IndexTree_Child_SRM neighbor(){
+    // Copy the current label
+    BigInteger[] parentLabel = this.label();
+    BigInteger[] childLabel = new BigInteger[parentLabel.length + 1];
+    System.arraycopy(parentLabel, 0, childLabel, 0, parentLabel.length);
+
+    childLabel[parentLabel.length] = BigInteger.ZERO;
+
+    return Ariadne_IndexTree_Child_SRM.make(childLabel);
   }
 
   @Override

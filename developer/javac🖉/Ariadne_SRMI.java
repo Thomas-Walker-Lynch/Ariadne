@@ -19,9 +19,9 @@ public class Ariadne_SRMI<T> extends Ariadne_SRM<T>{
   }
 
   @Override
-  public boolean step(){
+  public void step(){
     throw new UnsupportedOperationException("Ariadne_SRMI::can't step unmounted tape.");
-    // index.add(BigInteger.ONE);
+// index.add(BigInteger.ONE);
   }
 
   BigInteger index(){return index;}

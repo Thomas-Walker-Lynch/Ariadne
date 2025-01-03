@@ -6,11 +6,13 @@ import java.util.List;
 
 public class Example_SRMI_Array {
   public static void main( String[] args ) {
+  /*
+
     // Create a list
-    List<String> labels = Arrays.asList( "A" ,"B" ,"C" ,"D" );
+    List<String> label_list = Arrays.asList( "A" ,"B" ,"C" ,"D" );
 
     // Attach SRMI to the list
-    Ariadne_SRMI_Array<String> srm = Ariadne_SRMI_Array.attach( labels );
+    Ariadne_SRMI_Array<String> srm = Ariadne_SRMI_Array.make( label_list );
 
     // Use the SRMI
     System.out.println( "Topology: " + srm.topology() );
@@ -25,5 +27,7 @@ public class Example_SRMI_Array {
     // Final item
     System.out.println( "Reading: " + srm.read() );
     System.out.println( "Status: " + srm.status() );
+
+  */
   }
 }

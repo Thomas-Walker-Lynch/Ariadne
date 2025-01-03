@@ -7,26 +7,32 @@ public class CountingNumber extends Ariadne_SRM<BigInteger>{
   private static final Ariadne_Test test = Ariadne_Test.make("Ariadne_SRM<BigInteger>::");
 
   public static CountingNumber make(){
-    return new CountingNumber();
+    return new CountingNumber(null);
+  }
+  public static CountingNumber make(BigInteger maximum){
+    return new CountingNumber(maximum);
   }
 
   private BigInteger i;
+  private BigInteger maximum;
+  Ariadne_SRM.Status status;
 
-  protected CountingNumber(){
-    super();
-    i = BigInteger.ZERO;
+  protected CountingNumber(BigInteger maximum){
+    i = BigInteger.ONE;
+    this.maximum = maximum;
+    this.status = Status.LEFTMOST;
     test.print("CountingNumber read() value initialized to: " + i);
   }
 
   @Override
   public Topology topology(){
-    return Topology.INFINITE_RIGHT; // leftmost, no rightmost
+    if(maximum == null) return Topology.INFINITE_RIGHT;
+    return Topology.SEGMENT;
   }
 
   @Override
   public Status status(){
-    if( i.equals(BigInteger.ZERO) ) return Status.LEFTMOST;
-    else return Status.INTERIM;
+    return status;
   }
   
   @Override
@@ -35,10 +41,19 @@ public class CountingNumber extends Ariadne_SRM<BigInteger>{
   }
 
   @Override
-  public boolean step(){
+  public void step(){
+    super.step();
     i = i.add(BigInteger.ONE);
-    test.print(" after step right new read() value: " + i);
-    return true;
+
+    if(topology() == Topology.SEGMENT){
+      if(i.compareTo(maximum) == 0){
+        status = Status.RIGHTMOST;
+      }else if(status() == Status.LEFTMOST){
+        status = Status.INTERIM;
+      }
+    }
+      
+    test.print(" after step, new read() value: " + i);
   }
 
 }

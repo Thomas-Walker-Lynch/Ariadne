@@ -9,30 +9,37 @@ script_afp=$(realpath "${BASH_SOURCE[0]}")
     exit 1
   fi
 
-  cd "$REPO_HOME"/developer
-
+  cd "$REPO_HOME"/developer/example
 
 echo "Compiling example .java files..."
 
   set -x
-  cd example
-  javac -verbose -g -sourcepath . *.java
+  javac -g -sourcepath . *.java
   set +x
+
   if [ $? -ne 0 ]; then
     echo "Compilation failed."
     exit 1
   fi
 
 echo "Creating bash wrappers..."
-  # wrapper is a space separated list
-  wrapper=Example_*.class
-  for file in $wrapper;do
-    cat > $file << EOL
+
+set -x
+
+wrapper=(Example_*.class)
+
+for file in "${wrapper[@]}"; do
+  wrapper_name=$(basename "$file" .class)
+  cat > "$wrapper_name" << EOL
 #!/bin/bash
-java $file
+java $wrapper_name
 EOL
-    chmod +x $file
-  done
+
+  # Make the wrapper executable
+  chmod +x "$wrapper_name"
+done
+
+set +x
 
 echo "$(script_fp) done."
 

@@ -309,7 +309,7 @@ This algorithm avoids forward referencing by ensuring that nodes are processed a
     <ul>
       <li>Yield a node from the list (one at a time).</li>
       <li>If the list becomes empty, remove it from <code>list_of__opened_incomplete_child_list</code>.</li>
-      <li>Print the node.</li>
+      <li>queue the node as the read value.</li>
       <li>If the node has its own child list, add it to <code>list_of__unopened_node</code>.</li>
     </ul>
   </li>

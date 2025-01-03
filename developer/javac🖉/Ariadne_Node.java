@@ -31,44 +31,44 @@ package com.ReasoningTechnology.Ariadne;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class Ariadne_Node<T> extends HashMap<String, Object> {
+public class Ariadne_Node<TLabel> extends HashMap<String, Object> {
 
   // Owned by the class
-  public static <T> Ariadne_Node<T> make(T label) {
-    return new Ariadne_Node<>(label) ;
+  public static <TLabel> Ariadne_Node<TLabel> make(TLabel label) {
+    return new Ariadne_Node<>(label);
   }
 
   // Data owned by the instance
-  private final T label ;
-  private final HashSet<Ariadne_Token> markSet ;
-  private static final String NEIGHBOR_PROPERTY_NAME = "neighbor_property" ;
+  private final TLabel label;
+  private final HashSet<Ariadne_Token> markSet;
+  private static final String NEIGHBOR_PROPERTY_NAME = "neighbor_property";
 
   // Constructors
-  public Ariadne_Node(T label) {
-    super() ;
-    this.label = label ;
-    this.markSet = new HashSet<>() ;
+  public Ariadne_Node(TLabel label) {
+    super();
+    this.label = label;
+    this.markSet = new HashSet<>();
   }
 
   // Instance interface
-  public T label() {
-    return this.label ;
+  public TLabel label() {
+    return this.label;
   }
 
-  public Ariadne_SRM<T> neighbor() {
-    return Ariadne_SRM.make() ;
+  public Ariadne_SRM<TLabel> neighbor() {
+    return Ariadne_SRM.make();
   }
 
   public void mark(Ariadne_Token token) {
-    markSet.add(token) ;
+    markSet.add(token);
   }
 
   public boolean hasMark(Ariadne_Token token) {
-    return markSet.contains(token) ;
+    return markSet.contains(token);
   }
 
   public void removeMark(Ariadne_Token token) {
-    markSet.remove(token) ;
+    markSet.remove(token);
   }
 
   // Object interface
@@ -77,6 +77,6 @@ public class Ariadne_Node<T> extends HashMap<String, Object> {
     return "Ariadne_Node{"
            + "label=" + label
            + " ,markSet=" + markSet
-           + "}" ;
+           + "}";
   }
 }
