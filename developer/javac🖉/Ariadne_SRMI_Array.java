@@ -1,18 +1,18 @@
 package com.ReasoningTechnology.Ariadne;
 import java.util.List;
 
-public class Ariadne_SRMI_Array<T> extends Ariadne_SRMI<T>{
+public class Ariadne_SRMI_Array<TElement> extends Ariadne_SRMI<TElement>{
 
   public static <T> Ariadne_SRMI_Array<T> make(List<T> array){
     return new Ariadne_SRMI_Array<>(array);
   }
 
-  private List<T> _array;
+  private List<TElement> _array;
   private int _index;
   private Topology _topology;
   private Location _location;
 
-  protected Ariadne_SRMI_Array(){
+  protected Ariadne_SRMI_Array(List<TElement> array) {
     _array = array;
 
     if( _array == null || _array.isEmpty() ) 
@@ -41,8 +41,8 @@ public class Ariadne_SRMI_Array<T> extends Ariadne_SRMI<T>{
   }
 
   @Override
-  public T access(){
-    if( can_read() ) return _array.get( _index() );
+  public TElement access(){
+    if( can_read() ) return _array.get( _index );
     throw new UnsupportedOperationException("Ariadne_SRMI_Array::read can not read tape.");
   }
 

@@ -20,16 +20,16 @@ public class Example_SRM_List {
 
     // Traverse the list
     while( srm.location() != Ariadne_SRM.Location.RIGHTMOST ){
-      System.out.println("Reading: " + srm.read());
+      System.out.println("Reading: " + srm.access());
       srm.step();
     }
 
     // Final item
-    System.out.println(" Reading: " + srm.read() );
+    System.out.println(" Reading: " + srm.access() );
     System.out.println(" Final Location: " + srm.location() );
 
-    // Reset the SRM and traverse again
-    srm.reset();
-    System.out.println( "After reset: " + srm.read() );
+    // Rewind the SRM and traverse again
+    srm.rewind();
+    System.out.println( "After rewind: " + srm.access() );
   }
 }

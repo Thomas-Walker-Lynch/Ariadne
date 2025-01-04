@@ -1,60 +1,129 @@
-import com.ReasoningTechnology.Ariadne.Ariadne_SRM;
-import com.ReasoningTechnology.Ariadne.Ariadne_Test;
 import java.math.BigInteger;
 
-public class CountingNumber extends Ariadne_SRM<BigInteger>{
-
-  private static final Ariadne_Test test = Ariadne_Test.make("Ariadne_SRM<BigInteger>::");
-
-  public static CountingNumber make(){
-    return new CountingNumber(null);
-  }
-  public static CountingNumber make(BigInteger maximum){
-    return new CountingNumber(maximum);
-  }
+public class CountingNumber {
 
   private BigInteger i;
   private BigInteger maximum;
-  Ariadne_SRM.Location location;
+  private State current_state;
 
-  protected CountingNumber(BigInteger maximum){
-    i = BigInteger.ONE;
+  public static CountingNumber make( BigInteger maximum ){
+    return new CountingNumber( maximum );
+  }
+
+  public static CountingNumber make(){
+    return new CountingNumber( null );
+  }
+
+  private CountingNumber( BigInteger maximum ){
+    this.i = BigInteger.ONE;
     this.maximum = maximum;
-    this.location = Location.LEFTMOST;
-    test.print("CountingNumber read() value initialized to: " + i);
+    this.current_state = ( maximum == null ) ? new State_InfiniteRight() : new State_Leftmost();
   }
 
-  @Override
-  public Topology topology(){
-    if(maximum == null) return Topology.INFINITE_RIGHT;
-    return Topology.SEGMENT;
+  private void set_state( State new_state ){
+    this.current_state = new_state;
   }
 
-  @Override
-  public Location location(){
-    return location;
-  }
-  
-  @Override
-  public BigInteger read(){
-    return i;  // note that BigInteger is immutable
+  public boolean can_read(){
+    return current_state.can_read();
   }
 
-  @Override
+  public boolean can_step(){
+    return current_state.can_step();
+  }
+
   public void step(){
-    super.step();
-    i = i.add(BigInteger.ONE);
+    current_state.step();
+  }
 
-    if(topology() == Topology.SEGMENT){
-      if(i.compareTo(maximum) == 0){
-        location = Location.RIGHTMOST;
-      }else if(location() == Location.LEFTMOST){
-        location = Location.INTERIM;
+  public BigInteger read(){
+    return i;
+  }
+
+  // --- State Interface ---
+  private abstract class State {
+    abstract boolean can_read();
+    abstract boolean can_step();
+    abstract void step();
+  }
+
+  // --- State_Leftmost ---
+  private class State_Leftmost extends State {
+    @Override
+    boolean can_read(){
+      return true;
+    }
+
+    @Override
+    boolean can_step(){
+      return true;
+    }
+
+    @Override
+    void step(){
+      i = i.add( BigInteger.ONE );
+      if( i.equals( maximum ) ){
+        set_state( new State_Rightmost() );
+      }else{
+        set_state( new State_InterimSegment() );
       }
     }
-      
-    test.print(" after step, new read() value: " + i);
   }
 
-}
+  // --- State_InterimSegment ---
+  private class State_InterimSegment extends State {
+    @Override
+    boolean can_read(){
+      return true;
+    }
 
+    @Override
+    boolean can_step(){
+      return true;
+    }
+
+    @Override
+    void step(){
+      i = i.add( BigInteger.ONE );
+      if( i.equals( maximum ) ){
+        set_state( new State_Rightmost() );
+      }
+    }
+  }
+
+  // --- State_InfiniteRight ---
+  private class State_InfiniteRight extends State {
+    @Override
+    boolean can_read(){
+      return true;
+    }
+
+    @Override
+    boolean can_step(){
+      return true;
+    }
+
+    @Override
+    void step(){
+      i = i.add( BigInteger.ONE );
+    }
+  }
+
+  // --- State_Rightmost ---
+  private class State_Rightmost extends State {
+    @Override
+    boolean can_read(){
+      return true;
+    }
+
+    @Override
+    boolean can_step(){
+      return false;
+    }
+
+    @Override
+    void step(){
+      throw new UnsupportedOperationException( "Cannot step from RIGHTMOST." );
+    }
+  }
+}

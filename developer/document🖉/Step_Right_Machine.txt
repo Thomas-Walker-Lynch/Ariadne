@@ -48,3 +48,9 @@ The SRM methods (mount, dismount, lenient_mount, lenient_dismount) simply delega
 Relinquishing Locks Last:
 
 By ensuring that relinquish is the last step in dismount and other relevant methods, we prevent premature lock release before operations are complete.
+
+----
+
+a SRM with a function implementation represents an evolving system, it is common that information is lost for reversing a forward step in an evolving system, so it is natural in function based programming to have a tape machine that only steps right.
+
+Still a Turing Machine can step left, and there are computation complexity implications. Some of these can be mitigated by having a context window, and thus tentative forward evolution of the system.

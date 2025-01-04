@@ -16,7 +16,7 @@ public class Ariadne_SRM_List<TElement> extends Ariadne_SRM<TElement> {
     return new Ariadne_SRM_List<>(list);
   }
 
-  private final List<TElement> _list;  // The attached linked list
+  private List<TElement> _list;  // The attached linked list
   private ListIterator<TElement> iterator;  // Iterator for traversal
   private TElement read_value;  // Stores the current cell value
 
@@ -25,6 +25,9 @@ public class Ariadne_SRM_List<TElement> extends Ariadne_SRM<TElement> {
 
   // Protected constructor for controlled instantiation
   protected Ariadne_SRM_List(List<TElement> list){
+    init(list);
+  }
+  private void init(List<TElement> list){
     _list = list;
     
     if( _list == null || _list.isEmpty() ) 
@@ -39,7 +42,7 @@ public class Ariadne_SRM_List<TElement> extends Ariadne_SRM<TElement> {
     else
       _location = Location.OTHER;
 
-    if(_topology >= SINGLETON){
+    if(_topology.ordinal() >= Topology.SINGLETON.ordinal()){
       iterator = _list.listIterator();
       read_value = iterator.next();
     }
@@ -65,11 +68,15 @@ public class Ariadne_SRM_List<TElement> extends Ariadne_SRM<TElement> {
   public void step(){
     if( can_step() ){
       read_value = iterator.next();  // Move to the next cell and update current value
-      if( !iterator.has_next() ) _location = Location.RIGHTMOST;
+      if( !iterator.hasNext() ) _location = Location.RIGHTMOST;
       return;
     }
     throw new UnsupportedOperationException("Ariadne_SRM_List::step can not step.");
   }
 
+  @Override
+  public void rewind(){
+    init(_list);
+  }
 
 }

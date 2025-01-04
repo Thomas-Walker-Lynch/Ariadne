@@ -24,7 +24,7 @@ public class Ariadne_IndexTree_Child_SRM extends Ariadne_SRM<BigInteger[]> {
   }
 
   @Override
-  public BigInteger[] read(){
+  public BigInteger[] access(){
     // Return a reference to the current label
     return label;
   }

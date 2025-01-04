@@ -18,6 +18,9 @@ public class Ariadne_SRM<TElement> {
   protected Ariadne_SRM(){
   }
 
+  // machine and tape status/properties
+  //
+
   public enum Topology{
     UNDEFINED
     ,NO_CELLS
@@ -47,13 +50,30 @@ public class Ariadne_SRM<TElement> {
       return topology().ordinal() >= Topology.SEGMENT.ordinal()
           && location().ordinal() <= Location.INTERIM.ordinal();
   }
-
   public boolean can_read() {
       return topology().ordinal() >= Topology.SINGLETON.ordinal();
   }
 
-  // returns a reference, cell can then be read or written
-  public TElement access(){
+  // moving the head
+  //
+
+  public void step(){
+    throw new UnsupportedOperationException("Ariadne_SRM::step not implemented.");
+  }
+
+  public void rewind(){
+    throw new UnsupportedOperationException("Ariadne_SRM::rewind not implemented.");      
+  }
+
+  public void fast_forward(){
+    throw new UnsupportedOperationException("Ariadne_SRM::fast_forward not implemented.");      
+  }
+
+  // access
+  //
+  
+  public TElement access(){ 
+    // returns a reference, cell can then be read or written
     throw new UnsupportedOperationException("Ariadne_SRM::read not implemented.");
   }
 
@@ -68,18 +88,6 @@ public class Ariadne_SRM<TElement> {
   // writes value
   public void write(TElement e){
     throw new UnsupportedOperationException("Ariadne_SRM::read not implemented.");
-  }
-
-  public void step(){
-    throw new UnsupportedOperationException("Ariadne_SRM::step not implemented.");
-  }
-
-  public void rewind(){
-    throw new UnsupportedOperationException("Ariadne_SRM::rewind not implemented.");      
-  }
-
-  public void fast_forward(){
-    throw new UnsupportedOperationException("Ariadne_SRM::fast_forward not implemented.");      
   }
 
 }
