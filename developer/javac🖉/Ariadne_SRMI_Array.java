@@ -1,62 +1,70 @@
 package com.ReasoningTechnology.Ariadne;
-
-import java.math.BigInteger;
 import java.util.List;
-import java.util.concurrent.Semaphore;
 
 public class Ariadne_SRMI_Array<T> extends Ariadne_SRMI<T>{
 
-  private List<T> list;
-  private Semaphore lock;
-
-  public static <T> Ariadne_SRMI_Array<T> make(){
-    return new Ariadne_SRMI_Array<>();
+  public static <T> Ariadne_SRMI_Array<T> make(List<T> array){
+    return new Ariadne_SRMI_Array<>(array);
   }
 
+  private List<T> _array;
+  private int _index;
+  private Topology _topology;
+  private Location _location;
+
   protected Ariadne_SRMI_Array(){
-    super();
+    _array = array;
+
+    if( _array == null || _array.isEmpty() ) 
+      _topology = Topology.NO_CELLS;
+    else if( _array.size() == 1 ) 
+      _topology = Topology.SINGLETON;
+    else
+      _topology = Topology.SEGMENT;
+
+    if(_topology == Topology.SEGMENT)
+      _location = Location.LEFTMOST;
+    else
+      _location = Location.OTHER;
+
+    _index = 0;
   }
 
   @Override
   public Topology topology(){
-    if(list == null || list.isEmpty()){
-      return Topology.NO_CELLS;
-    }
-    return Topology.SEGMENT;
+    return _topology;
   }
 
   @Override
-  public Status status(){
-    return super.status();
+  public Location location(){
+    return _location;
   }
 
   @Override
-  public T read(){
-    if(!mounted()){
-      throw new UnsupportedOperationException("Ariadne_SRMI_Array::read tape not mounted or out of bounds.");
-    }
-    return list.get(index().intValue());
+  public T access(){
+    if( can_read() ) return _array.get( _index() );
+    throw new UnsupportedOperationException("Ariadne_SRMI_Array::read can not read tape.");
   }
 
   @Override
   public void step(){
-    if(!can_step()){
-      throw new UnsupportedOperationException("Ariadne_SRMI_Array::step, cannot step further.");
+    if( can_step() ){
+      _index++;
+      if( _index == _array.size() - 1 ) _location = Location.RIGHTMOST;
+      return;
     }
-    if(index().compareTo(rightmost_index()) < 0){
-      index = index.add(BigInteger.ONE);
-//      set_status(index().equals(rightmost_index()) ? Status.RIGHTMOST : Status.INTERIM);
-    } else{
-      throw new UnsupportedOperationException("Ariadne_SRMI_Array::step, no more cells.");
-    }
+    throw new UnsupportedOperationException("Ariadne_SRMI_Array::step can not step.");
   }
 
   @Override
-  public BigInteger rightmost_index(){
-    if(list == null){
-      throw new UnsupportedOperationException("Ariadne_SRMI_Array::rightmost_index no tape mounted.");
-    }
-    return BigInteger.valueOf(list.size() - 1);
+  public int leftmost_index(){
+    return 0;
+  }
+
+  @Override
+  public int rightmost_index(){
+    if( can_read() ) return _array.size() - 1;
+    throw new UnsupportedOperationException("Ariadne_SRMI_Array::rightmost_index can not read array.");
   }
 
 }

@@ -16,17 +16,17 @@ public class Example_SRMI_Array {
 
     // Use the SRMI
     System.out.println( "Topology: " + srm.topology() );
-    System.out.println( "Status: " + srm.status() );
+    System.out.println( "Location: " + srm.location() );
 
     // Traverse the list
-    while( srm.status() != Ariadne_SRM.Status.RIGHTMOST ) {
+    while( srm.location() != Ariadne_SRM.Location.RIGHTMOST ) {
       System.out.println( "Reading: " + srm.read() );
       srm.step();
     }
 
     // Final item
     System.out.println( "Reading: " + srm.read() );
-    System.out.println( "Status: " + srm.status() );
+    System.out.println( "Location: " + srm.location() );
 
   */
   }

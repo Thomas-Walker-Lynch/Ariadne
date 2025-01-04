@@ -15,12 +15,12 @@ public class CountingNumber extends Ariadne_SRM<BigInteger>{
 
   private BigInteger i;
   private BigInteger maximum;
-  Ariadne_SRM.Status status;
+  Ariadne_SRM.Location location;
 
   protected CountingNumber(BigInteger maximum){
     i = BigInteger.ONE;
     this.maximum = maximum;
-    this.status = Status.LEFTMOST;
+    this.location = Location.LEFTMOST;
     test.print("CountingNumber read() value initialized to: " + i);
   }
 
@@ -31,8 +31,8 @@ public class CountingNumber extends Ariadne_SRM<BigInteger>{
   }
 
   @Override
-  public Status status(){
-    return status;
+  public Location location(){
+    return location;
   }
   
   @Override
@@ -47,9 +47,9 @@ public class CountingNumber extends Ariadne_SRM<BigInteger>{
 
     if(topology() == Topology.SEGMENT){
       if(i.compareTo(maximum) == 0){
-        status = Status.RIGHTMOST;
-      }else if(status() == Status.LEFTMOST){
-        status = Status.INTERIM;
+        location = Location.RIGHTMOST;
+      }else if(location() == Location.LEFTMOST){
+        location = Location.INTERIM;
       }
     }
       

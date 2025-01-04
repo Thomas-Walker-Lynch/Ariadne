@@ -3,6 +3,9 @@
 
   This is a mostly abstract base class.
 
+  This is for single threaded execution.  The multiple thread model
+  uses `mount` and `dismount` to lock the resources being iterated on.
+ 
 */
 
 package com.ReasoningTechnology.Ariadne;
@@ -16,45 +19,67 @@ public class Ariadne_SRM<TElement> {
   }
 
   public enum Topology{
-    NO_CELLS
+    UNDEFINED
+    ,NO_CELLS
+    ,SINGLETON
     ,SEGMENT
+    ,SEGMENT_OR_CIRCLE
     ,CIRCLE
+    ,CIRCLE_OR_INFINITE_RIGHT
     ,INFINITE_RIGHT
-    ,UNKNOWN
-    ,UNDEFINED
     ;
   }
-  public Topology topology(){
-    return Topology.UNDEFINED;
-  }
-
-  // categorizes the head location
-  public enum Status{
-    TAPE_NOT_MOUNTED
+  public enum Location{
+    OTHER
     ,LEFTMOST
     ,INTERIM
     ,RIGHTMOST
     ;
   }
-  public Status status(){
-    throw new UnsupportedOperationException("Ariadne_SRM::status not implemented.");
+
+  public Topology topology(){
+    return Topology.UNDEFINED;
   }
-  public boolean can_step(){
-    return 
-      status() == Status.LEFTMOST
-      || status() == Status.INTERIM;
+  public Location location(){
+    throw new UnsupportedOperationException("Ariadne_SRM::location not implemented.");
   }
-  public boolean mounted(){
-    return status() != Status.TAPE_NOT_MOUNTED;
+  public boolean can_step() {
+      return topology().ordinal() >= Topology.SEGMENT.ordinal()
+          && location().ordinal() <= Location.INTERIM.ordinal();
+  }
+
+  public boolean can_read() {
+      return topology().ordinal() >= Topology.SINGLETON.ordinal();
+  }
+
+  // returns a reference, cell can then be read or written
+  public TElement access(){
+    throw new UnsupportedOperationException("Ariadne_SRM::read not implemented.");
   }
 
   public TElement read(){
+    TElement accessed_cell = access();   
+    return deep_copy( accessed_cell );
+  }
+  private TElement deep_copy( TElement original ){
+    throw new UnsupportedOperationException("Ariadne_SRM::deep_copy not implemented.");
+  }
+
+  // writes value
+  public void write(TElement e){
     throw new UnsupportedOperationException("Ariadne_SRM::read not implemented.");
   }
 
   public void step(){
-    if( !can_step() )
-      throw new UnsupportedOperationException("Ariadne_SRM::step can not step.");      
+    throw new UnsupportedOperationException("Ariadne_SRM::step not implemented.");
+  }
+
+  public void rewind(){
+    throw new UnsupportedOperationException("Ariadne_SRM::rewind not implemented.");      
+  }
+
+  public void fast_forward(){
+    throw new UnsupportedOperationException("Ariadne_SRM::fast_forward not implemented.");      
   }
 
 }

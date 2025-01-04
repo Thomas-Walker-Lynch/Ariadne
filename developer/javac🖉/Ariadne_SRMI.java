@@ -4,32 +4,28 @@ Ariadne_SRM with index
 */
 
 package com.ReasoningTechnology.Ariadne;
-import java.math.BigInteger;
 
-public class Ariadne_SRMI<T> extends Ariadne_SRM<T>{
+public class Ariadne_SRMI<TElement> extends Ariadne_SRM<TElement>{
 
-  protected BigInteger index;
-
-  public static <T> Ariadne_SRMI<T> make(){
-    return new Ariadne_SRMI<T>();
+  public static <TElement> Ariadne_SRMI<TElement> make(){
+    return new Ariadne_SRMI<TElement>();
   }
   protected Ariadne_SRMI(){
-    super();
-    index = BigInteger.ZERO;;
   }
 
-  @Override
-  public void step(){
-    throw new UnsupportedOperationException("Ariadne_SRMI::can't step unmounted tape.");
-// index.add(BigInteger.ONE);
+  public int index(){
+    throw new UnsupportedOperationException("Ariadne_SRMI::index not implemented.");
   }
 
-  BigInteger index(){return index;}
-  BigInteger leftmost_index(){
-    return BigInteger.ZERO;
+  public int leftmost_index(){
+    throw new UnsupportedOperationException("Ariadne_SRMI::leftmost_index not implemented.");
   }
-  BigInteger rightmost_index(){
-    throw new UnsupportedOperationException("Ariadne_SRMI:: rightmost_index() of undefined.");
+  public int rightmost_index(){
+    throw new UnsupportedOperationException("Ariadne_SRMI::rightmost_index not implemented.");
+  }
+
+  void seek(int i){
+    throw new UnsupportedOperationException("Ariadne_SRMI::seek not implemented.");
   }
 
 }

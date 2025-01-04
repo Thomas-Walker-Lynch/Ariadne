@@ -11,12 +11,12 @@ public class Example_CountingNumber{
 
   protected static void print_ten(CountingNumber n){
     System.out.println("Iterating through Counting Numbers:");
-    if( !n.mounted() ) return;
+    if( !n.can_read() ) return;
     if(n.topology() == Ariadne_SRM.Topology.SEGMENT){
 
       do{
         System.out.println("Current Number: " + n.read());
-        if( n.status() ==  Ariadne_SRM.Status.RIGHTMOST ) break;
+        if( n.location() ==  Ariadne_SRM.Location.RIGHTMOST ) break;
         n.step();
       }while(true);
 
