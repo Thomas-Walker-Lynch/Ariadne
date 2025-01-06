@@ -1,56 +1,83 @@
-  A 'tape' as a model for computation is a sequence of cells, where something can be written or read from each cell. We talk about the sequence as though written on paper, running from left to right.  The elements in the sequence have neighbors, so the sequence of cells can be said to be mutually connected. This is to say that if cell B is to the right of cell A in the sequence, then cell A is to the left of cell B; Also if cell A is to the left of cell B, then cell B is to the right of cell A.
+Tape
 
-  One of the cells on the tape is specially marked as being the 'mounted cell'. This is the cell that can be written or read after the tape is mounted on a 'tape machine', and before any steps have been taken. 
+  A 'tape' is a one dimensional discrete space.  Being a discrete space, rather than having points, it has 'cells'.
 
-  Information from the `topology` method will remain valid for as long as the topology of
-  the tape is not modified.  
+  Rather than a function definition assigning a value to a point, and evaluating a function resulting in reading that value back, in a discrete space, a machine writes a value to a cell, and then upon revisiting the cell it can read the value back. The cell that the machine is reading or writing, is the 'cell the head is on'.  The machine domain is then the 'tape'.
 
-  A finite tape will have a leftmost cell, which has no left neighbor, and a rightmost cell, which has no right neighbor. All other cells will have two neighbors.
+  A 'tape' is any manifold where each cell has two neighbors, there are two possible such manifolds, either a finite number of cells linked in a cycle, or an unbounded number of cells. A third candidate, the null manifold, does not violate the two neighbor requirements, nor does it fulfill them..
 
-  A tape can have an infinite number of cells to the left of the mount point, to the right of the mount point, or in both directions. Hence it is possible that two, one, or zero cells on a tape have only one neighbor, where the zero neighbor case is for finite tapes, and the latter cases are for infinite tapes.
+  Experience with physical memory tapes guides our abstraction of a tape as a mathematical entity. Note that physicals tapes can have no cells. Two examples include unformated tapes and short tapes that have leaders for mounting on the machine, but after being mounted, do not have sufficient length to be written to. This can happen physically, or logically if more than one volume shares a given tape. Hence, our analogy supports the idea of having a null tape, one with no cells, as an entity.
 
-  An algorithm running on a tape machine that has a left going tape can be translated into an algorithm for a right going tape simply by swapping `step_right` for `step_left`. Hence there is no utility to be had by keeping both models.
+  Given a tape we can prove it to be either a cycle or unbounded by analyzing the situation of mounting the tape on a tape machine and stepping.  If by analysis we can proves that when starting at the mount point cell, that stepping in one direction eventually leads back to the mount point cell, then the tape is a cycle. On the other hand if we can prove that will not happen, the tape is unbounded. Note, we must use analysis rather than running the machine, because when stepping the machine in the unbounded case, it will never halt. This is a form of hmotropy analysis of our manifold, with the stepping machine representing a limit.
 
-  Another isomorphism can be setup between a single ended tape and a double direction tape by replacing each step by two steps, and then placing odd cell into correspondence with the right going tape, and even cells with left going tape.  Hence an algorithm implemented over the top of either can be mechanically transformed to an algorithm for the other.
+  Suppose we have an unbounded tape. We can create a new manifold by cutting the tape, thus producing to two half tapes, each singly ended though still countably infinite in length. Such a manifold is equivalent to a 'sequence' in mathematics. Both of these manifolds are equivalent to the original uncut manifold. We can see this by taking a sequence and placing every other cell in correspondence to cells on the original tape, alternately mapping to the next consecutive cell on the right going side, then on the left going side.
 
-  However, what we can not do without affecting the power of our computation machine is to
-  eliminate 'step-left', yet this is a common simplification in data structures. The Lisp language is based on single linked lists for example.
+  We can take the right going tape and cut it again, to create a finite tape segment, and another right going infinite tape which we let drop to the cutting floor. The finite segment is not equivalent to the original tape of course, as any at mapping all the cells from each tape, will exhaust all the cells on the finite tape with cells left over on the unbounded one. It is interesting to note that the right going tape we left on the floor is in fact equivalent to the tape it was cut from.
 
-  This 'Step Right Machine' (SRM) defined here can only be stepped to the right. Thus whether cells are mutually connected, or not, becomes irrelevant.  Also, saying 'leftmost' is a feature of the tape, becomes muddled, as the mount point cell will be the leftmost cell that is ever visited.
+  The finite tape of at least two cells will have two cells that have only one neighbor, the leftmost and the rightmost cell. This manifold is equivalent to a vector variable in mathematics.  If merely one cell is shaved off, this singleton tape will have no neighbors. This is equivalent to a variable in mathematics.
 
-  A SRM can be defined using functions, or it can be used as an iterator for traversing through a container.
+  Hence, a half tape manifold can be null, singleton, cyclic, or infinite.
 
-  The property methods defined here are kept general so that they can be used with other tape machines.
+---     
+
+Singly Linked Tape
+
+  Consider a tape where each cell has one right neighbor instead of two mutual neighbors.
+
+  When mounted on a tape machine, the mount point cell is the leftmost cell, because the machine can not step left because there is no left neighbor.
+
+  When cut, we do not get two infinite singly linked tapes, instead we jump ahead to
+  the case of the two parts being an a finite segment, and an infinite right going tail.
+
+  In the case of the doubly linked tape, the only way a tape could be cyclic while each cell has two local mutually connected neighbors, is if all the cells are connected in one big cycle. For the singly linked tape, there are no mutual connections, so a cycle can be created by a cell assigning a right neighbor to any other cell already on the tape, including itself.  Hence, the Singly Linked Tape has three possible cycle cases. However, for the
+  state machine methods behave the same for all three.
+
+  Also for the single linked machine, the Singleton manifold and the Rightmost manifold
+  become identical.
+
+  Hence these are the  possible manifolds for a singly linked tape:
+  null, cyclic, segment, or infinite.
 
 
------
+  
+  A machine with a singly linked tape mounted, can not compute some things that a Turing Machine can, yet, it is a common data structure used in computing. It can be used with forward, irreversible, advance of a program. This is the most common kind actually. If local reversibility is needed, a cache or window can be used for recent values.  The depth of this local memory is an interesting metric.  For macro level reversibility, a system can use checkpoints.
 
-public void lenient_mount() {
-  if(status() != Status.TAPE_NOT_MOUNTED) {
-    dismount(); // Ensure the current tape is dismounted first
-  }
-  mount(); // Proceed to mount the new tape
-}
+---
 
-public void lenient_dismount() {
-  if(status() != Status.TAPE_NOT_MOUNTED) {
-    dismount(); // Only dismount if a tape is currently mounted
-  }
-}
-Why This Works Without synchronized:
-Thread Safety via LockManagerDelegate:
+The Step Right Machine
 
-LockManagerDelegate manages locks and ensures that only one thread can operate on the tape at a time.
-When relinquish or request is called, the delegate ensures proper locking/unlocking.
-No Shared State Changes in SRM Methods:
+  This is a conventional iterator for traversing through containers. The items visited
+  during the traversal are as though values in cells on a single linked tape.
 
-The SRM methods (mount, dismount, lenient_mount, lenient_dismount) simply delegate to LockManagerDelegate and update internal state like Status. There’s no risk of race conditions if the delegate properly handles concurrent access.
-Relinquishing Locks Last:
 
-By ensuring that relinquish is the last step in dismount and other relevant methods, we prevent premature lock release before operations are complete.
+---------------------------------------
 
-----
+Tape Topology
 
-a SRM with a function implementation represents an evolving system, it is common that information is lost for reversing a forward step in an evolving system, so it is natural in function based programming to have a tape machine that only steps right.
+A tape is a one-dimensional discrete space consisting of "cells." These cells represent the fundamental units of memory that a machine can read from or write to. The set of all cells defines the tape topology, which determines the connectivity and traversal characteristics of the tape.
 
-Still a Turing Machine can step left, and there are computation complexity implications. Some of these can be mitigated by having a context window, and thus tentative forward evolution of the system.
+Key Characteristics of Tape Topologies
+1. Stepping Determines Topology:
+   - A machine begins at the leftmost cell when the tape is mounted. Stepping right from this cell reveals the connectivity of the tape. This process is analogous to "shrinking the circle" in topology, where stepping serves as an operation to explore and classify the tape's structure.
+
+2. Single-ended Constraint:
+   - A tape is always single-ended because there is no cell to the left of the leftmost cell. This rules out two-way infinite tapes, as there is no way to step left.
+
+3. Unbroken Connectivity:
+   - The tape is either unbounded (infinite), cyclic (all cells connect into a single cycle), or finite (with distinct leftmost and rightmost boundaries). If stepping reaches a cell that is not connected to any other cell, that cell is the rightmost cell of a finite tape segment.
+
+Defined Topologies
+
+State	can_read()	can_step()	Notes
+Null	false	false	No cells exist; the machine cannot perform any operation.
+Cyclic	true	true	The machine loops indefinitely, can always read and step.
+Segment	true	true (until rightmost)	Represents a bounded tape; steps until reaching the rightmost cell.
+Infinite Right	true	true	Unbounded cells extend infinitely; can always read and step.
+Rightmost	true	false	At the last cell of a finite segment (or singleton tape).
+
+---
+🥳 Cheers to:
+
+A precise loop that doesn’t compromise readability or efficiency.
+An elegant state pattern that aligns with the real-world model.
+The beauty of RT code format guiding clarity and consistency!

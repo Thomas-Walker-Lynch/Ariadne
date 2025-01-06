@@ -1,129 +1,124 @@
 import java.math.BigInteger;
 
-public class CountingNumber {
+public class CountingNumber extends Ariadne_SRM<BigInteger>{
 
   private BigInteger i;
   private BigInteger maximum;
-  private State current_state;
 
-  public static CountingNumber make( BigInteger maximum ){
-    return new CountingNumber( maximum );
+  private final State state_null = new State_Null();
+  private final State state_segment = new State_Segment();
+  private final State state_rightmost = new State_Rightmost();
+  private final State state_infinite = new State_Infinite();
+
+  private CountingNumber(BigInteger maximum){
+    this.i = BigInteger.ONE;
+    this.maximum = maximum;
+
+    if( maximum == null ){
+      set_state(state_infinite);
+    }else if( maximum.compareTo(BigInteger.ZERO) <= 0 ){
+      set_state(state_null);
+    }else if( maximum.equals(BigInteger.ONE) ){
+      set_state(state_rightmost);
+    }else{
+      set_state(state_segment);
+    }
+  }
+
+  public static CountingNumber make(BigInteger maximum){
+    return new CountingNumber(maximum);
   }
 
   public static CountingNumber make(){
-    return new CountingNumber( null );
+    return new CountingNumber(null);
   }
 
-  private CountingNumber( BigInteger maximum ){
-    this.i = BigInteger.ONE;
-    this.maximum = maximum;
-    this.current_state = ( maximum == null ) ? new State_InfiniteRight() : new State_Leftmost();
-  }
-
-  private void set_state( State new_state ){
-    this.current_state = new_state;
-  }
-
-  public boolean can_read(){
-    return current_state.can_read();
-  }
-
-  public boolean can_step(){
-    return current_state.can_step();
-  }
-
-  public void step(){
-    current_state.step();
-  }
-
+  @Override
   public BigInteger read(){
     return i;
   }
 
-  // --- State Interface ---
-  private abstract class State {
-    abstract boolean can_read();
-    abstract boolean can_step();
-    abstract void step();
+  private abstract class BaseState extends State{
+    abstract MachineState state();
   }
 
-  // --- State_Leftmost ---
-  private class State_Leftmost extends State {
+  private class State_Null extends BaseState{
     @Override
     boolean can_read(){
-      return true;
+      return false;
     }
-
-    @Override
-    boolean can_step(){
-      return true;
-    }
-
-    @Override
-    void step(){
-      i = i.add( BigInteger.ONE );
-      if( i.equals( maximum ) ){
-        set_state( new State_Rightmost() );
-      }else{
-        set_state( new State_InterimSegment() );
-      }
-    }
-  }
-
-  // --- State_InterimSegment ---
-  private class State_InterimSegment extends State {
-    @Override
-    boolean can_read(){
-      return true;
-    }
-
-    @Override
-    boolean can_step(){
-      return true;
-    }
-
-    @Override
-    void step(){
-      i = i.add( BigInteger.ONE );
-      if( i.equals( maximum ) ){
-        set_state( new State_Rightmost() );
-      }
-    }
-  }
-
-  // --- State_InfiniteRight ---
-  private class State_InfiniteRight extends State {
-    @Override
-    boolean can_read(){
-      return true;
-    }
-
-    @Override
-    boolean can_step(){
-      return true;
-    }
-
-    @Override
-    void step(){
-      i = i.add( BigInteger.ONE );
-    }
-  }
-
-  // --- State_Rightmost ---
-  private class State_Rightmost extends State {
-    @Override
-    boolean can_read(){
-      return true;
-    }
-
     @Override
     boolean can_step(){
       return false;
     }
-
     @Override
     void step(){
-      throw new UnsupportedOperationException( "Cannot step from RIGHTMOST." );
+      throw new UnsupportedOperationException("Cannot step from NULL state.");
+    }
+    @Override
+    MachineState state(){
+      return MachineState.NULL;
     }
   }
+
+  private class State_Segment extends BaseState{
+    @Override
+    boolean can_read(){
+      return true;
+    }
+    @Override
+    boolean can_step(){
+      return true;
+    }
+    @Override
+    void step(){
+      i = i.add(BigInteger.ONE);
+      if( i.equals(maximum) ){
+        set_state(state_rightmost);
+      }
+    }
+    @Override
+    MachineState state(){
+      return MachineState.SEGMENT;
+    }
+  }
+
+  private class State_Rightmost extends BaseState{
+    @Override
+    boolean can_read(){
+      return true;
+    }
+    @Override
+    boolean can_step(){
+      return false;
+    }
+    @Override
+    void step(){
+      throw new UnsupportedOperationException("Cannot step from RIGHTMOST.");
+    }
+    @Override
+    MachineState state(){
+      return MachineState.RIGHTMOST;
+    }
+  }
+
+  private class State_Infinite extends BaseState{
+    @Override
+    boolean can_read(){
+      return true;
+    }
+    @Override
+    boolean can_step(){
+      return true;
+    }
+    @Override
+    void step(){
+      i = i.add(BigInteger.ONE);
+    }
+    @Override
+    MachineState state(){
+      return MachineState.INFINITE;
+    }
+  }
+
 }
