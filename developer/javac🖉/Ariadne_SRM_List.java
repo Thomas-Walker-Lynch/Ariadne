@@ -4,79 +4,91 @@
   to read the current element without advancing the iterator.
 
 */
-
 package com.ReasoningTechnology.Ariadne;
-
 import java.util.List;
-import java.util.ListIterator;
 
-public class Ariadne_SRM_List<TElement> extends Ariadne_SRM<TElement> {
+public class Ariadne_SRM_List<T> extends Ariadne_SRM<T>{
 
-  public static <TElement> Ariadne_SRM_List<TElement> make(List<TElement> list){
-    return new Ariadne_SRM_List<>(list);
-  }
+  private final List<T> list;
+  private int current_index;
 
-  private List<TElement> _list;  // The attached linked list
-  private ListIterator<TElement> iterator;  // Iterator for traversal
-  private TElement read_value;  // Stores the current cell value
-
-  private Topology _topology;
-  private Location _location;
-
-  // Protected constructor for controlled instantiation
-  protected Ariadne_SRM_List(List<TElement> list){
-    init(list);
-  }
-  private void init(List<TElement> list){
-    _list = list;
-    
-    if( _list == null || _list.isEmpty() ) 
-      _topology = Topology.NO_CELLS;
-    else if( _list.size() == 1 ) 
-      _topology = Topology.SINGLETON;
-    else
-      _topology = Topology.SEGMENT;
-
-    if(_topology == Topology.SEGMENT)
-      _location = Location.LEFTMOST;
-    else
-      _location = Location.OTHER;
-
-    if(_topology.ordinal() >= Topology.SINGLETON.ordinal()){
-      iterator = _list.listIterator();
-      read_value = iterator.next();
+  public Ariadne_SRM_List(List<T> list){
+    if(list == null || list.isEmpty()){
+      this.list = null; // not used, but what Java says, goes, if you want you code.
+      set_state(state_null);
+    }else{
+      this.list = list;
+      this.current_index = 0;
+      set_state(state_segment);
     }
   }
 
-  @Override
-  public Topology topology(){
-    return _topology;
-  }
-
-  @Override
-  public Location location(){
-    return _location;
-  }
-
-  @Override
-  public TElement access(){
-    if( can_read() ) return read_value;
-    throw new UnsupportedOperationException("Ariadne_SRM_List::access can not read tape.");
-  }
-
-  @Override
-  public void step(){
-    if( can_step() ){
-      read_value = iterator.next();  // Move to the next cell and update current value
-      if( !iterator.hasNext() ) _location = Location.RIGHTMOST;
-      return;
+  private final State state_null = new State(){
+    @Override
+    boolean can_read(){
+      return false;
     }
-    throw new UnsupportedOperationException("Ariadne_SRM_List::step can not step.");
-  }
+    @Override
+    boolean can_step(){
+      return false;
+    }
+    @Override
+    void step(){
+      throw new UnsupportedOperationException("Cannot step from NULL state.");
+    }
+    @Override
+    MachineState state(){
+      return MachineState.NULL;
+    }
+  };
+
+  private final State state_segment = new State(){
+    @Override
+    boolean can_read(){
+      return true;
+    }
+    @Override
+    boolean can_step(){
+      return current_index < list.size() - 1;
+    }
+    @Override
+    void step(){
+      if(can_step()){
+        current_index++;
+      }else{
+        set_state(state_rightmost);
+      }
+    }
+    @Override
+    MachineState state(){
+      return MachineState.SEGMENT;
+    }
+  };
+
+  private final State state_rightmost = new State(){
+    @Override
+    boolean can_read(){
+      return true;
+    }
+    @Override
+    boolean can_step(){
+      return false;
+    }
+    @Override
+    void step(){
+      throw new UnsupportedOperationException("Cannot step from RIGHTMOST state.");
+    }
+    @Override
+    MachineState state(){
+      return MachineState.RIGHTMOST;
+    }
+  };
 
   @Override
-  public void rewind(){
-    init(_list);
+  public T read(){
+    if(!can_read()){
+      throw new UnsupportedOperationException("Cannot read from NULL state.");
+    }
+    return list.get(current_index);
   }
-
 }

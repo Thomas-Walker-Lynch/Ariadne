@@ -1,3 +1,4 @@
+import com.ReasoningTechnology.Ariadne.Ariadne_SRM;
 import java.math.BigInteger;
 
 public class CountingNumber extends Ariadne_SRM<BigInteger>{
@@ -38,11 +39,7 @@ public class CountingNumber extends Ariadne_SRM<BigInteger>{
     return i;
   }
 
-  private abstract class BaseState extends State{
-    abstract MachineState state();
-  }
-
-  private class State_Null extends BaseState{
+  private class State_Null extends State{
     @Override
     boolean can_read(){
       return false;
@@ -61,7 +58,7 @@ public class CountingNumber extends Ariadne_SRM<BigInteger>{
     }
   }
 
-  private class State_Segment extends BaseState{
+  private class State_Segment extends State{
     @Override
     boolean can_read(){
       return true;
@@ -83,7 +80,7 @@ public class CountingNumber extends Ariadne_SRM<BigInteger>{
     }
   }
 
-  private class State_Rightmost extends BaseState{
+  private class State_Rightmost extends State{
     @Override
     boolean can_read(){
       return true;
@@ -102,7 +99,7 @@ public class CountingNumber extends Ariadne_SRM<BigInteger>{
     }
   }
 
-  private class State_Infinite extends BaseState{
+  private class State_Infinite extends State{
     @Override
     boolean can_read(){
       return true;

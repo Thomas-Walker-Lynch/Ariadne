@@ -6,6 +6,7 @@
   This is for single-threaded execution. The multi-threaded model
   uses `mount` and `dismount` to lock the resources being iterated on.
 */
+package com.ReasoningTechnology.Ariadne;
 
 public abstract class Ariadne_SRM<T>{
 
@@ -25,7 +26,7 @@ public abstract class Ariadne_SRM<T>{
     abstract MachineState state();
   }
 
-  private State current_state;
+  protected State current_state;
 
   protected void set_state(State new_state){
     this.current_state = new_state;

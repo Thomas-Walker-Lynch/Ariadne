@@ -2,7 +2,7 @@ package com.ReasoningTechnology.Ariadne;
 
 import java.math.BigInteger;
 
-public class Ariadne_IndexTree_Child_SRM extends Ariadne_SRM<BigInteger[]> {
+public class Ariadne_IndexTree_Child_SRM extends Ariadne_SRMI<BigInteger[]>{
 
   private BigInteger[] label;
 
@@ -11,28 +11,39 @@ public class Ariadne_IndexTree_Child_SRM extends Ariadne_SRM<BigInteger[]> {
   }
 
   protected Ariadne_IndexTree_Child_SRM(BigInteger[] initial_label){
-    super();
-    if (initial_label == null || initial_label.length == 0) {
+    super(BigInteger.ZERO ,null);
+    if(initial_label == null || initial_label.length == 0){
       throw new IllegalArgumentException("Initial label must not be null or empty.");
     }
     this.label = initial_label;
+    set_state(state_infinite_right);
   }
 
-  @Override
-  public Topology topology(){
-    return Topology.INFINITE_RIGHT;
+  private final Ariadne_SRM.State state_infinite_right = new Ariadne_SRM.State(){
+    @Override boolean can_read(){
+      return true;
+    }
+    @Override boolean can_step(){
+      return true;
+    }
+    @Override void step(){
+      increment_label();
+    }
+    @Override Ariadne_SRM.MachineState state(){
+      return Ariadne_SRM.MachineState.INFINITE;
+    }
+  };
+
+  private void increment_label(){
+    label[label.length - 1] = super.index();
   }
 
-  @Override
-  public BigInteger[] access(){
-    // Return a reference to the current label
+  @Override public void step(){
+    super.step();
+    label[label.length - 1] = super.index();
+  }
+
+  @Override public BigInteger[] read(){
     return label;
   }
-
-  @Override
-  public void step(){
-    int max_index = label.length - 1;
-    label[max_index] = label[max_index].add(BigInteger.ONE);
-  }
-
 }

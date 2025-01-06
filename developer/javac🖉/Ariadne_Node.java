@@ -55,8 +55,8 @@ public class Ariadne_Node<TLabel> extends HashMap<String, Object> {
     return this.label;
   }
 
-  public Ariadne_SRM<TLabel> neighbor() {
-    return Ariadne_SRM.make();
+  public Ariadne_SRM<TLabel> neighbor(){
+    throw new UnsupportedOperationException("Neighbor is not implemented in the base class.");
   }
 
   public void mark(Ariadne_Token token) {

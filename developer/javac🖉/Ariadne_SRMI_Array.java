@@ -1,70 +1,92 @@
 package com.ReasoningTechnology.Ariadne;
+
+import java.math.BigInteger;
 import java.util.List;
 
-public class Ariadne_SRMI_Array<TElement> extends Ariadne_SRMI<TElement>{
+public class Ariadne_SRMI_Array<TElement> extends Ariadne_SRMI<TElement> {
 
-  public static <T> Ariadne_SRMI_Array<T> make(List<T> array){
-    return new Ariadne_SRMI_Array<>(array);
-  }
+  private final List<TElement> array;
 
-  private List<TElement> _array;
-  private int _index;
-  private Topology _topology;
-  private Location _location;
+  public Ariadne_SRMI_Array(List<TElement> array) {
+    super(BigInteger.ZERO, array == null || array.isEmpty() ? BigInteger.ZERO : BigInteger.valueOf(array.size() - 1));
 
-  protected Ariadne_SRMI_Array(List<TElement> array) {
-    _array = array;
-
-    if( _array == null || _array.isEmpty() ) 
-      _topology = Topology.NO_CELLS;
-    else if( _array.size() == 1 ) 
-      _topology = Topology.SINGLETON;
-    else
-      _topology = Topology.SEGMENT;
-
-    if(_topology == Topology.SEGMENT)
-      _location = Location.LEFTMOST;
-    else
-      _location = Location.OTHER;
-
-    _index = 0;
-  }
-
-  @Override
-  public Topology topology(){
-    return _topology;
-  }
-
-  @Override
-  public Location location(){
-    return _location;
-  }
-
-  @Override
-  public TElement access(){
-    if( can_read() ) return _array.get( _index );
-    throw new UnsupportedOperationException("Ariadne_SRMI_Array::read can not read tape.");
-  }
-
-  @Override
-  public void step(){
-    if( can_step() ){
-      _index++;
-      if( _index == _array.size() - 1 ) _location = Location.RIGHTMOST;
-      return;
+    if (array == null || array.isEmpty()) {
+      set_state(state_null);
+    } else if (array.size() == 1) {
+      set_state(state_rightmost);
+    } else {
+      set_state(state_segment);
     }
-    throw new UnsupportedOperationException("Ariadne_SRMI_Array::step can not step.");
+
+    this.array = array;
   }
 
   @Override
-  public int leftmost_index(){
-    return 0;
+  public TElement read() {
+    if (!can_read()) {
+      throw new UnsupportedOperationException("Cannot read from the current state.");
+    }
+    return array.get(index().intValueExact());
   }
 
-  @Override
-  public int rightmost_index(){
-    if( can_read() ) return _array.size() - 1;
-    throw new UnsupportedOperationException("Ariadne_SRMI_Array::rightmost_index can not read array.");
-  }
+  private final State state_null = new State() {
+    @Override
+    boolean can_read() {
+      return false;
+    }
+    @Override
+    boolean can_step() {
+      return false;
+    }
+    @Override
+    void step() {
+      throw new UnsupportedOperationException("Cannot step from NULL state.");
+    }
+    @Override
+    MachineState state() {
+      return MachineState.NULL;
+    }
+  };
 
+  private final State state_segment = new State() {
+    @Override
+    boolean can_read() {
+      return true;
+    }
+    @Override
+    boolean can_step() {
+      return index().compareTo(rightmost_index().subtract(BigInteger.ONE)) < 0;
+    }
+    @Override
+    void step() {
+      if (can_step()) {
+        seek(index().add(BigInteger.ONE));
+      } else {
+        set_state(state_rightmost);
+      }
+    }
+    @Override
+    MachineState state() {
+      return MachineState.SEGMENT;
+    }
+  };
+
+  private final State state_rightmost = new State() {
+    @Override
+    boolean can_read() {
+      return true;
+    }
+    @Override
+    boolean can_step() {
+      return false;
+    }
+    @Override
+    void step() {
+      throw new UnsupportedOperationException("Cannot step from RIGHTMOST state.");
+    }
+    @Override
+    MachineState state() {
+      return MachineState.RIGHTMOST;
+    }
+  };
 }
