@@ -13,9 +13,9 @@ public class Ariadne_SRMI_Array<T> extends Ariadne_SRMI<T>{
   // Instance data
   private final List<T> array;
 
-  private final TopoIface<T> state_null = new StateNull();
-  private final TopoIface<T> state_segment = new StateSegment();
-  private final TopoIface<T> state_rightmost = new StateRightmost();
+  private final TopoIface<T> topo_null = new TopoNull();
+  private final TopoIface<T> topo_segment = new TopoSegment();
+  private final TopoIface<T> topo_rightmost = new TopoRightmost();
 
   // Constructor
   protected Ariadne_SRMI_Array(List<T> array){
@@ -23,27 +23,27 @@ public class Ariadne_SRMI_Array<T> extends Ariadne_SRMI<T>{
     this.array = array;
 
     if( array == null || array.isEmpty() ){
-      set_topology( state_null );
+      set_topology( topo_null );
       return;
     }
 
     if( array.size() == 1 ){
-      set_topology( state_rightmost );
+      set_topology( topo_rightmost );
       return;
     }
 
-    set_topology( state_segment );
+    set_topology( topo_segment );
   }
 
-  // StateNull
-  private class StateNull implements TopoIface<T>{
+  // TopoNull
+  private class TopoNull implements TopoIface<T>{
     @Override
     public boolean can_read(){
       return false;
     }
     @Override
     public T read(){
-      throw new UnsupportedOperationException( "Cannot read from NULL state." );
+      throw new UnsupportedOperationException( "Cannot read from NULL topo." );
     }
     @Override
     public boolean can_step(){
@@ -51,7 +51,7 @@ public class Ariadne_SRMI_Array<T> extends Ariadne_SRMI<T>{
     }
     @Override
     public void step(){
-      throw new UnsupportedOperationException( "Cannot step from NULL state." );
+      throw new UnsupportedOperationException( "Cannot step from NULL topo." );
     }
     @Override
     public Topology topology(){
@@ -59,8 +59,8 @@ public class Ariadne_SRMI_Array<T> extends Ariadne_SRMI<T>{
     }
   }
 
-  // StateSegment
-  private class StateSegment implements TopoIface<T>{
+  // TopoSegment
+  private class TopoSegment implements TopoIface<T>{
     @Override
     public boolean can_read(){
       return true;
@@ -77,7 +77,7 @@ public class Ariadne_SRMI_Array<T> extends Ariadne_SRMI<T>{
     public void step(){
       Ariadne_SRMI_Array.super.step();
       if( index().compareTo(BigInteger.valueOf(array.size() - 1)) < 0 )
-        set_topology(state_rightmost);
+        set_topology(topo_rightmost);
     }
     @Override
     public Topology topology(){
@@ -85,8 +85,8 @@ public class Ariadne_SRMI_Array<T> extends Ariadne_SRMI<T>{
     }
   }
 
-  // StateRightmost
-  private class StateRightmost implements TopoIface<T>{
+  // TopoRightmost
+  private class TopoRightmost implements TopoIface<T>{
     @Override
     public boolean can_read(){
       return true;
@@ -101,7 +101,7 @@ public class Ariadne_SRMI_Array<T> extends Ariadne_SRMI<T>{
     }
     @Override
     public void step(){
-      throw new UnsupportedOperationException( "Cannot step from RIGHTMOST state." );
+      throw new UnsupportedOperationException( "Cannot step from RIGHTMOST topo." );
     }
     @Override
     public Topology topology(){

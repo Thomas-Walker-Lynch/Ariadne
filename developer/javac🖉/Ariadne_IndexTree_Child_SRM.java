@@ -21,11 +21,11 @@ public class Ariadne_IndexTree_Child_SRM extends Ariadne_SRMI<BigInteger[]>{
     }
 
     this.label = initial_label;
-    set_topology( state_infinite_right );
+    set_topology( topo_infinite_right );
   }
 
   // Infinite right topology
-  private final TopoIface<BigInteger[]> state_infinite_right = new TopoIface<BigInteger[]>(){
+  private final TopoIface<BigInteger[]> topo_infinite_right = new TopoIface<BigInteger[]>(){
     @Override public boolean can_read(){
       return true;
     }
