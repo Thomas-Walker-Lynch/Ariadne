@@ -5,6 +5,9 @@ if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
   exit 1
 fi
 
+# without this bash takes non-matching globs literally
+shopt -s nullglob
+
 # --------------------------------------------------------------------------------
 # project definition
 

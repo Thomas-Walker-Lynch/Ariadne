@@ -3,30 +3,20 @@ script_afp=$(realpath "${BASH_SOURCE[0]}")
 
 # before running this script, gather everything needed for the release on the scratchpad
 
-# input guards
+cd "$REPO_HOME"/developer || exit 1
+source tool🖉/env_script
 
-  if [ -z "$REPO_HOME" ]; then
-    echo "$(script_fp):: REPO_HOME is not set."
-    exit 1
-  fi
+# Inform the user
 
-  env_must_be="developer/tool🖉/env"
-  if [ "$ENV" != "$env_must_be" ]; then
-    echo "$(script_fp):: must be run in the $env_must_be environment"
-    exit 1
-  fi
+  echo "The pwd for this script is `pwd`."
 
-  cd "$REPO_HOME"/developer
+# we build into the scratchpad
 
   if [ ! -d scratchpad ]; then
     echo "$(script_fp):: no scratchpad directory"
     exit 1
   fi
 
-
-# Inform the user
-
-  echo "The pwd for this script is `pwd`."
 
 # Function to copy and set permissions
 

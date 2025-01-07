@@ -5,14 +5,8 @@ script_afp=$(realpath "${BASH_SOURCE[0]}")
 # the package name in scratch_pad.  If the `-nolink` option is specified,
 # it makes a copy instead of a link.
 
-# Input guards
-env_must_be="developer/tool🖉/env"
-if [ "$ENV" != "$env_must_be" ]; then
-  echo "$script_afp:: error: must be run in the $env_must_be environment"
-  exit 1
-fi
-
 cd "$REPO_HOME"/developer || exit 1
+source tool🖉/env_script
 
 # Parse options
 nolink=false
