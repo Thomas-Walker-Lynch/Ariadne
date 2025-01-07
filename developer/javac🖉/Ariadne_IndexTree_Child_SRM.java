@@ -4,22 +4,28 @@ import java.math.BigInteger;
 
 public class Ariadne_IndexTree_Child_SRM extends Ariadne_SRMI<BigInteger[]>{
 
+  // Static
+  public static Ariadne_IndexTree_Child_SRM make(BigInteger[] initial_label){
+    return new Ariadne_IndexTree_Child_SRM( initial_label );
+  }
+
+  // Instance data
   private BigInteger[] label;
 
-  public static Ariadne_IndexTree_Child_SRM make(BigInteger[] initial_label){
-    return new Ariadne_IndexTree_Child_SRM(initial_label);
-  }
-
+  // Constructor
   protected Ariadne_IndexTree_Child_SRM(BigInteger[] initial_label){
-    super(BigInteger.ZERO ,null);
-    if(initial_label == null || initial_label.length == 0){
-      throw new IllegalArgumentException("Initial label must not be null or empty.");
+    super();
+
+    if( initial_label == null || initial_label.length == 0 ){
+      throw new IllegalArgumentException( "Initial label must not be null or empty." );
     }
+
     this.label = initial_label;
-    set_state(state_infinite_right);
+    set_topology( state_infinite_right );
   }
 
-  private final Ariadne_SRM.ASRM state_infinite_right = new Ariadne_SRM.ASRM(){
+  // Infinite right topology
+  private final TopoIface<BigInteger[]> state_infinite_right = new TopoIface<BigInteger[]>(){
     @Override public boolean can_read(){
       return true;
     }
@@ -30,11 +36,11 @@ public class Ariadne_IndexTree_Child_SRM extends Ariadne_SRMI<BigInteger[]>{
       return true;
     }
     @Override public void step(){
-      label[label.length - 1] = super.index();
+      label[label.length - 1] = index();
     }
-    @Override public Ariadne_SRM.State state(){
-      return Ariadne_SRM.State.INFINITE;
+    @Override public Topology topology(){
+      return Topology.INFINITE;
     }
   };
-
 }
+

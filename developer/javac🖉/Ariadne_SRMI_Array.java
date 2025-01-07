@@ -1,34 +1,41 @@
-/*
-  The Ariadne_SRM_List class provides a Step Right Machine (SRM) for linked lists.
-  This implementation uses Java's ListIterator, which lacks a direct method
-  to read the current element without advancing the iterator.
-
-*/
 package com.ReasoningTechnology.Ariadne;
+
+import java.math.BigInteger;
 import java.util.List;
 
-public class Ariadne_SRM_List<T> extends Ariadne_SRM<T>{
+public class Ariadne_SRMI_Array<T> extends Ariadne_SRMI<T>{
 
-  private final List<T> list;
-  private int current_index;
+  // Static methods
+  public static <T> Ariadne_SRMI_Array<T> make(List<T> array){
+    return new Ariadne_SRMI_Array<>( array );
+  }
+
+  // Instance data
+  private final List<T> array;
 
   private final TopoIface<T> state_null = new StateNull();
   private final TopoIface<T> state_segment = new StateSegment();
   private final TopoIface<T> state_rightmost = new StateRightmost();
 
-  public Ariadne_SRM_List(List<T> list){
+  // Constructor
+  protected Ariadne_SRMI_Array(List<T> array){
+    super();
+    this.array = array;
 
-    if( list == null || list.isEmpty() ){
-      this.list = null;
+    if( array == null || array.isEmpty() ){
       set_topology( state_null );
       return;
     }
 
-    this.list = list;
-    this.current_index = 0;
+    if( array.size() == 1 ){
+      set_topology( state_rightmost );
+      return;
+    }
+
     set_topology( state_segment );
   }
 
+  // StateNull
   private class StateNull implements TopoIface<T>{
     @Override
     public boolean can_read(){
@@ -52,6 +59,7 @@ public class Ariadne_SRM_List<T> extends Ariadne_SRM<T>{
     }
   }
 
+  // StateSegment
   private class StateSegment implements TopoIface<T>{
     @Override
     public boolean can_read(){
@@ -59,19 +67,17 @@ public class Ariadne_SRM_List<T> extends Ariadne_SRM<T>{
     }
     @Override
     public T read(){
-      return list.get( current_index );
+      return array.get( index().intValueExact() );
     }
     @Override
     public boolean can_step(){
-      return current_index < list.size() - 1;
+      return true;
     }
     @Override
     public void step(){
-      if( can_step() ){
-        current_index++;
-      }else{
-        set_topology( state_rightmost );
-      }
+      Ariadne_SRMI_Array.super.step();
+      if( index().compareTo(BigInteger.valueOf(array.size() - 1)) < 0 )
+        set_topology(state_rightmost);
     }
     @Override
     public Topology topology(){
@@ -79,6 +85,7 @@ public class Ariadne_SRM_List<T> extends Ariadne_SRM<T>{
     }
   }
 
+  // StateRightmost
   private class StateRightmost implements TopoIface<T>{
     @Override
     public boolean can_read(){
@@ -86,7 +93,7 @@ public class Ariadne_SRM_List<T> extends Ariadne_SRM<T>{
     }
     @Override
     public T read(){
-      return list.get( current_index );
+      return array.get( index().intValueExact() );
     }
     @Override
     public boolean can_step(){
@@ -102,5 +109,3 @@ public class Ariadne_SRM_List<T> extends Ariadne_SRM<T>{
     }
   }
 }
-
-
