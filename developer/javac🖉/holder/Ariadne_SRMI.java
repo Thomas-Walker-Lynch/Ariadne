@@ -12,6 +12,8 @@ public abstract class Ariadne_SRMI<T> extends Ariadne_SRM<T>{
   private final BigInteger leftmost_index;
   private final BigInteger rightmost_index;
 
+  public static 
+
   public Ariadne_SRMI(BigInteger leftmost_index, BigInteger rightmost_index){
     if(leftmost_index == null 
        || rightmost_index == null 
@@ -45,7 +47,7 @@ public abstract class Ariadne_SRMI<T> extends Ariadne_SRM<T>{
 
   @Override
   public void step(){
-    current_state.step();
+    super.step();
     current_index = current_index.add(BigInteger.ONE);
   }
 }

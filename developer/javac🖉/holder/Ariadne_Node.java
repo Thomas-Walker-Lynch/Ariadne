@@ -31,10 +31,10 @@ package com.ReasoningTechnology.Ariadne;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class Ariadne_Node<TLabel> extends HashMap<String, Object> {
+public class Ariadne_Node<TLabel> extends HashMap<String, Object>{
 
   // Owned by the class
-  public static <TLabel> Ariadne_Node<TLabel> make(TLabel label) {
+  public static <TLabel> Ariadne_Node<TLabel> make(TLabel label){
     return new Ariadne_Node<>(label);
   }
 
@@ -44,14 +44,14 @@ public class Ariadne_Node<TLabel> extends HashMap<String, Object> {
   private static final String NEIGHBOR_PROPERTY_NAME = "neighbor_property";
 
   // Constructors
-  public Ariadne_Node(TLabel label) {
+  protected Ariadne_Node(TLabel label){
     super();
     this.label = label;
     this.markSet = new HashSet<>();
   }
 
   // Instance interface
-  public TLabel label() {
+  public TLabel label(){
     return this.label;
   }
 
@@ -59,21 +59,21 @@ public class Ariadne_Node<TLabel> extends HashMap<String, Object> {
     throw new UnsupportedOperationException("Neighbor is not implemented in the base class.");
   }
 
-  public void mark(Ariadne_Token token) {
+  public void mark(Ariadne_Token token){
     markSet.add(token);
   }
 
-  public boolean hasMark(Ariadne_Token token) {
+  public boolean hasMark(Ariadne_Token token){
     return markSet.contains(token);
   }
 
-  public void removeMark(Ariadne_Token token) {
+  public void removeMark(Ariadne_Token token){
     markSet.remove(token);
   }
 
   // Object interface
   @Override
-  public String toString() {
+  public String toString(){
     return "Ariadne_Node{"
            + "label=" + label
            + " ,markSet=" + markSet

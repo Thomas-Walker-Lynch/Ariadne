@@ -1,33 +1,31 @@
-/*
-  The Ariadne_SRM_List class provides a Step Right Machine (SRM) for linked lists.
-  This implementation uses Java's ListIterator, which lacks a direct method
-  to read the current element without advancing the iterator.
-
-*/
 package com.ReasoningTechnology.Ariadne;
+
+import java.math.BigInteger;
 import java.util.List;
 
-public class Ariadne_SRM_List<T> extends Ariadne_SRM<T>{
+public class Ariadne_SRMI_Array<T> extends Ariadne_SRMI<T>{
 
-  private final List<T> list;
-  private int current_index;
+  private final List<T> array;
 
-  public Ariadne_SRM_List(List<T> list){
-    if(list == null || list.isEmpty()){
-      this.list = null; // not used, but what Java says, goes, if you want you code.
+  public Ariadne_SRMI_Array(List<T> array){
+    super(BigInteger.ZERO, array == null || array.isEmpty() ? BigInteger.ZERO : BigInteger.valueOf(array.size() - 1));
+
+    if (array == null || array.isEmpty()){
       set_state(state_null);
-    }else{
-      this.list = list;
-      this.current_index = 0;
+    } else if (array.size() == 1){
+      set_state(state_rightmost);
+    } else{
       set_state(state_segment);
     }
+
+    this.array = array;
   }
 
   private final ASRM state_null = new ASRM(){
     @Override public boolean can_read(){
       return false;
     }
-    @Override public void read(){
+    @Override public T read(){
       throw new UnsupportedOperationException("Cannot read from NULL state.");
     }
     @Override public boolean can_step(){
@@ -46,15 +44,15 @@ public class Ariadne_SRM_List<T> extends Ariadne_SRM<T>{
       return true;
     }
     @Override public void read(){
-      return list.get(current_index);
+      return array.get(index().intValueExact());
     }
     @Override public boolean can_step(){
-      return current_index < list.size() - 1;
+      return index().compareTo(rightmost_index().subtract(BigInteger.ONE)) < 0;
     }
     @Override public void step(){
-      if(can_step()){
-        current_index++;
-      }else{
+      if (can_step()){
+        seek(index().add(BigInteger.ONE));
+      } else{
         set_state(state_rightmost);
       }
     }
@@ -68,7 +66,7 @@ public class Ariadne_SRM_List<T> extends Ariadne_SRM<T>{
       return true;
     }
     @Override public void read(){
-      return list.get(current_index);
+      return array.get(index().intValueExact());
     }
     @Override public boolean can_step(){
       return false;
@@ -80,5 +78,4 @@ public class Ariadne_SRM_List<T> extends Ariadne_SRM<T>{
       return State.RIGHTMOST;
     }
   };
-
 }

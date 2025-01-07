@@ -8,9 +8,9 @@
 */
 package com.ReasoningTechnology.Ariadne;
 
-public abstract class Ariadne_SRM<T>{
+public class Ariadne_SRM<T>{
 
-  public enum MachineState{
+  public enum Topology{
     NULL
     ,CYCLIC
     ,SEGMENT
@@ -19,32 +19,71 @@ public abstract class Ariadne_SRM<T>{
     ;
   }
 
-  protected abstract class State{
-    abstract boolean can_read();
-    abstract boolean can_step();
-    abstract void step();
-    abstract MachineState state();
+  public static <TElement> Ariadne_SRM<TElement> make(){
+    return new Ariadne_SRM<>();
   }
 
-  protected State current_state;
+  protected TopoIface<T> current_topology;
+  public final TopoIface<T> not_mounted = new NotMounted();
 
-  protected void set_state(State new_state){
-    this.current_state = new_state;
+  protected Ariadne_SRM(){
+    set_topology(not_mounted);
+  }
+
+  public boolean is_mounted(){
+    return 
+      current_topology != null 
+      && current_topology != not_mounted;
+  }
+
+  // Interface for interacting with a tape.
+  protected interface TopoIface<T>{
+    boolean can_read();
+    T read();
+    boolean can_step();
+    void step();
+    Topology topology();
+  }
+
+  // Initially the tape has not been mounted so it can not be interacted with.
+  protected class NotMounted implements TopoIface<T>{
+    public boolean can_read(){
+      return false;
+    }
+    public T read(){
+      throw new UnsupportedOperationException("Ariadne_SRM::NotMounted::read.");
+    }
+    public boolean can_step(){
+      return false;
+    }
+    public void step(){
+      throw new UnsupportedOperationException("Ariadne_SRM::NotMounted::step.");
+    }
+    public Topology topology(){
+      throw new UnsupportedOperationException("Ariadne_SRM::NotMounted::topology.");
+    }
+  }
+
+  // sets the tape access methods to be used
+  protected void set_topology(TopoIface<T> new_topology){
+    current_topology = new_topology;
   }
 
   public boolean can_read(){
-    return current_state.can_read();
+    return current_topology.can_read();
+  }
+  public T read(){
+    return current_topology.read();
   }
   public boolean can_step(){
-    return current_state.can_step();
+    return current_topology.can_step();
   }
   public void step(){
-    current_state.step();
+    current_topology.step();
   }
-  public MachineState state(){
-    return current_state.state();
+  public Topology topology(){
+    return current_topology.topology();
   }
 
-  public abstract T read();
 }
  

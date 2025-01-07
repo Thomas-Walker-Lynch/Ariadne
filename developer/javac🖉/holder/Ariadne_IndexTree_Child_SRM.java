@@ -19,31 +19,22 @@ public class Ariadne_IndexTree_Child_SRM extends Ariadne_SRMI<BigInteger[]>{
     set_state(state_infinite_right);
   }
 
-  private final Ariadne_SRM.State state_infinite_right = new Ariadne_SRM.State(){
-    @Override boolean can_read(){
+  private final Ariadne_SRM.ASRM state_infinite_right = new Ariadne_SRM.ASRM(){
+    @Override public boolean can_read(){
       return true;
     }
-    @Override boolean can_step(){
+    @Override public BigInteger[] read(){
+      return label;
+    }
+    @Override public boolean can_step(){
       return true;
     }
-    @Override void step(){
-      increment_label();
+    @Override public void step(){
+      label[label.length - 1] = super.index();
     }
-    @Override Ariadne_SRM.MachineState state(){
-      return Ariadne_SRM.MachineState.INFINITE;
+    @Override public Ariadne_SRM.State state(){
+      return Ariadne_SRM.State.INFINITE;
     }
   };
 
-  private void increment_label(){
-    label[label.length - 1] = super.index();
-  }
-
-  @Override public void step(){
-    super.step();
-    label[label.length - 1] = super.index();
-  }
-
-  @Override public BigInteger[] read(){
-    return label;
-  }
 }

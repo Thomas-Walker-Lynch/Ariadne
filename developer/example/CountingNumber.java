@@ -3,119 +3,138 @@ import java.math.BigInteger;
 
 public class CountingNumber extends Ariadne_SRM<BigInteger>{
 
-  private BigInteger i;
-  private BigInteger maximum;
-
-  private final State state_null = new State_Null();
-  private final State state_segment = new State_Segment();
-  private final State state_rightmost = new State_Rightmost();
-  private final State state_infinite = new State_Infinite();
-
-  private CountingNumber(BigInteger maximum){
-    this.i = BigInteger.ONE;
-    this.maximum = maximum;
-
-    if( maximum == null ){
-      set_state(state_infinite);
-    }else if( maximum.compareTo(BigInteger.ZERO) <= 0 ){
-      set_state(state_null);
-    }else if( maximum.equals(BigInteger.ONE) ){
-      set_state(state_rightmost);
-    }else{
-      set_state(state_segment);
-    }
-  }
-
   public static CountingNumber make(BigInteger maximum){
     return new CountingNumber(maximum);
   }
 
   public static CountingNumber make(){
-    return new CountingNumber(null);
+    return new CountingNumber();
   }
 
-  @Override
-  public BigInteger read(){
-    return i;
+  private BigInteger i;
+  private BigInteger maximum;
+
+  private final TopoIface<BigInteger> state_null = new ASRM_Null();
+  private final TopoIface<BigInteger> state_segment = new ASRM_Segment();
+  private final TopoIface<BigInteger> state_rightmost = new ASRM_Rightmost();
+  private final TopoIface<BigInteger> state_infinite = new ASRM_Infinite();
+
+  public CountingNumber(){
+    this.i = BigInteger.ONE;
+    this.maximum = maximum;
+    set_topology(state_infinite);
   }
 
-  private class State_Null extends State{
+  public CountingNumber(BigInteger maximum){
+    this.i = BigInteger.ONE;
+    this.maximum = maximum;
+
+    if( maximum.compareTo(BigInteger.ZERO) <= 0 ){
+      set_topology( state_null );
+      return;
+    }
+
+    if( maximum.equals(BigInteger.ONE) ){
+      set_topology(state_rightmost);
+      return;
+    }
+
+    set_topology(state_segment);
+  }
+
+
+  private class ASRM_Null implements TopoIface<BigInteger>{
     @Override
-    boolean can_read(){
+    public boolean can_read(){
       return false;
     }
     @Override
-    boolean can_step(){
+    public BigInteger read(){
+      return i;
+    }
+    @Override
+    public boolean can_step(){
       return false;
     }
     @Override
-    void step(){
-      throw new UnsupportedOperationException("Cannot step from NULL state.");
+    public void step(){
+      throw new UnsupportedOperationException( "Cannot step from NULL state." );
     }
     @Override
-    MachineState state(){
-      return MachineState.NULL;
+    public Topology topology(){
+      return Topology.NULL;
     }
   }
 
-  private class State_Segment extends State{
+  private class ASRM_Segment implements TopoIface<BigInteger>{
     @Override
-    boolean can_read(){
+    public boolean can_read(){
       return true;
     }
     @Override
-    boolean can_step(){
+    public BigInteger read(){
+      return i;
+    }
+    @Override
+    public boolean can_step(){
       return true;
     }
     @Override
-    void step(){
-      i = i.add(BigInteger.ONE);
-      if( i.equals(maximum) ){
-        set_state(state_rightmost);
+    public void step(){
+      i = i.add( BigInteger.ONE );
+      if( i.equals( maximum ) ){
+        set_topology( state_rightmost );
       }
     }
     @Override
-    MachineState state(){
-      return MachineState.SEGMENT;
+    public Topology topology(){
+      return Topology.SEGMENT;
     }
   }
 
-  private class State_Rightmost extends State{
+  private class ASRM_Rightmost implements TopoIface<BigInteger>{
     @Override
-    boolean can_read(){
+    public boolean can_read(){
       return true;
     }
     @Override
-    boolean can_step(){
+    public BigInteger read(){
+      return i;
+    }
+    @Override
+    public boolean can_step(){
       return false;
     }
     @Override
-    void step(){
-      throw new UnsupportedOperationException("Cannot step from RIGHTMOST.");
+    public void step(){
+      throw new UnsupportedOperationException( "Cannot step from RIGHTMOST." );
     }
     @Override
-    MachineState state(){
-      return MachineState.RIGHTMOST;
+    public Topology topology(){
+      return Topology.RIGHTMOST;
     }
   }
 
-  private class State_Infinite extends State{
+  private class ASRM_Infinite implements TopoIface<BigInteger>{
     @Override
-    boolean can_read(){
+    public boolean can_read(){
       return true;
     }
     @Override
-    boolean can_step(){
+    public BigInteger read(){
+      return i;
+    }
+    @Override
+    public boolean can_step(){
       return true;
     }
     @Override
-    void step(){
-      i = i.add(BigInteger.ONE);
+    public void step(){
+      i = i.add( BigInteger.ONE );
     }
     @Override
-    MachineState state(){
-      return MachineState.INFINITE;
+    public Topology topology(){
+      return Topology.INFINITE;
     }
   }
-
 }
