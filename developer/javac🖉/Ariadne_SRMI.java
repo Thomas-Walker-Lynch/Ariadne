@@ -18,9 +18,7 @@ public abstract class Ariadne_SRMI<T> extends Ariadne_SRM<T>{
     return current_index;
   }
 
-  @Override
-  public void step(){
-    current_topology.step();
+  public void increment(){
     current_index = current_index.add(BigInteger.ONE);
   }
 }

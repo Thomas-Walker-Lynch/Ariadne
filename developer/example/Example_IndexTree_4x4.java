@@ -1,6 +1,9 @@
 
 import com.ReasoningTechnology.Ariadne.Ariadne_SRM;
 import com.ReasoningTechnology.Ariadne.Ariadne_SRM_List;
+import com.ReasoningTechnology.Ariadne.Ariadne_IndexTree_Child_SRM;
+import com.ReasoningTechnology.Ariadne.Ariadne_IndexTree_Graph;
+import com.ReasoningTechnology.Ariadne.Ariadne_IndexTree_Node;
 
 import java.math.BigInteger;
 
@@ -11,7 +14,7 @@ public class Example_IndexTree_4x4{
     Ariadne_IndexTree_Graph graph = new Ariadne_IndexTree_Graph();
     Ariadne_SRM<BigInteger[]> root = graph.start();
 
-    Ariadne_IndexTree_Node label;
+    BigInteger  label[];
     Ariadne_IndexTree_Node node;
     Ariadne_SRM<BigInteger[]> child_srm;
 

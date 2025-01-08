@@ -75,8 +75,8 @@ public class Ariadne_SRMI_Array<T> extends Ariadne_SRMI<T>{
     }
     @Override
     public void step(){
-      Ariadne_SRMI_Array.super.step();
-      if( index().compareTo(BigInteger.valueOf(array.size() - 1)) < 0 )
+      increment();
+      if( index().compareTo(BigInteger.valueOf(array.size() - 1)) == 0 )
         set_topology(topo_rightmost);
     }
     @Override

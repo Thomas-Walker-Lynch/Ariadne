@@ -36,6 +36,7 @@ public class Ariadne_IndexTree_Child_SRM extends Ariadne_SRMI<BigInteger[]>{
       return true;
     }
     @Override public void step(){
+      increment();
       label[label.length - 1] = index();
     }
     @Override public Topology topology(){

@@ -9,16 +9,16 @@ script_afp=$(realpath "${BASH_SOURCE[0]}")
 cd "$REPO_HOME"/developer || exit 1
 source tool🖉/env_script
 
-set -x
+# remove example class files
 
-# remove main build files
+  cd example || exit 1
 
-  # rm_na currently does not handle links correctly 
-  rm -r scratchpad/*
-  rm_na jvm/*
-  rm_na bash/*
-
-set +x
+  for file in Example_*.class; do
+    echo "file: " $file
+    rm_na "$file"
+    wrapper_name=$(basename "$file" .class)
+    rm_na "$wrapper_name"
+  done
 
 echo "$(script_fn) done."
 

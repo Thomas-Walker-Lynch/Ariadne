@@ -20,21 +20,16 @@ echo "Compiling example .java files..."
 
 echo "Creating bash wrappers..."
 
-set -x
-
-for file in Example_*.class; do
-  echo "file: " $file
-  wrapper_name=$(basename "$file" .class)
-  cat > "$wrapper_name" << EOL
+  for file in Example_*.class; do
+    echo "file: " $file
+    wrapper_name=$(basename "$file" .class)
+    cat > "$wrapper_name" << EOL
 #!/bin/bash
 java $wrapper_name
 EOL
-
-  # Make the wrapper executable
-  chmod +x "$wrapper_name"
-  done
-
-set +x
+    # Make the wrapper executable
+    chmod +x "$wrapper_name"
+    done
 
 echo "$(script_fp) done."
 
