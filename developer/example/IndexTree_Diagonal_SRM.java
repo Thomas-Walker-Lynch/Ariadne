@@ -1,3 +1,14 @@
+/*
+An index Tree is infinite.
+
+A tree diagonal consists of
+a) a node descending from each child discovered thus far
+b> a node extending each child list discovered thus far.
+
+Hence, each diagonal extends the tree down one, and over one.
+
+*/
+
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -5,33 +16,68 @@ import com.ReasoningTechnology.Ariadne.Ariadne_Test;
 import com.ReasoningTechnology.Ariadne.Ariadne_SRM;
 import com.ReasoningTechnology.Ariadne.Ariadne_IndexTree_Node;
 
-public class IndexTree_Diagonal_SRM extends Ariadne_SRM<List<BigInteger[]>>{
+public class IndexTree_Diagonal_SRM extends Ariadne_SRM_Label>{
 
-  // Instance data
-  private final List<BigInteger[]> list_of__unopened_node;
-  private final List<List<BigInteger[]>> list_of__opened_incomplete_child_list;
-  private final List<BigInteger[]> read_list;
+  // Static
+  //
 
-  // Constructor
-  protected IndexTree_Diagonal_SRM(){
-    this.list_of__unopened_node = new ArrayList<>();
-    this.list_of__opened_incomplete_child_list = new ArrayList<>();
-    this.read_list = new ArrayList<>();
-    enqueue_root();
-  }
-
-  // Static factory method
   public static IndexTree_Diagonal_SRM make(){
     return new IndexTree_Diagonal_SRM();
   }
 
-  @Override
-  public List<BigInteger[]> read(){
+  //Instance data
+  //
+
+  private final List<Ariadne_Label> list_of__unopened_node;
+  // each node has a child list,  this is a list of child lists
+  private final List<List<Ariadne_IndexTree_Label>> list_of__opened_incomplete_child_list;
+  // Each diagonal is a list of nodes, referenced by their label
+  private final List<Ariadne_Label> read_list;
+
+  // Constructor(s)
+  //
+
+  protected IndexTree_Diagonal_SRM(){
+    list_of__unopened_node = new ArrayList<>();
+    list_of__opened_incomplete_child_list = new ArrayList<>();
+    read_list = new ArrayList<>();
+    enqueue_root();
+  }
+
+  // Implementation of instance interface.
+  //
+
+  private void enqueue_root(){
+    Ariadne_IndexTree_Label root_label = Ariadne_IndexTree_Label.root();
+    read_list.add(root_label);
+
+    Ariadne_IndexTree_Node root_node = lookup(root_label);
+    if( !fetch_child_labels(root_node).isEmpty() ){
+      list_of__unopened_node.add(root_label);
+    }
+  }
+
+  // lol! This can not be done on an infinite list!
+  private List<BigInteger[]> fetch_child_labels(Ariadne_IndexTree_Node node){
+    List<BigInteger[]> child_labels = new ArrayList<>();
+    if(node != null){
+      IndexTree_Diagonal_SRM child_srm = node.neighbor();
+      if( child_srm.can_read() ){
+        do{
+          child_labels.add(child_srm.read());
+          if( !srm.can_step ) break;
+          child_srm.step();
+        }while(true);
+      }
+    }
+    return child_labels;
+  }
+
+  @Override public List<BigInteger[]> read(){
     return read_list;
   }
 
-  @Override
-  public void step(){
+  @Override public void step(){
     read_list.clear();
 
     // Process unopened nodes
@@ -64,32 +110,9 @@ public class IndexTree_Diagonal_SRM extends Ariadne_SRM<List<BigInteger[]>>{
     }
   }
 
-  private void enqueue_root(){
-    BigInteger[] root_label = new BigInteger[0];
-    read_list.add(root_label);
-
-    Ariadne_IndexTree_Node root_node = lookup(root_label);
-    if( !fetch_child_labels(root_node).isEmpty() ){
-      list_of__unopened_node.add(root_label);
-    }
-  }
-
   private Ariadne_IndexTree_Node lookup(BigInteger[] label){
     // Perform a lookup to retrieve the node corresponding to the label
     return Ariadne_IndexTree_Node.make(label);
   }
 
-  private List<BigInteger[]> fetch_child_labels(Ariadne_IndexTree_Node node){
-    List<BigInteger[]> child_labels = new ArrayList<>();
-
-    if(node != null){
-      Ariadne_SRM<BigInteger[]> neighbor_srm = node.neighbor();
-      while( neighbor_srm.can_step() ){
-        child_labels.add(neighbor_srm.read());
-        neighbor_srm.step();
-      }
-    }
-
-    return child_labels;
-  }
 }

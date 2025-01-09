@@ -8,22 +8,22 @@ package com.ReasoningTechnology.Ariadne;
 import java.util.List;
 import java.util.ListIterator;
 
-public class Ariadne_SRM_List<T> extends Ariadne_SRM<T>{
+public class Ariadne_SRM_List extends Ariadne_SRM{
 
   // Static methods
-  public static <T> Ariadne_SRM_List<T> make(List<T> list){
-    return new Ariadne_SRM_List<>(list);
+  public static  Ariadne_SRM_List make(List list){
+    return new Ariadne_SRM_List(list);
   }
 
-  private List<T> list;  // The attached linked list
-  private ListIterator<T> iterator;  // Iterator for traversal
-  private T read_value;  // Stores the current cell value
+  private List list;  // The attached linked list
+  private ListIterator iterator;  // Iterator for traversal
+  private Object read_value;  // Stores the current cell value
 
-  private final TopoIface<T> topo_null = new TopoNull();
-  private final TopoIface<T> topo_segment = new TopoSegment();
-  private final TopoIface<T> topo_rightmost = new TopoRightmost();
+  private final TopoIface topo_null = new TopoNull();
+  private final TopoIface topo_segment = new TopoSegment();
+  private final TopoIface topo_rightmost = new TopoRightmost();
 
-  protected Ariadne_SRM_List(List<T> list){
+  protected Ariadne_SRM_List(List list){
     this.list = list;
 
     if( list == null || list.isEmpty() ){
@@ -43,11 +43,11 @@ public class Ariadne_SRM_List<T> extends Ariadne_SRM<T>{
     set_topology(topo_segment);
   }
 
-  private class TopoNull implements TopoIface<T>{
+  private class TopoNull implements TopoIface{
     @Override public boolean can_read(){
       return false;
     }
-    @Override public T read(){
+    @Override public Object read(){
       throw new UnsupportedOperationException( "Cannot read from NULL topo." );
     }
     @Override public boolean can_step(){
@@ -61,11 +61,11 @@ public class Ariadne_SRM_List<T> extends Ariadne_SRM<T>{
     }
   }
 
-  private class TopoSegment implements TopoIface<T>{
+  private class TopoSegment implements TopoIface{
     @Override public boolean can_read(){
       return true;
     }
-    @Override public T read(){
+    @Override public Object read(){
       return read_value;
     }
     @Override public boolean can_step(){
@@ -80,11 +80,11 @@ public class Ariadne_SRM_List<T> extends Ariadne_SRM<T>{
     }
   }
 
-  private class TopoRightmost implements TopoIface<T>{
+  private class TopoRightmost implements TopoIface{
     @Override public boolean can_read(){
       return true;
     }
-    @Override public T read(){
+    @Override public Object read(){
       return read_value;
     }
     @Override public boolean can_step(){

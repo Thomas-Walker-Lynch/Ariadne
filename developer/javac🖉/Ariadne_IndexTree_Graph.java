@@ -1,16 +1,19 @@
 package com.ReasoningTechnology.Ariadne;
 
-import java.math.BigInteger;
+public class Ariadne_IndexTree_Graph{
 
-public class Ariadne_IndexTree_Graph implements Ariadne_Graph<BigInteger[]>{
-
-  @Override
-  public Ariadne_IndexTree_Child_SRM start(){
-    return Ariadne_IndexTree_Child_SRM.make(new BigInteger[0]);
+  public static Ariadne_IndexTree_Graph make(){
+    return new Ariadne_IndexTree_Graph();
+  }
+  protected Ariadne_IndexTree_Graph(){
   }
 
-  @Override
-  public Ariadne_IndexTree_Node lookup(BigInteger[] label){
+  public Ariadne_IndexTree_Child_SRM start(){
+    Ariadne_IndexTree_Label root_label = Ariadne_IndexTree_Label.root();
+    return Ariadne_IndexTree_Child_SRM.make(root_label);
+  }
+
+  Ariadne_IndexTree_Node lookup(Ariadne_IndexTree_Label label){
     return Ariadne_IndexTree_Node.make(label);
   }
 

@@ -1,5 +1,5 @@
 /*
-  User defines a graph by implementing this interface.  For the build tool, the defined
+  User defines a graph by implementing this interface. For the build tool, the defined
   graph is dynamically loaded.
 
   Generally labels are returned and passed around. Only `lookup` returns a Node.
@@ -10,12 +10,10 @@
 
 package com.ReasoningTechnology.Ariadne;
 
-public interface Ariadne_Graph<TLabel> {
+public interface Ariadne_Graph {
 
-  // returns list of TLabel
-  Ariadne_SRM<TLabel> start();
+  Ariadne_SRM start();
 
-  // lookup a Node by label
-  Ariadne_Node<TLabel> lookup(TLabel label);
+  Ariadne_Node lookup(Ariadne_Label label);
 
 }

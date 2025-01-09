@@ -8,7 +8,10 @@
 */
 package com.ReasoningTechnology.Ariadne;
 
-public class Ariadne_SRM<T>{
+public class Ariadne_SRM{
+
+  // static
+  //
 
   public enum Topology{
     NULL
@@ -16,18 +19,23 @@ public class Ariadne_SRM<T>{
     ,SEGMENT
     ,RIGHTMOST
     ,INFINITE
-    ;
   }
 
-  public static <TElement> Ariadne_SRM<TElement> make(){
-    return new Ariadne_SRM<>();
+  public static make(){
+    return new Ariadne_SRM
   }
 
-  protected TopoIface<T> current_topology;
-  public final TopoIface<T> not_mounted = new NotMounted();
+  // instance data
+  //
+
+  protected TopoIface current_topology;
+  public final TopoIface not_mounted = new NotMounted();
+
+  // constructor(s)
+  //
 
   protected Ariadne_SRM(){
-    set_topology(not_mounted);
+    set_topology( not_mounted );
   }
 
   public boolean is_mounted(){
@@ -36,54 +44,59 @@ public class Ariadne_SRM<T>{
       && current_topology != not_mounted;
   }
 
-  // Interface for interacting with a tape.
-  protected interface TopoIface<T>{
+  // Implementation of instance interface.
+
+  protected interface TopoIface{
     boolean can_read();
-    T read();
+    Object read();
     boolean can_step();
     void step();
     Topology topology();
   }
 
-  // Initially the tape has not been mounted so it can not be interacted with.
-  protected class NotMounted implements TopoIface<T>{
-    public boolean can_read(){
+  // Initially, the tape has not been mounted.
+  protected class NotMounted implements TopoIface{
+    @Override public boolean can_read(){
       return false;
     }
-    public T read(){
+    @Override public Object read(){
       throw new UnsupportedOperationException("Ariadne_SRM::NotMounted::read.");
     }
-    public boolean can_step(){
+    @Override public boolean can_step(){
       return false;
     }
-    public void step(){
+    @Override public void step(){
       throw new UnsupportedOperationException("Ariadne_SRM::NotMounted::step.");
     }
-    public Topology topology(){
+    @Override public Topology topology(){
       throw new UnsupportedOperationException("Ariadne_SRM::NotMounted::topology.");
     }
   }
 
-  // sets the tape access methods to be used
-  protected void set_topology(TopoIface<T> new_topology){
+  // Sets the tape access methods to be used.
+  protected void set_topology(TopoIface new_topology){
     current_topology = new_topology;
   }
 
   public boolean can_read(){
     return current_topology.can_read();
   }
-  public T read(){
+
+  public Object read(){
     return current_topology.read();
   }
+
   public boolean can_step(){
     return current_topology.can_step();
   }
+
   public void step(){
     current_topology.step();
   }
+
   public Topology topology(){
     return current_topology.topology();
   }
 
 }
- 
+

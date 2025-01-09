@@ -1,33 +1,23 @@
 package com.ReasoningTechnology.Ariadne;
-
-import java.math.BigInteger;
 import java.util.Arrays;
 
-public class Ariadne_IndexTree_Node extends Ariadne_Node<BigInteger[]>{
+public class Ariadne_IndexTree_Node extends Ariadne_Node{
 
-  public static Ariadne_IndexTree_Node make(BigInteger[] label){
+  public static Ariadne_IndexTree_Node make(Ariadne_IndexTree_Label label){
     return new Ariadne_IndexTree_Node(label);
   }
 
-  private final BigInteger[] first_child_label;
+  private final Ariadne_IndexTree_Label first_child_label;
  
-  public Ariadne_IndexTree_Node(BigInteger[] label){
+  public Ariadne_IndexTree_Node(Ariadne_IndexTree_Label label){
     super(label);
-    this.first_child_label = new BigInteger[label.length + 1];
-    System.arraycopy(label, 0, this.first_child_label, 0, label.length);
-    this.first_child_label[label.length] = BigInteger.ZERO;
+    first_child_label = label.copy();
+    first_child_label.inc_down();
   }
 
-  @Override
+  //  public Ariadne_IndexTree_Child_SRM neighbor(){
   public Ariadne_IndexTree_Child_SRM neighbor(){
     return Ariadne_IndexTree_Child_SRM.make(first_child_label);
   }
 
-  @Override
-  public String toString(){
-    return 
-      "<" 
-      + String.join("," ,Arrays.stream(label()).map(BigInteger::toString).toArray(String[]::new)) 
-      + ">";
-  }
 }

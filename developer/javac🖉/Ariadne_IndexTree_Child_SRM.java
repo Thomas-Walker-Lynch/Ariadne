@@ -1,47 +1,81 @@
 package com.ReasoningTechnology.Ariadne;
 
-import java.math.BigInteger;
+public class Ariadne_IndexTree_Child_SRM extends Ariadne_SRM_Label {
 
-public class Ariadne_IndexTree_Child_SRM extends Ariadne_SRMI<BigInteger[]>{
-
-  // Static
-  public static Ariadne_IndexTree_Child_SRM make(BigInteger[] initial_label){
-    return new Ariadne_IndexTree_Child_SRM( initial_label );
+  public static Ariadne_IndexTree_Child_SRM make( Ariadne_IndexTree_Label first_child_label ){
+    return new Ariadne_IndexTree_Child_SRM( first_child_label );
   }
 
-  // Instance data
-  private BigInteger[] label;
+  private final Ariadne_IndexTree_Label label;
 
-  // Constructor
-  protected Ariadne_IndexTree_Child_SRM(BigInteger[] initial_label){
-    super();
+  protected Ariadne_IndexTree_Child_SRM( Ariadne_IndexTree_Label first_child_label ){
+    this.label = first_child_label.copy();
 
-    if( initial_label == null || initial_label.length == 0 ){
-      throw new IllegalArgumentException( "Initial label must not be null or empty." );
+    if( label == null ){
+      set_topology( topo_null );
+      return;
     }
 
-    this.label = initial_label;
+    if( label.isEmpty() ){
+      set_topology( topo_rightmost );
+      return;
+    }
+
     set_topology( topo_infinite_right );
   }
 
-  // Infinite right topology
-  private final TopoIface<BigInteger[]> topo_infinite_right = new TopoIface<BigInteger[]>(){
+  private final TopoIface topo_null = new TopoIface(){
+    @Override public boolean can_read(){
+      return false;
+    }
+    @Override public Object read(){
+      throw new UnsupportedOperationException( "Cannot read from NULL topology." );
+    }
+    @Override public boolean can_step(){
+      return false;
+    }
+    @Override public void step(){
+      throw new UnsupportedOperationException( "Cannot step from NULL topology." );
+    }
+    @Override public Topology topology(){
+      return Topology.NULL;
+    }
+  };
+
+  private final TopoIface topo_infinite_right = new TopoIface(){
     @Override public boolean can_read(){
       return true;
     }
-    @Override public BigInteger[] read(){
+    @Override public Object read(){
       return label;
     }
     @Override public boolean can_step(){
       return true;
     }
     @Override public void step(){
-      increment();
-      label[label.length - 1] = index();
+      label.inc_across();
     }
     @Override public Topology topology(){
       return Topology.INFINITE;
     }
   };
-}
 
+  private final TopoIface topo_rightmost = new TopoIface(){
+    @Override public boolean can_read(){
+      return true;
+    }
+    @Override public Object read(){
+      return label;
+    }
+    @Override public boolean can_step(){
+      return false;
+    }
+    @Override public void step(){
+      throw new UnsupportedOperationException( "Cannot step from RIGHTMOST topology." );
+    }
+    @Override public Topology topology(){
+      return Topology.RIGHTMOST;
+    }
+  };
+
+}

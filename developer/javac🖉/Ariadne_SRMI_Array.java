@@ -3,22 +3,22 @@ package com.ReasoningTechnology.Ariadne;
 import java.math.BigInteger;
 import java.util.List;
 
-public class Ariadne_SRMI_Array<T> extends Ariadne_SRMI<T>{
+public class Ariadne_SRMI_Array extends Ariadne_SRMI{
 
   // Static methods
-  public static <T> Ariadne_SRMI_Array<T> make(List<T> array){
-    return new Ariadne_SRMI_Array<>( array );
+  public static  Ariadne_SRMI_Array make(List array){
+    return new Ariadne_SRMI_Array( array );
   }
 
   // Instance data
-  private final List<T> array;
+  private final List array;
 
-  private final TopoIface<T> topo_null = new TopoNull();
-  private final TopoIface<T> topo_segment = new TopoSegment();
-  private final TopoIface<T> topo_rightmost = new TopoRightmost();
+  private final TopoIface topo_null = new TopoNull();
+  private final TopoIface topo_segment = new TopoSegment();
+  private final TopoIface topo_rightmost = new TopoRightmost();
 
   // Constructor
-  protected Ariadne_SRMI_Array(List<T> array){
+  protected Ariadne_SRMI_Array(List array){
     super();
     this.array = array;
 
@@ -36,13 +36,13 @@ public class Ariadne_SRMI_Array<T> extends Ariadne_SRMI<T>{
   }
 
   // TopoNull
-  private class TopoNull implements TopoIface<T>{
+  private class TopoNull implements TopoIface{
     @Override
     public boolean can_read(){
       return false;
     }
     @Override
-    public T read(){
+    public Object read(){
       throw new UnsupportedOperationException( "Cannot read from NULL topo." );
     }
     @Override
@@ -60,13 +60,13 @@ public class Ariadne_SRMI_Array<T> extends Ariadne_SRMI<T>{
   }
 
   // TopoSegment
-  private class TopoSegment implements TopoIface<T>{
+  private class TopoSegment implements TopoIface{
     @Override
     public boolean can_read(){
       return true;
     }
     @Override
-    public T read(){
+    public Object read(){
       return array.get( index().intValueExact() );
     }
     @Override
@@ -86,13 +86,13 @@ public class Ariadne_SRMI_Array<T> extends Ariadne_SRMI<T>{
   }
 
   // TopoRightmost
-  private class TopoRightmost implements TopoIface<T>{
+  private class TopoRightmost implements TopoIface{
     @Override
     public boolean can_read(){
       return true;
     }
     @Override
-    public T read(){
+    public Object read(){
       return array.get( index().intValueExact() );
     }
     @Override

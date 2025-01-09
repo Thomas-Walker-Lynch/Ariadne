@@ -6,7 +6,7 @@ Ariadne_SRM with index
 package com.ReasoningTechnology.Ariadne;
 import java.math.BigInteger;
 
-public abstract class Ariadne_SRMI<T> extends Ariadne_SRM<T>{
+public abstract class Ariadne_SRMI extends Ariadne_SRM{
 
   private BigInteger current_index;
 

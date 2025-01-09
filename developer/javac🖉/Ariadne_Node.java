@@ -31,52 +31,77 @@ package com.ReasoningTechnology.Ariadne;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class Ariadne_Node<TLabel> extends HashMap<String, Object>{
+public class Ariadne_Node extends HashMap<String, Object>{
 
   // Owned by the class
-  public static <TLabel> Ariadne_Node<TLabel> make(TLabel label){
-    return new Ariadne_Node<>(label);
+  public static Ariadne_Node make(Ariadne_Label label){
+    return new Ariadne_Node(label);
   }
 
   // Data owned by the instance
-  private final TLabel label;
-  private final HashSet<Ariadne_Token> markSet;
+  private final Ariadne_Label label;
+  private final HashSet<Ariadne_Token> mark_set;
   private static final String NEIGHBOR_PROPERTY_NAME = "neighbor_property";
 
   // Constructors
-  protected Ariadne_Node(TLabel label){
-    super();
+  protected Ariadne_Node(Ariadne_Label label){
     this.label = label;
-    this.markSet = new HashSet<>();
+    this.mark_set = new HashSet<>();
   }
 
   // Instance interface
-  public TLabel label(){
+  public Ariadne_Label label(){
     return this.label;
   }
 
-  public Ariadne_SRM<TLabel> neighbor(){
-    throw new UnsupportedOperationException("Neighbor is not implemented in the base class.");
+  public Ariadne_SRM_Label neighbor(){
+    throw new UnsupportedOperationException("Ariadne_Node::neighbor not implemented in the base class.");
   }
 
   public void mark(Ariadne_Token token){
-    markSet.add(token);
+    mark_set.add(token);
   }
 
   public boolean hasMark(Ariadne_Token token){
-    return markSet.contains(token);
+    return mark_set.contains(token);
   }
 
   public void removeMark(Ariadne_Token token){
-    markSet.remove(token);
+    mark_set.remove(token);
   }
 
+
   // Object interface
-  @Override
-  public String toString(){
-    return "Ariadne_Node{"
-           + "label=" + label
-           + " ,markSet=" + markSet
-           + "}";
+  @Override public String toString(){
+    StringBuilder output = new StringBuilder();
+
+    // Node representation
+    if( label == null ){
+      output.append( "Node()" );
+    }else{
+      output
+        .append( "Node(" )
+        .append( label.toString() )
+        .append( ")" )
+        ;
+    }
+
+    // Marks representation
+    if( !mark_set.isEmpty() ){
+      Ariadne_SRM_Set srm = Ariadne_SRM_Set.make(mark_set);
+      output.append( " Mark(" );
+
+      do{
+        output.append( srm.read().toString() );
+        if( !srm.can_step() ) break;
+        output.append( ", " );
+        srm.step();
+      }while(true);
+
+      output.append( ")" );
+    }
+
+    return output.toString();
   }
+
 }
