@@ -12,7 +12,7 @@ public class Example_SRTM_List {
     label_list.add( "C" );
 
     // Attach SRTM to the linked list and traverse
-    Ariadne_SRTM_List<String> srm = Ariadne_SRTM_List.make(label_list);
+    Ariadne_SRTM_List srm = Ariadne_SRTM_List.make(label_list);
     if( srm.can_read() ){
       do{
         System.out.println( "Reading: " + srm.read() );  

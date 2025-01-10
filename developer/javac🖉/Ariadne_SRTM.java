@@ -1,10 +1,11 @@
 /*
   Step Right Tape Machine
 
-  This is a mostly abstract base class.
+  Depending how the undefined methods here are defined, the SRTM can
+  equally be a finite iterator, a generator, or an infinite stream.
 
   This is for single-threaded execution. The multi-threaded model
-  uses `mount` and `dismount` to lock the resources being iterated on.
+  uses `mount` and `dismount` to lock the resources being iterated over.
 */
 package com.ReasoningTechnology.Ariadne;
 

@@ -1,23 +1,23 @@
 /*
   Implementation of Ariadne_Label for BigInteger array-based labels.
 */
-
-package com.ReasoningTechnology.Ariadne;
-
 import java.math.BigInteger;
 import java.util.Arrays;
 
-public class IndexTree_Label implements Ariadne_Label{
+import com.ReasoningTechnology.Ariadne.Ariadne_Label;
+
+
+public class Label implements Ariadne_Label{
 
   // Owned by class
   //
 
-  public static IndexTree_Label make(BigInteger[] array){
-    return new IndexTree_Label(array);
+  public static Label make(BigInteger[] array){
+    return new Label(array);
   }
 
-  public static IndexTree_Label root(){
-    return new IndexTree_Label(new BigInteger[0]);
+  public static Label root(){
+    return new Label(new BigInteger[0]);
   }
 
   // Instance data
@@ -28,7 +28,7 @@ public class IndexTree_Label implements Ariadne_Label{
   // Constructor
   //
 
-  private IndexTree_Label(BigInteger[] array){
+  private Label(BigInteger[] array){
     this.value = array.clone();
   }
 
@@ -43,8 +43,8 @@ public class IndexTree_Label implements Ariadne_Label{
     return Arrays.toString(value);
   }
 
-  @Override public IndexTree_Label copy(){
-    return new IndexTree_Label(value);
+  @Override public Label copy(){
+    return new Label(value);
   }
 
   // Increment last element by one, modifying in place
@@ -71,7 +71,7 @@ public class IndexTree_Label implements Ariadne_Label{
   @Override public boolean equals(Object o){
     if(this == o) return true;
     if( o == null || getClass() != o.getClass() ) return false;
-    IndexTree_Label that = (IndexTree_Label) o;
+    Label that = (Label) o;
     return Arrays.equals(value, that.value);
   }
 

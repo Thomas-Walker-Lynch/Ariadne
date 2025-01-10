@@ -1,13 +1,15 @@
+
+
 import java.math.BigInteger;
 import java.util.Queue;
 
-public class Example_IndexTree_Diagonal_SRTM {
+public class Example_SRTM_Diagonal {
 
   public static void main(String[] args){
     System.out.println("Starting IndexTree SRTM Example");
 
     // Instantiate the IndexTree Diagonal SRTM
-    IndexTree_Diagonal_SRTM srm = IndexTree_Diagonal_SRTM.make();
+    SRTM_Diagonal srm = SRTM_Diagonal.make();
 
     int step_count = 0;
     do{

@@ -1,5 +1,6 @@
 /*
-  The Ariadne_SRTM_List class provides a Step Right Tape Machine (SRTMT) for linked lists.
+  Linked list specific SRTM.
+
   This implementation uses Java's ListIterator, which lacks a direct method
   to read the current element without advancing the iterator.
 

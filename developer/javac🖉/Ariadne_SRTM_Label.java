@@ -1,3 +1,8 @@
+/*
+Graph nodes are referenced by their labels.
+
+*/
+
 package com.ReasoningTechnology.Ariadne;
 
 public class Ariadne_SRTM_Label extends Ariadne_SRTM {

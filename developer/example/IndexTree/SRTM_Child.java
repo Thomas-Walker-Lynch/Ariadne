@@ -1,15 +1,26 @@
-package com.ReasoningTechnology.Ariadne;
+import com.ReasoningTechnology.Ariadne.Ariadne_SRTM_Label;
 
-public class IndexTree_SRTM_Child extends Ariadne_SRTM_Label {
+public class SRTM_Child extends Ariadne_SRTM_Label {
 
-  public static IndexTree_SRTM_Child make( IndexTree_Label first_child_label ){
-    return new IndexTree_SRTM_Child( first_child_label );
+  // Static
+  //
+
+  public static SRTM_Child make( Label first_child_label ){
+    return new SRTM_Child( first_child_label );
   }
 
-  private final IndexTree_Label label;
+  // Instance data
+  //
 
-  protected IndexTree_SRTM_Child( IndexTree_Label first_child_label ){
-    this.label = first_child_label.copy();
+  // Label is a container of co-ordinates to a node, so the only thing 'final'
+  // is the container, not its contents.
+  private final Label label;
+
+  // Constructor(s)
+  //
+
+  protected SRTM_Child( Label leftmost_child_label ){
+    this.label = leftmost_child_label.copy();
 
     if( label == null ){
       set_topology( topo_null );
@@ -22,6 +33,13 @@ public class IndexTree_SRTM_Child extends Ariadne_SRTM_Label {
     }
 
     set_topology( topo_infinite_right );
+  }
+
+  // Implementation of the instance interface
+  //
+
+  @Override public Label read(){
+    return (Label)super.read();
   }
 
   private final TopoIface topo_null = new TopoIface(){

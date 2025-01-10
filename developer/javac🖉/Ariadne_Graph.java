@@ -10,10 +10,20 @@
 
 package com.ReasoningTechnology.Ariadne;
 
-public interface Ariadne_Graph {
+public class Ariadne_Graph{
 
-  Ariadne_SRTM start();
+  public static Ariadne_Graph make(){
+    return new Ariadne_Graph();
+  }
+  protected Ariadne_Graph(){
+  }
 
-  Ariadne_Node lookup(Ariadne_Label label);
+  public Ariadne_SRTM start(){
+    throw new UnsupportedOperationException("Ariadne_Graph::start.");
+  }
+
+  public Ariadne_Node lookup(Ariadne_Label label){
+    throw new UnsupportedOperationException("Ariadne_Graph::lookup.");
+  }
 
 }
