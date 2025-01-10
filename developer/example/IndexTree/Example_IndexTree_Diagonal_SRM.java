@@ -1,13 +1,13 @@
 import java.math.BigInteger;
 import java.util.Queue;
 
-public class Example_IndexTree_Diagonal_SRM {
+public class Example_IndexTree_Diagonal_SRMT {
 
   public static void main(String[] args){
-    System.out.println("Starting IndexTree SRM Example");
+    System.out.println("Starting IndexTree SRMT Example");
 
-    // Instantiate the IndexTree Diagonal SRM
-    IndexTree_Diagonal_SRM srm = IndexTree_Diagonal_SRM.make();
+    // Instantiate the IndexTree Diagonal SRMT
+    IndexTree_Diagonal_SRMT srm = IndexTree_Diagonal_SRMT.make();
 
     int step_count = 0;
     do{

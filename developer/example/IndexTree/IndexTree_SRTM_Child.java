@@ -1,14 +1,14 @@
 package com.ReasoningTechnology.Ariadne;
 
-public class Ariadne_IndexTree_Child_SRM extends Ariadne_SRM_Label {
+public class IndexTree_SRMT_Child extends Ariadne_SRMT_Label {
 
-  public static Ariadne_IndexTree_Child_SRM make( Ariadne_IndexTree_Label first_child_label ){
-    return new Ariadne_IndexTree_Child_SRM( first_child_label );
+  public static IndexTree_SRMT_Child make( IndexTree_Label first_child_label ){
+    return new IndexTree_SRMT_Child( first_child_label );
   }
 
-  private final Ariadne_IndexTree_Label label;
+  private final IndexTree_Label label;
 
-  protected Ariadne_IndexTree_Child_SRM( Ariadne_IndexTree_Label first_child_label ){
+  protected IndexTree_SRMT_Child( IndexTree_Label first_child_label ){
     this.label = first_child_label.copy();
 
     if( label == null ){

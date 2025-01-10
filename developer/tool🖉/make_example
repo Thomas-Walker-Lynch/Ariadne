@@ -4,8 +4,13 @@ script_afp=$(realpath "${BASH_SOURCE[0]}")
 cd "$REPO_HOME"/developer || exit 1
 source tool🖉/env_script
 
+# Check if the directory $1 exists
+if [ ! -d "example/$1" ]; then
+  echo "Error: Directory 'example/$1' does not exist."
+  exit 1
+fi
 
-cd example || exit 1
+cd "example/$1" || exit 1
 
 echo "Compiling example .java files..."
 

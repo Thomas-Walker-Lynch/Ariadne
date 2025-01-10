@@ -1,9 +1,9 @@
 package com.ReasoningTechnology.Ariadne;
 
-public class Ariadne_SRM_Label extends Ariadne_SRM {
+public class Ariadne_SRMT_Label extends Ariadne_SRMT {
 
-  public static Ariadne_SRM_Label make(){
-    return new Ariadne_SRM_Label();
+  public static Ariadne_SRMT_Label make(){
+    return new Ariadne_SRMT_Label();
   }
 
   @Override public Ariadne_Label read(){

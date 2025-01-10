@@ -1,16 +1,16 @@
 /*
-Ariadne_SRM with index
+Ariadne_SRMT with index
 
 */
 
 package com.ReasoningTechnology.Ariadne;
 import java.math.BigInteger;
 
-public abstract class Ariadne_SRMI extends Ariadne_SRM{
+public abstract class Ariadne_SRMTI extends Ariadne_SRMT{
 
   private BigInteger current_index;
 
-  public Ariadne_SRMI(){
+  public Ariadne_SRMTI(){
     this.current_index = BigInteger.ZERO;
   }
 

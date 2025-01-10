@@ -1,3 +1,5 @@
+
+
 /*
 An index Tree is infinite.
 
@@ -8,6 +10,7 @@ b> a node extending each child list discovered thus far.
 Hence, each diagonal extends the tree down one, and over one.
 
 */
+
 
 import java.math.BigInteger;
 import java.util.ArrayList;

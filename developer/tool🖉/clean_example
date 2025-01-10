@@ -9,16 +9,24 @@ script_afp=$(realpath "${BASH_SOURCE[0]}")
 cd "$REPO_HOME"/developer || exit 1
 source tool🖉/env_script
 
-# remove example class files
+# Check if the directory $1 exists
+if [ ! -d "example/$1" ]; then
+  echo "Error: Directory 'example/$1' does not exist."
+  exit 1
+fi
 
-  cd example || exit 1
+cd "example/$1" || exit 1
+
+
+# remove wrappers and class files
 
   for file in Example_*.class; do
     echo "file: " $file
-    rm_na "$file"
     wrapper_name=$(basename "$file" .class)
     rm_na "$wrapper_name"
   done
+  rm_na *.class
+
 
 echo "$(script_fn) done."
 

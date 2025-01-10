@@ -3,11 +3,11 @@ package com.ReasoningTechnology.Ariadne;
 import java.math.BigInteger;
 import java.util.List;
 
-public class Ariadne_SRMI_Array extends Ariadne_SRMI{
+public class Ariadne_SRMTI_Array extends Ariadne_SRMTI{
 
   // Static methods
-  public static  Ariadne_SRMI_Array make(List array){
-    return new Ariadne_SRMI_Array( array );
+  public static  Ariadne_SRMTI_Array make(List array){
+    return new Ariadne_SRMTI_Array( array );
   }
 
   // Instance data
@@ -18,7 +18,7 @@ public class Ariadne_SRMI_Array extends Ariadne_SRMI{
   private final TopoIface topo_rightmost = new TopoRightmost();
 
   // Constructor
-  protected Ariadne_SRMI_Array(List array){
+  protected Ariadne_SRMTI_Array(List array){
     super();
     this.array = array;
 

@@ -8,7 +8,7 @@
 */
 package com.ReasoningTechnology.Ariadne;
 
-public class Ariadne_SRM{
+public class Ariadne_SRMT{
 
   // static
   //
@@ -21,8 +21,8 @@ public class Ariadne_SRM{
     ,INFINITE
   }
 
-  public static make(){
-    return new Ariadne_SRM
+  public static Ariadne_SRMT make(){
+    return new Ariadne_SRMT();
   }
 
   // instance data
@@ -34,7 +34,7 @@ public class Ariadne_SRM{
   // constructor(s)
   //
 
-  protected Ariadne_SRM(){
+  protected Ariadne_SRMT(){
     set_topology( not_mounted );
   }
 
@@ -60,16 +60,16 @@ public class Ariadne_SRM{
       return false;
     }
     @Override public Object read(){
-      throw new UnsupportedOperationException("Ariadne_SRM::NotMounted::read.");
+      throw new UnsupportedOperationException("Ariadne_SRMT::NotMounted::read.");
     }
     @Override public boolean can_step(){
       return false;
     }
     @Override public void step(){
-      throw new UnsupportedOperationException("Ariadne_SRM::NotMounted::step.");
+      throw new UnsupportedOperationException("Ariadne_SRMT::NotMounted::step.");
     }
     @Override public Topology topology(){
-      throw new UnsupportedOperationException("Ariadne_SRM::NotMounted::topology.");
+      throw new UnsupportedOperationException("Ariadne_SRMT::NotMounted::topology.");
     }
   }
 

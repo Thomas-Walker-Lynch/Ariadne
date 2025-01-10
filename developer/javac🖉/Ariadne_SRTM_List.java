@@ -1,5 +1,5 @@
 /*
-  The Ariadne_SRM_List class provides a Step Right Machine (SRM) for linked lists.
+  The Ariadne_SRMT_List class provides a Step Right Machine (SRMT) for linked lists.
   This implementation uses Java's ListIterator, which lacks a direct method
   to read the current element without advancing the iterator.
 
@@ -8,11 +8,11 @@ package com.ReasoningTechnology.Ariadne;
 import java.util.List;
 import java.util.ListIterator;
 
-public class Ariadne_SRM_List extends Ariadne_SRM{
+public class Ariadne_SRMT_List extends Ariadne_SRMT{
 
   // Static methods
-  public static  Ariadne_SRM_List make(List list){
-    return new Ariadne_SRM_List(list);
+  public static  Ariadne_SRMT_List make(List list){
+    return new Ariadne_SRMT_List(list);
   }
 
   private List list;  // The attached linked list
@@ -23,7 +23,7 @@ public class Ariadne_SRM_List extends Ariadne_SRM{
   private final TopoIface topo_segment = new TopoSegment();
   private final TopoIface topo_rightmost = new TopoRightmost();
 
-  protected Ariadne_SRM_List(List list){
+  protected Ariadne_SRMT_List(List list){
     this.list = list;
 
     if( list == null || list.isEmpty() ){

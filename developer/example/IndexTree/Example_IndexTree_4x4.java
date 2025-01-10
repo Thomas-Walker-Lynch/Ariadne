@@ -1,8 +1,8 @@
-import com.ReasoningTechnology.Ariadne.Ariadne_SRM;
-import com.ReasoningTechnology.Ariadne.Ariadne_SRM_List;
-import com.ReasoningTechnology.Ariadne.Ariadne_IndexTree_Child_SRM;
-import com.ReasoningTechnology.Ariadne.Ariadne_IndexTree_Graph;
-import com.ReasoningTechnology.Ariadne.Ariadne_IndexTree_Node;
+import com.ReasoningTechnology.Ariadne.Ariadne_SRMT;
+import com.ReasoningTechnology.Ariadne.Ariadne_SRMT_List;
+import com.ReasoningTechnology.Ariadne.IndexTree_SRMT_Child;
+import com.ReasoningTechnology.Ariadne.IndexTree_Graph;
+import com.ReasoningTechnology.Ariadne.IndexTree_Node;
 
 public class Example_IndexTree_4x4{
 
@@ -11,15 +11,15 @@ public class Example_IndexTree_4x4{
     System.out.println("Example_IndexTree_4x4");
 
     // Initialize graph and start at root
-    Ariadne_IndexTree_Graph graph = Ariadne_IndexTree_Graph.make();
-    Ariadne_IndexTree_Child_SRM root = graph.start();
+    IndexTree_Graph graph = IndexTree_Graph.make();
+    IndexTree_SRMT_Child root = graph.start();
 
     System.out.println("root: " + root.read().toString());
 
     // Variables for traversal
-    Ariadne_IndexTree_Label label = root.read();
-    Ariadne_IndexTree_Node node;
-    Ariadne_SRM<Ariadne_IndexTree_Label> child_srm;
+    IndexTree_Label label = root.read();
+    IndexTree_Node node;
+    Ariadne_SRMT<IndexTree_Label> child_srm;
 
     // Descend 3 more levels
     int i = 1;

@@ -7,17 +7,17 @@ package com.ReasoningTechnology.Ariadne;
 import java.math.BigInteger;
 import java.util.Arrays;
 
-public class Ariadne_IndexTree_Label implements Ariadne_Label{
+public class IndexTree_Label implements Ariadne_Label{
 
   // Owned by class
   //
 
-  public static Ariadne_IndexTree_Label make(BigInteger[] array){
-    return new Ariadne_IndexTree_Label(array);
+  public static IndexTree_Label make(BigInteger[] array){
+    return new IndexTree_Label(array);
   }
 
-  public static Ariadne_IndexTree_Label root(){
-    return new Ariadne_IndexTree_Label(new BigInteger[0]);
+  public static IndexTree_Label root(){
+    return new IndexTree_Label(new BigInteger[0]);
   }
 
   // Instance data
@@ -28,7 +28,7 @@ public class Ariadne_IndexTree_Label implements Ariadne_Label{
   // Constructor
   //
 
-  private Ariadne_IndexTree_Label(BigInteger[] array){
+  private IndexTree_Label(BigInteger[] array){
     this.value = array.clone();
   }
 
@@ -43,8 +43,8 @@ public class Ariadne_IndexTree_Label implements Ariadne_Label{
     return Arrays.toString(value);
   }
 
-  @Override public Ariadne_IndexTree_Label copy(){
-    return new Ariadne_IndexTree_Label(value);
+  @Override public IndexTree_Label copy(){
+    return new IndexTree_Label(value);
   }
 
   // Increment last element by one, modifying in place
@@ -71,7 +71,7 @@ public class Ariadne_IndexTree_Label implements Ariadne_Label{
   @Override public boolean equals(Object o){
     if(this == o) return true;
     if( o == null || getClass() != o.getClass() ) return false;
-    Ariadne_IndexTree_Label that = (Ariadne_IndexTree_Label) o;
+    IndexTree_Label that = (IndexTree_Label) o;
     return Arrays.equals(value, that.value);
   }
 
