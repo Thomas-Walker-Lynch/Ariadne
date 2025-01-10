@@ -44,7 +44,7 @@ Singly Linked Tape
 
 ---
 
-The Step Right Machine
+The Step Right Tape Machine
 
   This is a conventional iterator for traversing through containers. The items visited
   during the traversal are as though values in cells on a single linked tape.

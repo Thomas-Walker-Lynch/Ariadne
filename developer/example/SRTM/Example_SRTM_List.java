@@ -1,9 +1,9 @@
-import com.ReasoningTechnology.Ariadne.Ariadne_SRMT;
-import com.ReasoningTechnology.Ariadne.Ariadne_SRMT_List;
+import com.ReasoningTechnology.Ariadne.Ariadne_SRTM;
+import com.ReasoningTechnology.Ariadne.Ariadne_SRTM_List;
 
 import java.util.LinkedList;
 
-public class Example_SRMT_List {
+public class Example_SRTM_List {
   public static void main( String[] args ){
     // Create a linked list
     LinkedList<String> label_list = new LinkedList<>();
@@ -11,8 +11,8 @@ public class Example_SRMT_List {
     label_list.add( "B" );
     label_list.add( "C" );
 
-    // Attach SRMT to the linked list and traverse
-    Ariadne_SRMT_List<String> srm = Ariadne_SRMT_List.make(label_list);
+    // Attach SRTM to the linked list and traverse
+    Ariadne_SRTM_List<String> srm = Ariadne_SRTM_List.make(label_list);
     if( srm.can_read() ){
       do{
         System.out.println( "Reading: " + srm.read() );  

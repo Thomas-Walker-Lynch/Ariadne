@@ -1,5 +1,5 @@
 /*
-  Step Right Machine
+  Step Right Tape Machine
 
   This is a mostly abstract base class.
 
@@ -8,7 +8,7 @@
 */
 package com.ReasoningTechnology.Ariadne;
 
-public class Ariadne_SRMT{
+public class Ariadne_SRTM{
 
   // static
   //
@@ -21,8 +21,8 @@ public class Ariadne_SRMT{
     ,INFINITE
   }
 
-  public static Ariadne_SRMT make(){
-    return new Ariadne_SRMT();
+  public static Ariadne_SRTM make(){
+    return new Ariadne_SRTM();
   }
 
   // instance data
@@ -34,7 +34,7 @@ public class Ariadne_SRMT{
   // constructor(s)
   //
 
-  protected Ariadne_SRMT(){
+  protected Ariadne_SRTM(){
     set_topology( not_mounted );
   }
 
@@ -60,16 +60,16 @@ public class Ariadne_SRMT{
       return false;
     }
     @Override public Object read(){
-      throw new UnsupportedOperationException("Ariadne_SRMT::NotMounted::read.");
+      throw new UnsupportedOperationException("Ariadne_SRTM::NotMounted::read.");
     }
     @Override public boolean can_step(){
       return false;
     }
     @Override public void step(){
-      throw new UnsupportedOperationException("Ariadne_SRMT::NotMounted::step.");
+      throw new UnsupportedOperationException("Ariadne_SRTM::NotMounted::step.");
     }
     @Override public Topology topology(){
-      throw new UnsupportedOperationException("Ariadne_SRMT::NotMounted::topology.");
+      throw new UnsupportedOperationException("Ariadne_SRTM::NotMounted::topology.");
     }
   }
 

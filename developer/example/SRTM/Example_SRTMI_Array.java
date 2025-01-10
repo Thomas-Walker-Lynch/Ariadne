@@ -1,16 +1,16 @@
-import com.ReasoningTechnology.Ariadne.Ariadne_SRMT;
-import com.ReasoningTechnology.Ariadne.Ariadne_SRMTI_Array;
+import com.ReasoningTechnology.Ariadne.Ariadne_SRTM;
+import com.ReasoningTechnology.Ariadne.Ariadne_SRTMI_Array;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class Example_SRMTI_Array {
+public class Example_SRTMI_Array {
   public static void main( String[] args ){
     // Create an Array
     List<String> label_array = Arrays.asList( "A", "B", "C", "D" );
 
-    // Attach SRMTI to the array
-    Ariadne_SRMTI_Array<String> srm = Ariadne_SRMTI_Array.make( label_array );
+    // Attach SRTMI to the array
+    Ariadne_SRTMI_Array<String> srm = Ariadne_SRTMI_Array.make( label_array );
     if( srm.can_read() ){
       do{
         System.out.println( "Reading: " + srm.read() );  

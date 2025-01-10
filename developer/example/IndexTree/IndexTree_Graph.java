@@ -8,9 +8,9 @@ public class IndexTree_Graph{
   protected IndexTree_Graph(){
   }
 
-  public IndexTree_SRMT_Child start(){
+  public IndexTree_SRTM_Child start(){
     IndexTree_Label root_label = IndexTree_Label.root();
-    return IndexTree_SRMT_Child.make(root_label);
+    return IndexTree_SRTM_Child.make(root_label);
   }
 
   IndexTree_Node lookup(IndexTree_Label label){

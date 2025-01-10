@@ -15,9 +15,9 @@ public class IndexTree_Node extends Ariadne_Node{
     first_child_label.inc_down();
   }
 
-  //  public IndexTree_SRMT_Child neighbor(){
-  public IndexTree_SRMT_Child neighbor(){
-    return IndexTree_SRMT_Child.make(first_child_label);
+  //  public IndexTree_SRTM_Child neighbor(){
+  public IndexTree_SRTM_Child neighbor(){
+    return IndexTree_SRTM_Child.make(first_child_label);
   }
 
 }

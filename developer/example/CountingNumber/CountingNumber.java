@@ -1,7 +1,7 @@
-import com.ReasoningTechnology.Ariadne.Ariadne_SRMT;
+import com.ReasoningTechnology.Ariadne.Ariadne_SRTM;
 import java.math.BigInteger;
 
-public class CountingNumber extends Ariadne_SRMT<BigInteger>{
+public class CountingNumber extends Ariadne_SRTM<BigInteger>{
 
   public static CountingNumber make(BigInteger maximum){
     return new CountingNumber(maximum);
@@ -14,10 +14,10 @@ public class CountingNumber extends Ariadne_SRMT<BigInteger>{
   private BigInteger i;
   private BigInteger maximum;
 
-  private final TopoIface<BigInteger> state_null = new ASRMT_Null();
-  private final TopoIface<BigInteger> state_segment = new ASRMT_Segment();
-  private final TopoIface<BigInteger> state_rightmost = new ASRMT_Rightmost();
-  private final TopoIface<BigInteger> state_infinite = new ASRMT_Infinite();
+  private final TopoIface<BigInteger> state_null = new ASRTM_Null();
+  private final TopoIface<BigInteger> state_segment = new ASRTM_Segment();
+  private final TopoIface<BigInteger> state_rightmost = new ASRTM_Rightmost();
+  private final TopoIface<BigInteger> state_infinite = new ASRTM_Infinite();
 
   public CountingNumber(){
     this.i = BigInteger.ONE;
@@ -43,7 +43,7 @@ public class CountingNumber extends Ariadne_SRMT<BigInteger>{
   }
 
 
-  private class ASRMT_Null implements TopoIface<BigInteger>{
+  private class ASRTM_Null implements TopoIface<BigInteger>{
     @Override
     public boolean can_read(){
       return false;
@@ -66,7 +66,7 @@ public class CountingNumber extends Ariadne_SRMT<BigInteger>{
     }
   }
 
-  private class ASRMT_Segment implements TopoIface<BigInteger>{
+  private class ASRTM_Segment implements TopoIface<BigInteger>{
     @Override
     public boolean can_read(){
       return true;
@@ -92,7 +92,7 @@ public class CountingNumber extends Ariadne_SRMT<BigInteger>{
     }
   }
 
-  private class ASRMT_Rightmost implements TopoIface<BigInteger>{
+  private class ASRTM_Rightmost implements TopoIface<BigInteger>{
     @Override
     public boolean can_read(){
       return true;
@@ -115,7 +115,7 @@ public class CountingNumber extends Ariadne_SRMT<BigInteger>{
     }
   }
 
-  private class ASRMT_Infinite implements TopoIface<BigInteger>{
+  private class ASRTM_Infinite implements TopoIface<BigInteger>{
     @Override
     public boolean can_read(){
       return true;

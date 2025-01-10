@@ -13,16 +13,16 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import com.ReasoningTechnology.Ariadne.Ariadne_Test;
-import com.ReasoningTechnology.Ariadne.Ariadne_SRMT;
+import com.ReasoningTechnology.Ariadne.Ariadne_SRTM;
 import com.ReasoningTechnology.Ariadne.Ariadne_IndexTree_Node;
 
-public class IndexTree_Diagonal_SRMT extends Ariadne_SRMT_Label>{
+public class IndexTree_Diagonal_SRTM extends Ariadne_SRTM_Label>{
 
   // Static
   //
 
-  public static IndexTree_Diagonal_SRMT make(){
-    return new IndexTree_Diagonal_SRMT();
+  public static IndexTree_Diagonal_SRTM make(){
+    return new IndexTree_Diagonal_SRTM();
   }
 
   //Instance data
@@ -30,14 +30,14 @@ public class IndexTree_Diagonal_SRMT extends Ariadne_SRMT_Label>{
 
   private final List<Ariadne_Label> list_of__unopened_node;
   // each node has a child list,  this is a list of child lists
-  private final List<Ariadne_SRMT> list_of__opened_incomplete_child_list;
+  private final List<Ariadne_SRTM> list_of__opened_incomplete_child_list;
   // Each diagonal is a list of nodes, referenced by their label
   private final List<Ariadne_Label> read_list;
 
   // Constructor(s)
   //
 
-  protected IndexTree_Diagonal_SRMT(){
+  protected IndexTree_Diagonal_SRTM(){
     list_of__unopened_node = new ArrayList<>();
     list_of__opened_incomplete_child_list = new ArrayList<>();
     read_list = new ArrayList<>();
@@ -61,7 +61,7 @@ public class IndexTree_Diagonal_SRMT extends Ariadne_SRMT_Label>{
   private List<BigInteger[]> fetch_child_labels(Ariadne_IndexTree_Node node){
     List<BigInteger[]> child_labels = new ArrayList<>();
     if(node != null){
-      IndexTree_Diagonal_SRMT child_srm = node.neighbor();
+      IndexTree_Diagonal_SRTM child_srm = node.neighbor();
       if( child_srm.can_read() ){
         do{
           child_labels.add(child_srm.read());

@@ -1,4 +1,4 @@
-import com.ReasoningTechnology.Ariadne.Ariadne_SRMT;
+import com.ReasoningTechnology.Ariadne.Ariadne_SRTM;
 import java.math.BigInteger;
 
 public class Example_CountingNumber_0{
@@ -8,14 +8,14 @@ public class Example_CountingNumber_0{
 
     if( !n.can_read() ) return;
 
-    if( n.topology() == Ariadne_SRMT.Topology.SEGMENT ){
+    if( n.topology() == Ariadne_SRTM.Topology.SEGMENT ){
       do{
         System.out.println("Current Number: " + n.read());
         if( !n.can_step() ) break;
         n.step();
       }while( true );
 
-    }else if( n.topology() == Ariadne_SRMT.Topology.INFINITE ){
+    }else if( n.topology() == Ariadne_SRTM.Topology.INFINITE ){
       int count = 0;
       do{
         System.out.println("Current Number: " + n.read());

@@ -3,14 +3,14 @@ package com.ReasoningTechnology.Ariadne;
 import java.util.ArrayList;
 import java.util.Set;
 
-public class Ariadne_SRMT_Set extends Ariadne_SRMTI_Array{
+public class Ariadne_SRTM_Set extends Ariadne_SRTMI_Array{
 
   // Static factory method
-  public static  Ariadne_SRMT_Set make(Set set){
-    return new Ariadne_SRMT_Set( set );
+  public static  Ariadne_SRTM_Set make(Set set){
+    return new Ariadne_SRTM_Set( set );
   }
 
-  protected Ariadne_SRMT_Set(Set set){
+  protected Ariadne_SRTM_Set(Set set){
     super( new ArrayList(set) );
   }
 

@@ -1,5 +1,5 @@
 /*
-  IndexTree_SRMT_Diagonal
+  IndexTree_SRTM_Diagonal
 
   An index tree is infinite.
 
@@ -13,15 +13,15 @@
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-import com.ReasoningTechnology.Ariadne.Ariadne_SRMT;
+import com.ReasoningTechnology.Ariadne.Ariadne_SRTM;
 import com.ReasoningTechnology.Ariadne.IndexTree_Node;
 
-public class IndexTree_SRMT_Diagonal extends Ariadne_SRMT_Label {
+public class IndexTree_SRTM_Diagonal extends Ariadne_SRTM_Label {
 
   // Static
 
-  public static IndexTree_SRMT_Diagonal make(){
-    return new IndexTree_SRMT_Diagonal();
+  public static IndexTree_SRTM_Diagonal make(){
+    return new IndexTree_SRTM_Diagonal();
   }
 
   // Instance Data
@@ -29,15 +29,15 @@ public class IndexTree_SRMT_Diagonal extends Ariadne_SRMT_Label {
   private final List<Ariadne_Label> list_of__unopened_node;
   private final List<List<Ariadne_Label>> list_of__opened_incomplete_child_list;
   private final List<Ariadne_Label> read_list;
-  private final Ariadne_SRMT_Label breadth_srm;
+  private final Ariadne_SRTM_Label breadth_srm;
 
   // Constructor
 
-  protected IndexTree_SRMT_Diagonal(){
+  protected IndexTree_SRTM_Diagonal(){
     list_of__unopened_node = new ArrayList<>();
     list_of__opened_incomplete_child_list = new ArrayList<>();
     read_list = new ArrayList<>();
-    breadth_srm = Ariadne_SRMT_Label.make();
+    breadth_srm = Ariadne_SRTM_Label.make();
     enqueue_root();
   }
 
@@ -75,7 +75,7 @@ public class IndexTree_SRMT_Diagonal extends Ariadne_SRMT_Label {
       // Retrieve the node using lookup
       IndexTree_Node node = lookup( label );
 
-      // Mount a new breadth-first SRMT for children
+      // Mount a new breadth-first SRTM for children
       breadth_srm.mount( node.neighbor() );
 
       if( breadth_srm.can_read() ){

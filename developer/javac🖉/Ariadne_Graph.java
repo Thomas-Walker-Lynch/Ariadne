@@ -12,7 +12,7 @@ package com.ReasoningTechnology.Ariadne;
 
 public interface Ariadne_Graph {
 
-  Ariadne_SRMT start();
+  Ariadne_SRTM start();
 
   Ariadne_Node lookup(Ariadne_Label label);
 
