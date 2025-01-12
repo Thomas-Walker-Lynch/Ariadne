@@ -25,56 +25,60 @@ differs from depth first, which would never return to visit the child
 to the right of the leftmost child, and from breadth first, which
 would never descend to the grandchildren level of the tree.
 
+/*
 How diagonalization works:
 
   This is an infinite object, with each node having an infinite number
-  of children, and their being an infinite number of generations,
-  i.e. levels in the tree.
+  of children, and there being an infinite number of generations,
+  i.e., levels in the tree.
 
   Given a label, `inc_across` will turn it into the label for the
   right neighbor sibling, while `inc_down` will turn it into the label
   for the leftmost child.
 
   We compute each next diagonal based on the prior diagonal and a list
-  a 'child_srtm_list'.  We should not modify values in the diagonal,
-  because the calling program might still be using it.  Hence,
-  labels on the diagonal are copies before being modified.
+  called 'child_srtm_list'. We do not modify labels in the diagonal
+  directly because the calling program might still be using it. Instead,
+  labels on the diagonal are copied before being modified.
 
-  Because we want to do two independent modifications of the same base
-  label, we will need to copy it again before at least one of the
-  modifications. 
+  The diagonalization algorithm systematically alternates between
+  expanding depth (via `inc_down`) and breadth (via `inc_across`),
+  ensuring that every node in the infinite tree is eventually included
+  in a diagonal.
 
   Initially:
 
-    diagonal_0 is the root node, '[]'.
-    diagonal_1 is null.
-    child_srtm_list_0 is empty.
-    child_srtm_list_1 is null.
+    diagonal is the root node, '[]'.
+    child_srtm_list is empty.
 
-  Each time SRTM_Diagonal is stepped
+  Each time SRTM_Diagonal is stepped:
 
-    1. make an empty diagonal_1, and an empty child_srtm_list_1.
+    1. Create a new diagonal_1 and expand the child_srtm_list:
 
-    2. bind diagonl_0 to an SRTM, then for each cell:
-       2.1 read label_0.
-       2.2 copy label_0 to label_2.
-       2.3 inc_down label_1
-       2.4 copy label_1 to label_2.
-       2.5 append label_1 to diagonal_2.
-       2.6 bind a Child_SRTM to label_2. 
-       2.7 append the Child_SRTM to child_srtm_list_1
+       1.1 Bind diagonal (current diagonal) to an SRTM.
+       1.2 For each label in diagonal:
+           1.2.1 Copy the label.
+           1.2.2 Apply `inc_down` to the copy to get the leftmost child.
+           1.2.3 Append this child label to child_srtm_list as a new SRTM_Child.
 
-    3. Given child_srtm_list_0, for each child_srtm:
+    2. Populate diagonal_1 using child_srtm_list:
 
-       3.1 read label_0
-       3.3 inc_across label_0, which will modify it in place to become
-           the right neighbor sibling label.
-       3.3 append label_0 to diagonal_1
+       2.1 Bind child_srtm_list to an SRTM.
+       2.2 For each STRM in the list:
+           2.2.1 Read the label from the SRTM.
+           2.2.2 Append a copy of this label to diagonal_1.
+           2.2.3 if can_step the STRM, the step the head to the next sibling.
+                 else remove SRTM from the child_srtm_list.  (This removal
+                 will never happen on an infinite topology.)
 
-   4, Update state:
-       3.1 Join child_srtm_list_1 to the end of child_srtm_list_0.
-       3.2 Write over the diagonal_0 reference with the diagonal_1 reference.
+    3. Update the state for the next step:
 
+       3.1 Replace diagonal with diagonal_1.
+
+  This algorithm ensures that any given node in the infinite index
+  tree is eventually reached in a finite number of step. It traverses
+  the tree a diagonal manner that alternates between depth and breadth
+  expansion.
 */
 
 import java.math.BigInteger;
@@ -84,10 +88,11 @@ import java.util.List;
 import com.ReasoningTechnology.Ariadne.Ariadne_Test;
 import com.ReasoningTechnology.Ariadne.Ariadne_SRTM;
 import com.ReasoningTechnology.Ariadne.Ariadne_SRTM_Label;
+import com.ReasoningTechnology.Ariadne.Ariadne_SRTM_List;
 import com.ReasoningTechnology.Ariadne.Ariadne_Node;
 import com.ReasoningTechnology.Ariadne.Ariadne_Label;
 
-public class SRTM_Diagonal extends Ariadne_SRTM_Label{
+public class SRTM_Diagonal extends Ariadne_SRTM{
 
   // Static
   //
@@ -99,29 +104,36 @@ public class SRTM_Diagonal extends Ariadne_SRTM_Label{
   // Instance data
   //
 
-  private final List<Label> diagonal; // the read value
+  private List<Label> diagonal; // the read value
   private final List<SRTM_Child> child_srtm_list;
 
-  private final TopoIface topo_infinite = new Topo_Infinite();
+  private final TopoIface topo_infinite_right = new Topo_InfiniteRight();
 
   // Constructor(s)
   //
 
   // the diagonal will never be null nor empty
   protected SRTM_Diagonal(){
-
     diagonal = new ArrayList<>();
-    child_srtm_list_0 = new ArrayList<>();
-    child_srtm_list_1 = new ArrayList<>();
-    
-    diagonal.add(List.root());
+    diagonal.add(Label.root());
+    child_srtm_list = new ArrayList<>();
+    set_topology(topo_infinite_right);
   }
 
-  private class Topo_Infinite implements TopoIface{
+  // Implementation of instance interface
+  //
+
+  @Override
+  @SuppressWarnings("unchecked")
+  public List<Label> read() {
+    return (List<Label>)super.read(); // Cast to ensure type consistency
+  }
+
+  private class Topo_InfiniteRight implements TopoIface{
     @Override public boolean can_read(){
       return true;
     }
-    @Override public BigInteger read(){
+    @Override public List read(){
       return diagonal;
     }
     @Override public boolean can_step(){
@@ -130,65 +142,44 @@ public class SRTM_Diagonal extends Ariadne_SRTM_Label{
 
     @Override public void step(){
 
-      // Step 1: Create a new diagonal_1 and child_srtm_list_1
+      // Create a new diagonal and child_srtm_list_1
       List<Label> diagonal_1 = new ArrayList<>();
-      List<SRTM_Child> child_srtm_list_1 = new ArrayList<>();
 
-      // Step 2: Process diagonal_0 using an SRTM
-      SRTM_Label diagonal_srtm = SRTM_Label.make(diagonal);
+      // Step 2: add child list for each node on the current diagonal
+      Ariadne_SRTM_List<Label> diagonal_srtm = Ariadne_SRTM_List.make(diagonal);
       if( diagonal_srtm.can_read() ){
         do{
           // 2.1 Read label_0 from diagonal_0
-          Label label_0 = diagonal_srtm.read();
-
-          // 2.2 Copy label_0 to label_1 and inc_down it
-          Label label_1 = label_0.copy();
-          label_1.inc_down();
-
-          // 2.3 Append label_1 to diagonal_1
-          diagonal_1.add(label_1);
-
-          // 2.4 Copy label_1 to label_2 and bind it to a Child_SRTM
-          Label label_2 = label_1.copy();
-          SRTM_Child child_srtm = SRTM_Child.make(label_2);
-
-          // 2.5 Append the Child_SRTM to child_srtm_list_1
-          child_srtm_list_1.add(child_srtm);
-
+          Label label = diagonal_srtm.read().copy();
+          label.inc_down();
+          child_srtm_list.add(SRTM_Child.make(label));
           if( !diagonal_srtm.can_step() ) break;
           diagonal_srtm.step();
-        }while( true );
+        }while(true);
       }
 
-      // Step 3: Process child_srtm_list_0 using an SRTM
-      SRTM_Child child_srtm = SRTM_Child.make(child_srtm_list);
-      if( child_srtm.can_read() ){
+      // Add the current node from each child list to the new diagonal
+      Ariadne_SRTM_List<SRTM_Child> child_srtm_srtm = Ariadne_SRTM_List.make(child_srtm_list);
+      if( child_srtm_srtm.can_read() ){
         do{
-          // 3.1 Read the label from the SRTM and inc_across it in place
-          Label sibling_label = child_srtm.read().read();
-          sibling_label.inc_across();
-
-          // 3.2 Append sibling_label to diagonal_1
-          diagonal_1.add(sibling_label);
-
-          if( !child_srtm.can_step() ) break;
+          // 3.1 Read child_srtm and get its current label
+          SRTM_Child child_srtm = child_srtm_srtm.read();
+          Label label = child_srtm.read();
+          diagonal_1.add(label.copy());
           child_srtm.step();
-        }while( true );
+          if( !child_srtm_srtm.can_step() ) break;
+          child_srtm_srtm.step();
+        }while(true);
       }
 
-      // Step 4: Replace diagonal_0 with diagonal_1
+      // Update the state for the next step
       diagonal = diagonal_1;
-
-      // Step 5: Update the state for the next step
-      SRTM_Label child_srtm_1 = SRTM_Label.make(child_srtm_list_1);
-      if( child_srtm_1.can_read() ){
-        do{
-          child_srtm_list_0.add(child_srtm_1.read());
-          if( !child_srtm_1.can_step() ) break;
-          child_srtm_1.step();
-        }while( true );
-      }
-
     }
 
+    @Override public Topology topology(){
+      return Topology.INFINITE;
+    }
+
+  }
 }
+

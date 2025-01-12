@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.util.Arrays;
 
 import com.ReasoningTechnology.Ariadne.Ariadne_Label;
+import com.ReasoningTechnology.Ariadne.Ariadne_SRTM_List;
 
 
 public class Label implements Ariadne_Label{
@@ -35,12 +36,11 @@ public class Label implements Ariadne_Label{
   // Instance interface implementation
   //
 
-  @Override public boolean isEmpty(){
+  @Override public boolean is_null(){
     return value == null;
   }
-
-  @Override public String toString(){
-    return Arrays.toString(value);
+  public int length(){
+    return value.length;
   }
 
   @Override public Label copy(){
@@ -68,6 +68,27 @@ public class Label implements Ariadne_Label{
   // Good object citizenship
   //
   
+  @Override public String toString(){
+    if(is_null()) return "Label()";
+    if(length() == 0) return "Label([])";
+
+    StringBuilder formatted = new StringBuilder("Label([");
+
+    // Use precise loop with SRTM_List to iterate
+    Ariadne_SRTM_List<BigInteger> value_srtm = Ariadne_SRTM_List.make(Arrays.asList(value));
+    if(value_srtm.can_read()){
+      do{
+        formatted.append(value_srtm.read().toString());
+        if( !value_srtm.can_step() ) break;
+        value_srtm.step();
+        formatted.append(" ,");
+      }while(true);
+    }
+
+    formatted.append("])");
+    return formatted.toString();
+  }
+
   @Override public boolean equals(Object o){
     if(this == o) return true;
     if( o == null || getClass() != o.getClass() ) return false;

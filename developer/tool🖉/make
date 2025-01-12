@@ -6,7 +6,7 @@ source tool🖉/env_script
 
 echo "Compiling files..."
   set -x
-  javac -g -d scratchpad javac🖉/*.java
+  javac -Xlint:unchecked -g -d scratchpad javac🖉/*.java
   set +x
   if [ $? -ne 0 ]; then
     echo "Compilation failed."

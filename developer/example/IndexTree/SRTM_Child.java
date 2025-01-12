@@ -1,6 +1,18 @@
+/*
+SRTM_Child represents in the abstract the infinite child list of an
+IndexTree node.  Index tree node labels are paths through the tree, so
+labels can be computed.
+
+SRTM_Child is made from the leftmost child label. Then step() takes
+the current label and computes from it the right neighbor sibling
+node's label.
+
+*/
+
+
 import com.ReasoningTechnology.Ariadne.Ariadne_SRTM_Label;
 
-public class SRTM_Child extends Ariadne_SRTM_Label {
+public class SRTM_Child extends Ariadne_SRTM_Label{
 
   // Static
   //
@@ -23,16 +35,17 @@ public class SRTM_Child extends Ariadne_SRTM_Label {
     this.label = leftmost_child_label.copy();
 
     if( label == null ){
-      set_topology( topo_null );
+      set_topology(topo_null);
       return;
     }
 
-    if( label.isEmpty() ){
-      set_topology( topo_rightmost );
+    // the label for the root node is an empty array, "[]"
+    if( label.length() == 0){
+      set_topology(topo_rightmost);
       return;
     }
 
-    set_topology( topo_infinite_right );
+    set_topology(topo_infinite_right);
   }
 
   // Implementation of the instance interface

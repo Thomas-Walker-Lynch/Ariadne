@@ -15,7 +15,7 @@ cd "example/$1" || exit 1
 echo "Compiling example .java files..."
 
   set -x
-  javac -g -sourcepath . *.java
+  javac -Xlint:unchecked -g -sourcepath . *.java
   set +x
 
   if [ $? -ne 0 ]; then
