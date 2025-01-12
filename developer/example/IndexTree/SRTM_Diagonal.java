@@ -124,8 +124,27 @@ public class SRTM_Diagonal extends Ariadne_SRTM{
   //
 
   @Override
+  public String toString(){
+    StringBuilder formatted = new StringBuilder("SRTM_Diagonal(");
+    Ariadne_SRTM_List<Label> diagonal_srtm = Ariadne_SRTM_List.make(diagonal);
+
+    if( diagonal_srtm.can_read() ){
+      do{
+        formatted.append(diagonal_srtm.read().toString());
+        if( !diagonal_srtm.can_step() ) break;
+        diagonal_srtm.step();
+        formatted.append(" ,");
+      }while(true);
+    }
+
+    formatted.append(")");
+    return formatted.toString();
+  }
+
+
+  @Override
   @SuppressWarnings("unchecked")
-  public List<Label> read() {
+  public List<Label> read(){
     return (List<Label>)super.read(); // Cast to ensure type consistency
   }
 
