@@ -4,7 +4,7 @@ import com.ReasoningTechnology.Ariadne.Ariadne_SRTMI_Array;
 import java.util.Arrays;
 import java.util.List;
 
-public class Example_SRTMI_Array {
+public class SRTMI_Array_CLI {
   public static void main( String[] args ){
     // Create an Array
     List<String> label_array = Arrays.asList( "A", "B", "C", "D" );

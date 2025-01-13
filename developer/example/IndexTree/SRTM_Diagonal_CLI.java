@@ -1,6 +1,6 @@
 import java.util.List;
 
-public class Example_SRTM_Diagonal{
+public class SRTM_Diagonal_CLI{
 
   public static void main(String[] args){
     System.out.println("Starting IndexTree SRTM Example");
@@ -10,7 +10,7 @@ public class Example_SRTM_Diagonal{
     int step_count = 0;
     if( srtm.can_read() ){
       do{
-        System.out.println(step_count ": " + diagonal);
+        System.out.println(step_count + ": " + srtm.read());
         if( !srtm.can_step() ) break;
         if( step_count == 4 ) break; // Stop after 5 diagonals
         step_count++;

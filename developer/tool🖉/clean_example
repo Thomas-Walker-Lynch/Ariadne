@@ -20,7 +20,7 @@ cd "example/$1" || exit 1
 
 # remove wrappers and class files
 
-  for file in Example_*.class; do
+  for file in *_CLI.class; do
     echo "file: " $file
     wrapper_name=$(basename "$file" .class)
     rm_na "$wrapper_name"

@@ -1,0 +1,8 @@
+Reading: A
+Topology: SEGMENT
+Reading: B
+Topology: SEGMENT
+Reading: C
+Topology: SEGMENT
+Reading: D
+Topology: RIGHTMOST

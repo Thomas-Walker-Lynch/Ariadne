@@ -1,7 +1,7 @@
 import com.ReasoningTechnology.Ariadne.Ariadne_SRTM;
 import com.ReasoningTechnology.Ariadne.Ariadne_SRTM_List;
 
-public class Example_4x4{
+public class four_down_four_across_CLI{
 
   public static void main(String[] args){
 

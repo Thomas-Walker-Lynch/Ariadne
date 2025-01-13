@@ -3,7 +3,7 @@ import com.ReasoningTechnology.Ariadne.Ariadne_SRTM_List;
 
 import java.util.LinkedList;
 
-public class Example_SRTM_List {
+public class SRTM_List_CLI {
   public static void main( String[] args ){
     // Create a linked list
     LinkedList<String> label_list = new LinkedList<>();

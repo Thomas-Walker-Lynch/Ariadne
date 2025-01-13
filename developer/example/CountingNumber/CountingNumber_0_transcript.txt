@@ -1,0 +1,22 @@
+Iterating through Counting Numbers:
+Current Number: 1
+Current Number: 2
+Current Number: 3
+Current Number: 4
+Current Number: 5
+Current Number: 6
+Current Number: 7
+Current Number: 8
+Current Number: 9
+Current Number: 10
+Iterating through Counting Numbers:
+Current Number: 1
+Current Number: 2
+Current Number: 3
+Current Number: 4
+Current Number: 5
+Current Number: 6
+Current Number: 7
+Current Number: 8
+Current Number: 9
+Current Number: 10

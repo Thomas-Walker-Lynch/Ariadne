@@ -1,7 +1,7 @@
 import com.ReasoningTechnology.Ariadne.Ariadne_SRTM;
 import java.math.BigInteger;
 
-public class Example_CountingNumber_0{
+public class CountingNumber_0_CLI{
 
   protected static void print_ten(CountingNumber n){
     System.out.println("Iterating through Counting Numbers:");
