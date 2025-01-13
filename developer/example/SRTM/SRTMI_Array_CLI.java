@@ -10,7 +10,7 @@ public class SRTMI_Array_CLI {
     List<String> label_array = Arrays.asList( "A", "B", "C", "D" );
 
     // Attach SRTMI to the array
-    Ariadne_SRTMI_Array srm = Ariadne_SRTMI_Array.make( label_array );
+    Ariadne_SRTMI_Array<String> srm = Ariadne_SRTMI_Array.make( label_array );
     if( srm.can_read() ){
       do{
         System.out.println( "Reading: " + srm.read() );  

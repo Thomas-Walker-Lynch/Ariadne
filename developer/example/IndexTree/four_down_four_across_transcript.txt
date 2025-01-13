@@ -1,0 +1,8 @@
+Example_4x4
+starting at: Label([])
+Descended to: Label([0])
+Descended to: Label([0 ,0])
+Descended to: Label([0 ,0 ,0])
+Across to: Label([0 ,0 ,1])
+Across to: Label([0 ,0 ,2])
+Across to: Label([0 ,0 ,3])

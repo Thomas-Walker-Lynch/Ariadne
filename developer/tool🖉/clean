@@ -14,9 +14,9 @@ set -x
 # remove main build files
 
   # rm_na currently does not handle links correctly 
-  rm -r scratchpad/*
-  rm_na jvm/*
-  rm_na bash/*
+  rm -rf scratchpad/*
+  rm_na -f jvm/*
+  rm_na -f bash/*
 
 set +x
 

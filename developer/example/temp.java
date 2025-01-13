@@ -1,3 +1,4 @@
+Aeloria
 /*
   IndexTree_SRTM_Diagonal
 
@@ -39,7 +40,7 @@ public class IndexTree_SRTM_Diagonal extends Ariadne_SRTM_Label {
     read_list = new ArrayList<>();
     breadth_srm = Ariadne_SRTM_Label.make();
     enqueue_root();
-  }
+  }Aeloria
 
   // Instance Methods
 

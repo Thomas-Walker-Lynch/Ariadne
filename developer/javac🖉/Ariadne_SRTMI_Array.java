@@ -3,22 +3,26 @@ package com.ReasoningTechnology.Ariadne;
 import java.math.BigInteger;
 import java.util.List;
 
-public class Ariadne_SRTMI_Array extends Ariadne_SRTMI{
+public class Ariadne_SRTMI_Array<T> extends Ariadne_SRTMI{
 
   // Static methods
-  public static  Ariadne_SRTMI_Array make(List array){
-    return new Ariadne_SRTMI_Array( array );
+  //
+  
+  public static <T> Ariadne_SRTMI_Array<T> make(List<T> array){
+    return new Ariadne_SRTMI_Array<>(array);
   }
 
   // Instance data
-  private final List array;
+  //
+  
+  private final List<T> array;
 
   private final TopoIface topo_null = new TopoNull();
   private final TopoIface topo_segment = new TopoSegment();
   private final TopoIface topo_rightmost = new TopoRightmost();
 
   // Constructor
-  protected Ariadne_SRTMI_Array(List array){
+  protected Ariadne_SRTMI_Array(List<T> array){
     super();
     this.array = array;
 
@@ -37,74 +41,59 @@ public class Ariadne_SRTMI_Array extends Ariadne_SRTMI{
 
   // TopoNull
   private class TopoNull implements TopoIface{
-    @Override
-    public boolean can_read(){
+    @Override public boolean can_read(){
       return false;
     }
-    @Override
-    public Object read(){
+    @Override public Object read(){
       throw new UnsupportedOperationException( "Cannot read from NULL topo." );
     }
-    @Override
-    public boolean can_step(){
+    @Override public boolean can_step(){
       return false;
     }
-    @Override
-    public void step(){
+    @Override public void step(){
       throw new UnsupportedOperationException( "Cannot step from NULL topo." );
     }
-    @Override
-    public Topology topology(){
+    @Override public Topology topology(){
       return Topology.NULL;
     }
   }
 
   // TopoSegment
   private class TopoSegment implements TopoIface{
-    @Override
-    public boolean can_read(){
+    @Override public boolean can_read(){
       return true;
     }
-    @Override
-    public Object read(){
+    @Override public Object read(){
       return array.get( index().intValueExact() );
     }
-    @Override
-    public boolean can_step(){
+    @Override public boolean can_step(){
       return true;
     }
-    @Override
-    public void step(){
+    @Override public void step(){
       increment();
       if( index().compareTo(BigInteger.valueOf(array.size() - 1)) == 0 )
         set_topology(topo_rightmost);
     }
-    @Override
-    public Topology topology(){
+    @Override public Topology topology(){
       return Topology.SEGMENT;
     }
   }
 
   // TopoRightmost
   private class TopoRightmost implements TopoIface{
-    @Override
-    public boolean can_read(){
+    @Override public boolean can_read(){
       return true;
     }
-    @Override
-    public Object read(){
+    @Override public Object read(){
       return array.get( index().intValueExact() );
     }
-    @Override
-    public boolean can_step(){
+    @Override public boolean can_step(){
       return false;
     }
-    @Override
-    public void step(){
+    @Override public void step(){
       throw new UnsupportedOperationException( "Cannot step from RIGHTMOST topo." );
     }
-    @Override
-    public Topology topology(){
+    @Override public Topology topology(){
       return Topology.RIGHTMOST;
     }
   }
