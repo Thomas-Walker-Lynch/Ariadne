@@ -161,27 +161,23 @@ public class SRTM_Diagonal extends Ariadne_SRTM{
 
     @Override public void step(){
 
-      // Create a new diagonal and child_srtm_list_1
       List<Label> diagonal_1 = new ArrayList<>();
 
-      // Step 2: add child list for each node on the current diagonal
+      // inc_down from each node on diagonal_0 -> entry on child_strm list
       Ariadne_SRTM_List<Label> diagonal_srtm = Ariadne_SRTM_List.make(diagonal);
       if( diagonal_srtm.can_read() ){
         do{
-          // 2.1 Read label_0 from diagonal_0
-          Label label = diagonal_srtm.read().copy();
-          label.inc_down();
-          child_srtm_list.add(SRTM_Child.make(label));
+          Node node = Node.make(diagonal_srtm.read());
+          child_srtm_list.add(node.neighbor()); // graph node neighbor == tree node child
           if( !diagonal_srtm.can_step() ) break;
           diagonal_srtm.step();
         }while(true);
       }
 
-      // Add the current node from each child list to the new diagonal
+      // add to diagonal_1 from each on entry on the child_strm list
       Ariadne_SRTM_List<SRTM_Child> child_srtm_srtm = Ariadne_SRTM_List.make(child_srtm_list);
       if( child_srtm_srtm.can_read() ){
         do{
-          // 3.1 Read child_srtm and get its current label
           SRTM_Child child_srtm = child_srtm_srtm.read();
           Label label = child_srtm.read();
           diagonal_1.add(label.copy());
