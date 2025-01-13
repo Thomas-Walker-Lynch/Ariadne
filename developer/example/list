@@ -1,5 +1,0 @@
-#!/bin/env bash
-
-for file in Example_*.class; do
-  echo "file: " $file
-  done 
