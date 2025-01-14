@@ -17,8 +17,8 @@ public class SRTM_Child extends Ariadne_SRTM_Label{
   // Static
   //
 
-  public static SRTM_Child make( Label first_child_label ){
-    return new SRTM_Child( first_child_label );
+  public static SRTM_Child make( Label leftmost_child_label ){
+    return new SRTM_Child( leftmost_child_label );
   }
 
   // Instance data

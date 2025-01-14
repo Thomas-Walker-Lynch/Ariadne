@@ -6,7 +6,7 @@ can do this. This guarantee also applies to a pruned IndexTree.
 This implementation is nearly ready, to be included in the Ariadne
 library for generalized diagonal traversal. I have abstracted out all
 references to the IndexTree. It still needs to remove child lists that
-have been completely reversed from the child_strm_list.  This was not
+have been completely reversed from the child_srtm_list.  This was not
 needed for the IndexTree because it is infinite, so they will never be
 completely traversed. Also needed, is to stop when a node does not
 have a child list. Again, this is not needed here because the
@@ -117,7 +117,7 @@ public class SRTM_Diagonal extends Ariadne_SRTM{
 
         List<Label> diagonal_1 = new ArrayList<>();
 
-        // inc_down from each node on diagonal_0 -> entry on child_strm list
+        // inc_down from each node on diagonal_0 -> entry on child_srtm list
         Ariadne_SRTM_List<Label> diagonal_srtm = Ariadne_SRTM_List.make(diagonal);
         if( diagonal_srtm.can_read() ){
           do{
@@ -128,7 +128,7 @@ public class SRTM_Diagonal extends Ariadne_SRTM{
           }while(true);
         }
 
-        // add to diagonal_1 from each on entry on the child_strm list
+        // add to diagonal_1 from each on entry on the child_srtm list
         Ariadne_SRTM_List<SRTM_Child> child_srtm_srtm = Ariadne_SRTM_List.make(child_srtm_list);
         if( child_srtm_srtm.can_read() ){
           do{
