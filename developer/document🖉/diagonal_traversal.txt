@@ -67,10 +67,10 @@ How diagonalization works:
     2. Populate diagonal_1 using child_srtm_list:
 
        2.1 Bind child_srtm_list to an SRTM.
-       2.2 For each STRM in the list:
+       2.2 For each SRTM in the list:
            2.2.1 Read the label from the SRTM.
            2.2.2 Append a copy of this label to diagonal_1.
-           2.2.3 if can_step the STRM, the step the head to the next sibling.
+           2.2.3 if can_step the SRTM, the step the head to the next sibling.
                  else remove SRTM from the child_srtm_list.  (This removal
                  will never happen on an infinite topology.)
 

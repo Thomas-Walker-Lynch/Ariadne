@@ -32,83 +32,126 @@ A null valued label is flagged as an error, though we still look it up
 in the graph. It is a fatal error, `exit(1)` if `lookup` returns a
 null node.
 
+A `path` is a list of nodes (each referenced by a label).  `context_path`
+carries with it the child list for each node in the path.  The child
+list is represented as a srtm, and the head of the tape machine marks
+the child node that is no the path.
+
 */
+
+import java.util.HashMap;
 
 import com.ReasoningTechnology.Ariadne.Ariadne_SRTM;
 import com.ReasoningTechnology.Ariadne.Ariadne_Graph;
-
 
 class SRTM_Depth{
 
   // static
   //
 
-  PathStack make(Graph g){
-    return new SRTM_Depth(g);
+  SRTM_Depth make(Graph graph){
+    SRTM_Depth depth = new SRTM_Depth();
+    if(graph == null) return null;
+    depth.graph = graph;
+    depth.context_path.add( graph.start() );
+    boolean flag = complete_context_path();
+    if( flag ) return depth;
+    return null;
   }
 
   // instance data
   //
-  protected List<Ariadne_SRTM> path;
-  protected Graph graph;
+  protected Graph graph = null;
+  protected List<Ariadne_SRTM> context_path = new ArrayList<>();
+  protected Label cycle_node_label = null;
 
   // constructor
   //
-  protected SRTM_Depth(Graph g){
+  protected SRTM_Depth(){
     set_topography(topo_null);
-    if(g == null) return;
-    graph = g;
-    path.add( g.start() );
-    descend();
   }
 
   // instance interface implementation
   //
 
 
-  // A path is terminated by a leaf node or discovering a cycle.
-  protected boolean extend_path_to_termination(){
+  // A path is terminated by a leaf node or upon discovering a cycle.
+  // Return false iff can not complete the context path. This is generally a fatal error.
+  protected boolean complete_context_path(){
 
-    ArrayList<Label> = path new ArrayList<>;
-    
-
-    // Get the label for current child of the deepest in tree child_srtm
-    // The current child is the one under the read head.
-    Ariadne_SRTM<Ariadne_SRTM> child_srtm = path.get(path.size() - 1); 
-    Ariande_Label label = child_srtm.read(); 
-    if( label == null ){
-      System.out.println("SRTM_Depth::extend_to_leaf found null node");
-    }
-
-    // check if label has been visited before:
-    //
-    
-    
-    // descend from the label and put it in to 
-    Ariadne_Node node = graph.lookup(label);
-    if( node == null ){
-      System.out.println
-        (
-         "SRTM_Depth::descend error: label(\"" 
-         + label 
-         + "\") not found in graph."
-         );
+    if( context_path.isEmpty() ){
+      System.out.println("SRTM_Depth::complete_context_path empty context_path");
       return false;
     }
 
-    Ariadne_SRTM_Label = node.neighbor();
+    private final HashSet<Label> path_node_label_set = new HashSet<>();
+    boolean is_cycle_node = false;
 
-    if( !
+    // should add cycle check for anomalous case caller fed us an initial path with a cycle
+    // initialize the path_node set
+    Ariadne_SRTMI_Array<Ariadne_SRTM> context_path_srtm = Ariadne_SRTMI_Array.make(context_path);
+    Ariadne_SRTM_List<label> child_srtm = null;
+    Label path_node_label = null;
 
-    Ariadne_SRTM<Ariadne_SRTM> srtm = Ariadna_SRTM_List.make(path);
-    if( !srtm.can_read() ) return;
+    // context_path is known not to be  empty, so can_read() is true
     do{
-      child_srtm = srtm.read();
-      if( !srtm.can_step() ) break;
-      srtm.step();
+      child_srtm = context_path_srtm.read();
+      path_node_label = child_srtm.read();
+      if(path_node_label == null){
+        System.out.println("SRTM_Depth::complete_context_path null path label");
+        return false;
+      }
+      is_cycle_node = path_node_label_set.contains(path_node_label);
+      if( is_cycle_node ){
+        System.out.println
+        (
+         "SRTM_Depth::complete_context_path: cycle found in initial context_path"
+         );
+        cycle_node_label = path_node_label;
+        return false; 
+      }
+      path_node_label_set.add( path_node_label );
+      // when completing from the `start()`, this will be break out on the first try
+      if( !context_path_srtm.can_step() ) break;
+      context_path_srtm.step();
     }while(true);
 
-    visited.push(path.
+    // path descends down the left side of the unvisted portion of the tree.
+    // extend the context_path downward until leftmost is a leaf node or a cycle node
+    Ariadne_Node path_node = null;
+    boolean is_leaf_node = null;
+    do{
+      path_node = graph.lookup(path_node_label);
+      if(path_node == null){
+        System.out.println
+          (
+           "SRTM_Depth::complete_context_path node not found in graph for: label(\""
+           + path_node_label
+           + "\")"
+           );
+        return false;
+      }
+
+      // descend
+      child_srtm = path_node.neighbor();
+
+      // exit conditions
+      //
+      is_leaf_node = child_srtm == null || !child_srtm.can_read();
+      if(is_leaf_node) return true;
+      //
+      path_node_label = child_srtm.read();
+      is_cycle_node = path_node_label_set.contains(path_node_label);
+      if( is_cycle_node ){
+        // caller needs to check for cycle found before each new step
+        cycle_node_label = path_node_label;
+        return true; 
+      }
+
+      // path_node_label has now been visited
+      path_node_label_set.add(path_node_label);
+
+    }while(true);
   }
 
   // being a good object citizen
