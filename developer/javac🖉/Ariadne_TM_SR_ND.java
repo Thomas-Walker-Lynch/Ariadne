@@ -12,7 +12,7 @@ to file system objects.
 package com.ReasoningTechnology.Ariadne;
 import java.math.BigInteger;
 
-public abstract class Ariadne_TM_SR_ND extends Ariadne_TM_SR_ND{
+public class Ariadne_TM_SR_ND{
 
   // static
   //
@@ -34,7 +34,7 @@ public abstract class Ariadne_TM_SR_ND extends Ariadne_TM_SR_ND{
 
   protected TopoIface current_topology;
   public final TopoIface not_mounted = new NotMounted();
-  private BigInteger index;
+  protected BigInteger index;
 
   // constructor(s)
   //
@@ -51,22 +51,25 @@ public abstract class Ariadne_TM_SR_ND extends Ariadne_TM_SR_ND{
     return index;
   }
 
+  protected void increment(){
+    index = index.add(BigInteger.ONE);
+  }
+
+  public boolean head_on_same_cell(Ariadne_TM_SR_ND tm){
+    return this.index.equals(tm.index);
+  }
+
   public Ariadne_TM_SR_ND entangle(){
-    try{
-      Ariadne_TM_SR_ND copy = (Ariadne_TM_SR_ND) this.clone();
+    Ariadne_TM_SR_ND copy = make();
 
-      // entangled copy shares the same tape
-      copy.tape_list = this.tape_list; // Shares the same reference
-      copy.current_topology = this.current_topology; // Shares the same reference
+    // entangled copy shares the same tape
+    copy.current_topology = this.current_topology; // Shares the same reference
 
-      // nuance here, BigInteger is immutable, so any operation on the original
-      // index, and the copy index will be independent without having to do a deep copy.
-      copy.index = this.index; 
+    // Nuance here, BigInteger is immutable, so operation on the original
+    // index, and the copy index, will be independent, which is what we want.
+    copy.index = this.index; 
 
-      return copy;
-    }catch(CloneNotSupportedException e){
-      throw new AssertionError( "Clone not supported: " + e.getMessage() );
-    }
+    return copy;
   }
 
   public boolean is_mounted(){
@@ -89,6 +92,7 @@ public abstract class Ariadne_TM_SR_ND extends Ariadne_TM_SR_ND{
 
   public void step(){
     current_topology.step();
+    increment();
   }
 
   public Topology topology(){
@@ -135,37 +139,61 @@ public abstract class Ariadne_TM_SR_ND extends Ariadne_TM_SR_ND{
     if(!is_mounted()) return "TM_SR_ND(NotMounted)";
     if(!can_read()) return "TM_SR_ND(Null)";
 
-    StringBuilder sb = new StringBuilder();
-    sb.append("TM_SR_ND(").append(topology().name()).append("(");
+    StringBuilder data_channel = new StringBuilder(" ");
+    StringBuilder control_channel = new StringBuilder("|");
+    
+    data_channel.append( "TM_SR_ND(" ).append( topology().name()).append("( " );
+    control_channel.append( " ".repeat(data_channel.length()) );
 
-    try{
-      // Clone for traversal
-      Ariadne_TM_SR_ND copy = (Ariadne_TM_SR_ND) this.clone();
+    String element = null;
+    Ariadne_TM_SR_ND copy = (Ariadne_TM_SR_ND) this.entangle();
+    Object o = null;
+    do{
+      o = copy.read();
 
-      Object o = null;
-      do{
-        o = copy.read();
-        if(o == null){
-          sb.append("null");
-        }else if(!copy.can_step()){
-          sb.append("[");
-          sb.append(o.toString());
-          sb.append("]");
+      if(o == null){
+        data_channel.append( " ".repeat(3) );
+        if(head_on_same_cell(copy)){
+          control_channel.append("<->");
         }else{
-          sb.append(o.toString());
+          control_channel.append("|-|");
         }
+      }else if(o.toString().isEmpty()){
+        data_channel.append( " ".repeat(3) );
+        if(head_on_same_cell(copy)){
+          control_channel.append("<e>");
+        }else{
+          control_channel.append("|e|");
+        }
+      }else{
+        element = o.toString();
+        data_channel.append(" ").append(element).append(" ");
+        if(head_on_same_cell(copy)){
+          control_channel
+            .append("<")
+            .append("d".repeat(element.length()))
+            .append(">");
+        }else{
+          control_channel
+            .append("|")
+            .append("d".repeat(element.length()))
+            .append("|");
+        }
+      }
 
-        if(!copy.can_step()) break;
-        sb.append(" ,");
-        copy.step();
-      }while(true);
+      if(!copy.can_step()) break;
+      copy.step();
+    }while(true);
 
-    }catch(CloneNotSupportedException e){
-      throw new AssertionError("Clone not supported: " + e.getMessage());
-    }
+    data_channel.append(" )");
+    control_channel.append("  ");
 
-    sb.append("))");
-    return sb.toString();
+    return 
+      data_channel
+      .append("\n")
+      .append(control_channel)
+      .append("\n")
+      .toString();
   }
 
 }

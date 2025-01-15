@@ -70,7 +70,6 @@ public class Ariadne_TM_SR_ND_Array<T> extends Ariadne_TM_SR_ND{
       return true;
     }
     @Override public void step(){
-      increment();
       if( head_address().compareTo(BigInteger.valueOf(array.size() - 1)) == 0 )
         set_topology(topo_rightmost);
     }
