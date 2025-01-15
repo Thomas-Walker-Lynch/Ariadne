@@ -1,7 +1,7 @@
+import java.util.LinkedList;
+
 import com.ReasoningTechnology.Ariadne.Ariadne_TM_SR_ND;
 import com.ReasoningTechnology.Ariadne.Ariadne_TM_SR_ND_List;
-
-import java.util.LinkedList;
 
 public class TM_SR_ND_List_CLI {
   public static void main( String[] args ){

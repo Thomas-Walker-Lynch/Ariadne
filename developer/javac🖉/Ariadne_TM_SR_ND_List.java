@@ -27,10 +27,6 @@ public class Ariadne_TM_SR_ND_List<T> extends Ariadne_TM_SR_ND{
   private ListIterator<T> iterator;  // Iterator for traversal
   private T read_value;  // Stores the current cell value
 
-  private final TopoIface topo_null = new TopoNull();
-  private final TopoIface topo_segment = new TopoSegment();
-  private final TopoIface topo_rightmost = new TopoRightmost();
-
   // constructor(s)
   //
 
@@ -57,31 +53,60 @@ public class Ariadne_TM_SR_ND_List<T> extends Ariadne_TM_SR_ND{
   // instance interface implementation
   //
 
+  protected void entangle(Ariadne_TM_SR_ND_List<T> copy){
+    super.entangle(copy);
+    copy.read_value = this.read_value;
+    copy.iterator = this.list.listIterator(this.iterator.nextIndex());
+  }
+
+  @Override public Ariadne_TM_SR_ND_List<T> entangle(){
+    Ariadne_TM_SR_ND_List<T> copy = Ariadne_TM_SR_ND_List.make(this.list);
+
+    // Copy shared fields
+    copy.index = this.index; // Copy the step count
+    copy.read_value = this.read_value; // Synchronize the current read value
+    copy.iterator = this.list.listIterator(this.iterator.nextIndex()); // Align iterator
+
+    // Set the appropriate topology in the copy based on the current topology
+    switch (this.current_topology.topology()) {
+    case NULL:
+      copy.current_topology = copy.topo_null;
+      break;
+    case SEGMENT:
+      copy.current_topology = copy.topo_segment;
+      break;
+    case RIGHTMOST:
+      copy.current_topology = copy.topo_rightmost;
+      break;
+    default:
+      throw new IllegalStateException("Unexpected topology: " + this.current_topology.topology());
+    }
+
+    return copy;
+  }
+
+  @Override public boolean can_rewind(){
+    return true;
+  }
+
+  @Override public void rewind(){
+    super.rewind();
+    if(list == null || list.isEmpty()){
+      set_topology(topo_null);
+      return;
+    }
+    iterator = list.listIterator(); // Reset the iterator
+    read_value = iterator.next(); // Sync the read value
+    set_topology(list.size() == 1 ? topo_rightmost : topo_segment); // Adjust topology
+  }
+
   @Override 
   @SuppressWarnings("unchecked")
   public T read(){
     return (T) current_topology.read(); // Cast to ensure T is returned
   }
 
-  private class TopoNull implements TopoIface{
-    @Override public boolean can_read(){
-      return false;
-    }
-    @Override public T read(){
-      throw new UnsupportedOperationException( "Cannot read from NULL topo." );
-    }
-    @Override public boolean can_step(){
-      return false;
-    }
-    @Override public void step(){
-      throw new UnsupportedOperationException( "Cannot step over NULL topo." );
-    }
-    @Override public Topology topology(){
-      return Topology.NULL;
-    }
-  }
-
-  private class TopoSegment implements TopoIface{
+  protected final TopoIface topo_segment = new TopoIface(){
     @Override public boolean can_read(){
       return true;
     }
@@ -98,9 +123,9 @@ public class Ariadne_TM_SR_ND_List<T> extends Ariadne_TM_SR_ND{
     @Override public Topology topology(){
       return Topology.SEGMENT;
     }
-  }
+    };
 
-  private class TopoRightmost implements TopoIface{
+  protected final TopoIface topo_rightmost = new TopoIface(){
     @Override public boolean can_read(){
       return true;
     }
@@ -116,7 +141,7 @@ public class Ariadne_TM_SR_ND_List<T> extends Ariadne_TM_SR_ND{
     @Override public Topology topology(){
       return Topology.RIGHTMOST;
     }
-  }
+    };
 }
 
 

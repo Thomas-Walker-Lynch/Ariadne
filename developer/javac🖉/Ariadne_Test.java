@@ -14,6 +14,10 @@ public class Ariadne_Test {
   protected Ariadne_Test(){
   }
 
+  public boolean is_on(){
+    return test;
+  }
+
   public void switch_test(boolean enable){
     if( test && !enable ){
       print("test messages off");

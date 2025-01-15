@@ -17,10 +17,6 @@ public class Ariadne_TM_SR_ND_Array<T> extends Ariadne_TM_SR_ND{
   
   private final List<T> array;
 
-  private final TopoIface topo_null = new TopoNull();
-  private final TopoIface topo_segment = new TopoSegment();
-  private final TopoIface topo_rightmost = new TopoRightmost();
-
   // Constructor
   protected Ariadne_TM_SR_ND_Array(List<T> array){
     super();
@@ -39,27 +35,22 @@ public class Ariadne_TM_SR_ND_Array<T> extends Ariadne_TM_SR_ND{
     set_topology( topo_segment );
   }
 
-  // TopoNull
-  private class TopoNull implements TopoIface{
-    @Override public boolean can_read(){
-      return false;
-    }
-    @Override public Object read(){
-      throw new UnsupportedOperationException( "Cannot read from NULL topo." );
-    }
-    @Override public boolean can_step(){
-      return false;
-    }
-    @Override public void step(){
-      throw new UnsupportedOperationException( "Cannot step from NULL topo." );
-    }
-    @Override public Topology topology(){
-      return Topology.NULL;
-    }
+  // instance interface implementation
+
+  @Override public boolean can_rewind(){
+    return true;
   }
 
-  // TopoSegment
-  private class TopoSegment implements TopoIface{
+  @Override public void rewind() {
+    super.rewind();
+    if (array == null || array.isEmpty()) {
+      set_topology(topo_null); // Null topology for empty or null arrays
+      return;
+    }
+    set_topology(array.size() == 1 ? topo_rightmost : topo_segment); // Adjust topology
+  }
+
+  protected final TopoIface topo_segment = new TopoIface(){
     @Override public boolean can_read(){
       return true;
     }
@@ -76,10 +67,9 @@ public class Ariadne_TM_SR_ND_Array<T> extends Ariadne_TM_SR_ND{
     @Override public Topology topology(){
       return Topology.SEGMENT;
     }
-  }
+    };
 
-  // TopoRightmost
-  private class TopoRightmost implements TopoIface{
+  protected final TopoIface topo_rightmost = new TopoIface(){
     @Override public boolean can_read(){
       return true;
     }
@@ -95,5 +85,6 @@ public class Ariadne_TM_SR_ND_Array<T> extends Ariadne_TM_SR_ND{
     @Override public Topology topology(){
       return Topology.RIGHTMOST;
     }
-  }
+    };
+  
 }
