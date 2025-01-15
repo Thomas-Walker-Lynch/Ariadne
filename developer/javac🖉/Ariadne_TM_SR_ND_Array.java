@@ -3,13 +3,13 @@ package com.ReasoningTechnology.Ariadne;
 import java.math.BigInteger;
 import java.util.List;
 
-public class Ariadne_ND_SR_TM_Array<T> extends Ariadne_ND_SR_TM{
+public class Ariadne_TM_SR_ND_Array<T> extends Ariadne_TM_SR_ND{
 
   // Static methods
   //
   
-  public static <T> Ariadne_ND_SR_TM_Array<T> make(List<T> array){
-    return new Ariadne_ND_SR_TM_Array<>(array);
+  public static <T> Ariadne_TM_SR_ND_Array<T> make(List<T> array){
+    return new Ariadne_TM_SR_ND_Array<>(array);
   }
 
   // Instance data
@@ -22,7 +22,7 @@ public class Ariadne_ND_SR_TM_Array<T> extends Ariadne_ND_SR_TM{
   private final TopoIface topo_rightmost = new TopoRightmost();
 
   // Constructor
-  protected Ariadne_ND_SR_TM_Array(List<T> array){
+  protected Ariadne_TM_SR_ND_Array(List<T> array){
     super();
     this.array = array;
 

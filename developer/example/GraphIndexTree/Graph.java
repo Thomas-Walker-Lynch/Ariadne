@@ -8,9 +8,9 @@ public class Graph extends Ariadne_Graph{
   protected Graph(){
   }
 
-  @Override public ND_SR_TM_Child start(){
+  @Override public TM_SR_ND_Child start(){
     Label root_label = Label.root();
-    return ND_SR_TM_Child.make(root_label);
+    return TM_SR_ND_Child.make(root_label);
   }
 
   // no override, this graph does not lookup Ariadne_Label, only Label

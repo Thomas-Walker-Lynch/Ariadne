@@ -1,7 +1,7 @@
 /*
-  By convention an ND_SR_TM is named after the type of values found in the tape cells.
-  However, in this case the name reflects the type that that ND_SR_TM is made from.
-  The type of values found in the ND_SR_TM cells is abstracted as "T".
+  By convention an TM_SR_ND is named after the type of values found in the tape cells.
+  However, in this case the name reflects the type that that TM_SR_ND is made from.
+  The type of values found in the TM_SR_ND cells is abstracted as "T".
 
   This implementation uses Java's ListIterator, which lacks a direct
   method to read the current cell value, rather it yields the next
@@ -11,13 +11,13 @@ package com.ReasoningTechnology.Ariadne;
 import java.util.List;
 import java.util.ListIterator;
 
-public class Ariadne_ND_SR_TM_List<T> extends Ariadne_ND_SR_TM{
+public class Ariadne_TM_SR_ND_List<T> extends Ariadne_TM_SR_ND{
 
   // Static methods
   //
 
-  public static <T> Ariadne_ND_SR_TM_List<T> make(List<T> list) {
-    return new Ariadne_ND_SR_TM_List<>(list);
+  public static <T> Ariadne_TM_SR_ND_List<T> make(List<T> list) {
+    return new Ariadne_TM_SR_ND_List<>(list);
   }
 
   // instance data
@@ -34,7 +34,7 @@ public class Ariadne_ND_SR_TM_List<T> extends Ariadne_ND_SR_TM{
   // constructor(s)
   //
 
-  protected Ariadne_ND_SR_TM_List(List<T> list){
+  protected Ariadne_TM_SR_ND_List(List<T> list){
     this.list = list;
 
     if( list == null || list.isEmpty() ){

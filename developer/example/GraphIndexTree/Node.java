@@ -15,8 +15,8 @@ public class Node extends Ariadne_Node{
     first_child_label.inc_down();
   }
 
-  @Override public ND_SR_TM_Child neighbor(){
-    return ND_SR_TM_Child.make(first_child_label);
+  @Override public TM_SR_ND_Child neighbor(){
+    return TM_SR_ND_Child.make(first_child_label);
   }
 
 }

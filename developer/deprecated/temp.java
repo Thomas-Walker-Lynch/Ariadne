@@ -1,6 +1,6 @@
 Aeloria
 /*
-  IndexTree_ND_SR_TM_Diagonal
+  IndexTree_TM_SR_ND_Diagonal
 
   An index tree is infinite.
 
@@ -14,15 +14,15 @@ Aeloria
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-import com.ReasoningTechnology.Ariadne.Ariadne_ND_SR_TM;
+import com.ReasoningTechnology.Ariadne.Ariadne_TM_SR_ND;
 import com.ReasoningTechnology.Ariadne.IndexTree_Node;
 
-public class IndexTree_ND_SR_TM_Diagonal extends Ariadne_ND_SR_TM_Label {
+public class IndexTree_TM_SR_ND_Diagonal extends Ariadne_TM_SR_ND_Label {
 
   // Static
 
-  public static IndexTree_ND_SR_TM_Diagonal make(){
-    return new IndexTree_ND_SR_TM_Diagonal();
+  public static IndexTree_TM_SR_ND_Diagonal make(){
+    return new IndexTree_TM_SR_ND_Diagonal();
   }
 
   // Instance Data
@@ -30,15 +30,15 @@ public class IndexTree_ND_SR_TM_Diagonal extends Ariadne_ND_SR_TM_Label {
   private final List<Ariadne_Label> list_of__unopened_node;
   private final List<List<Ariadne_Label>> list_of__opened_incomplete_child_list;
   private final List<Ariadne_Label> read_list;
-  private final Ariadne_ND_SR_TM_Label breadth_srm;
+  private final Ariadne_TM_SR_ND_Label breadth_srm;
 
   // Constructor
 
-  protected IndexTree_ND_SR_TM_Diagonal(){
+  protected IndexTree_TM_SR_ND_Diagonal(){
     list_of__unopened_node = new ArrayList<>();
     list_of__opened_incomplete_child_list = new ArrayList<>();
     read_list = new ArrayList<>();
-    breadth_srm = Ariadne_ND_SR_TM_Label.make();
+    breadth_srm = Ariadne_TM_SR_ND_Label.make();
     enqueue_root();
   }Aeloria
 
@@ -76,7 +76,7 @@ public class IndexTree_ND_SR_TM_Diagonal extends Ariadne_ND_SR_TM_Label {
       // Retrieve the node using lookup
       IndexTree_Node node = lookup( label );
 
-      // Mount a new breadth-first ND_SR_TM for children
+      // Mount a new breadth-first TM_SR_ND for children
       breadth_srm.mount( node.neighbor() );
 
       if( breadth_srm.can_read() ){

@@ -1,10 +1,10 @@
 /*
-An ND_SR_TM with indexing == ND_SR_TM
+An TM_SR_ND with indexing == TM_SR_ND
 
 An index is indicates where the head is located on the tape.  This is done by
 tracking the cell address for the head.
 
-BigInteger is used so that it will be possible to bind ND_SR_TM machine extensions
+BigInteger is used so that it will be possible to bind TM_SR_ND machine extensions
 to file system objects.
 
 */
@@ -12,7 +12,7 @@ to file system objects.
 package com.ReasoningTechnology.Ariadne;
 import java.math.BigInteger;
 
-public abstract class Ariadne_ND_SR_TM extends Ariadne_ND_SR_TM{
+public abstract class Ariadne_TM_SR_ND extends Ariadne_TM_SR_ND{
 
   // static
   //
@@ -25,8 +25,8 @@ public abstract class Ariadne_ND_SR_TM extends Ariadne_ND_SR_TM{
     ,INFINITE
   }
 
-  public static Ariadne_ND_SR_TM make(){
-    return new Ariadne_ND_SR_TM();
+  public static Ariadne_TM_SR_ND make(){
+    return new Ariadne_TM_SR_ND();
   }
 
   // instance data
@@ -39,7 +39,7 @@ public abstract class Ariadne_ND_SR_TM extends Ariadne_ND_SR_TM{
   // constructor(s)
   //
 
-  public Ariadne_ND_SR_TM(){
+  public Ariadne_TM_SR_ND(){
     set_topology( not_mounted );
     this.index = BigInteger.ZERO;
   }
@@ -51,9 +51,9 @@ public abstract class Ariadne_ND_SR_TM extends Ariadne_ND_SR_TM{
     return index;
   }
 
-  public Ariadne_ND_SR_TM entangle(){
+  public Ariadne_TM_SR_ND entangle(){
     try{
-      Ariadne_ND_SR_TM copy = (Ariadne_ND_SR_TM) this.clone();
+      Ariadne_TM_SR_ND copy = (Ariadne_TM_SR_ND) this.clone();
 
       // entangled copy shares the same tape
       copy.tape_list = this.tape_list; // Shares the same reference
@@ -114,16 +114,16 @@ public abstract class Ariadne_ND_SR_TM extends Ariadne_ND_SR_TM{
       return false;
     }
     @Override public Object read(){
-      throw new UnsupportedOperationException("Ariadne_ND_SR_TM::NotMounted::read.");
+      throw new UnsupportedOperationException("Ariadne_TM_SR_ND::NotMounted::read.");
     }
     @Override public boolean can_step(){
       return false;
     }
     @Override public void step(){
-      throw new UnsupportedOperationException("Ariadne_ND_SR_TM::NotMounted::step.");
+      throw new UnsupportedOperationException("Ariadne_TM_SR_ND::NotMounted::step.");
     }
     @Override public Topology topology(){
-      throw new UnsupportedOperationException("Ariadne_ND_SR_TM::NotMounted::topology.");
+      throw new UnsupportedOperationException("Ariadne_TM_SR_ND::NotMounted::topology.");
     }
   }
 
@@ -132,15 +132,15 @@ public abstract class Ariadne_ND_SR_TM extends Ariadne_ND_SR_TM{
   //
 
   @Override public String toString(){
-    if(!is_mounted()) return "ND_SR_TM(NotMounted)";
-    if(!can_read()) return "ND_SR_TM(Null)";
+    if(!is_mounted()) return "TM_SR_ND(NotMounted)";
+    if(!can_read()) return "TM_SR_ND(Null)";
 
     StringBuilder sb = new StringBuilder();
-    sb.append("ND_SR_TM(").append(topology().name()).append("(");
+    sb.append("TM_SR_ND(").append(topology().name()).append("(");
 
     try{
       // Clone for traversal
-      Ariadne_ND_SR_TM copy = (Ariadne_ND_SR_TM) this.clone();
+      Ariadne_TM_SR_ND copy = (Ariadne_TM_SR_ND) this.clone();
 
       Object o = null;
       do{

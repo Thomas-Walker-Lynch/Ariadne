@@ -1,7 +1,7 @@
 /*
   Step Right Tape Machine
 
-  Depending how the undefined methods here are defined, the ND_SR_TM can
+  Depending how the undefined methods here are defined, the TM_SR_ND can
   equally be a finite iterator, a generator, or an infinite stream.
 
   This is for single-threaded execution. The multi-threaded model
@@ -9,7 +9,7 @@
 */
 package com.ReasoningTechnology.Ariadne;
 
-public class Ariadne_ND_SR_TM{
+public class Ariadne_TM_SR_ND{
 
   // static
   //
@@ -22,8 +22,8 @@ public class Ariadne_ND_SR_TM{
     ,INFINITE
   }
 
-  public static Ariadne_ND_SR_TM make(){
-    return new Ariadne_ND_SR_TM();
+  public static Ariadne_TM_SR_ND make(){
+    return new Ariadne_TM_SR_ND();
   }
 
   // instance data
@@ -35,7 +35,7 @@ public class Ariadne_ND_SR_TM{
   // constructor(s)
   //
 
-  protected Ariadne_ND_SR_TM(){
+  protected Ariadne_TM_SR_ND(){
     set_topology( not_mounted );
   }
 
@@ -87,16 +87,16 @@ public class Ariadne_ND_SR_TM{
       return false;
     }
     @Override public Object read(){
-      throw new UnsupportedOperationException("Ariadne_ND_SR_TM::NotMounted::read.");
+      throw new UnsupportedOperationException("Ariadne_TM_SR_ND::NotMounted::read.");
     }
     @Override public boolean can_step(){
       return false;
     }
     @Override public void step(){
-      throw new UnsupportedOperationException("Ariadne_ND_SR_TM::NotMounted::step.");
+      throw new UnsupportedOperationException("Ariadne_TM_SR_ND::NotMounted::step.");
     }
     @Override public Topology topology(){
-      throw new UnsupportedOperationException("Ariadne_ND_SR_TM::NotMounted::topology.");
+      throw new UnsupportedOperationException("Ariadne_TM_SR_ND::NotMounted::topology.");
     }
   }
 

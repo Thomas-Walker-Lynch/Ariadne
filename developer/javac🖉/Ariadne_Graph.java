@@ -18,7 +18,7 @@ public class Ariadne_Graph{
   protected Ariadne_Graph(){
   }
 
-  public Ariadne_ND_SR_TM start(){
+  public Ariadne_TM_SR_ND start(){
     throw new UnsupportedOperationException("Ariadne_Graph::start.");
   }
 

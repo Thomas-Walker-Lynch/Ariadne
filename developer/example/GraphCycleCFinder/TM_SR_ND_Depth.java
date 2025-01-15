@@ -1,5 +1,5 @@
 /*
-ND_SR_TM_Depth is a list of neighbor ND_SR_TMs going down the leftmost side of
+TM_SR_ND_Depth is a list of neighbor TM_SR_NDs going down the leftmost side of
 a graph traversal. A leftmost traversal is one characterized by
 following leftmost not yet visited node on the most recently visited
 node's neighbor list.
@@ -7,20 +7,20 @@ node's neighbor list.
 Depth traversal from a start node, ends when reaching a node that has
 no neighbors, or when reaching encountering a cycle.
 
-The `Node::neighbor()` function returns an ND_SR_TM for iterating over the
-node's neighbors. An ND_SR_TM is returned rather than a list, because in
+The `Node::neighbor()` function returns an TM_SR_ND for iterating over the
+node's neighbors. An TM_SR_ND is returned rather than a list, because in
 general a neighbor list is allowed to be unbounded.  Though with a
 finite graph, that can not happen. (See IndexTree for an example of an
 infinite depth and infinite breadth graph traveral.)
 
 It is possible to construct and infinite graph such that the
-`ND_SR_TM_Depth::make()` function would never return. 
+`TM_SR_ND_Depth::make()` function would never return. 
 
 For a finite graph, this depth traversal will provably terminate, due
 to running out unique (non cycle) nodes to visit.  More generally, if
 graph traversal from a start node is guaranteed to reach a leaf node
 (has no neighbors), or a a cycle, within a finite number of node
-traversal steps, then `ND_SR_TM_Depth::make()` will always return.
+traversal steps, then `TM_SR_ND_Depth::make()` will always return.
 
 Each call to step causes the TM read head to move to the next lowest
 depth, leftmost unvisited node. This might require backtracking and
@@ -41,15 +41,15 @@ the child node that is no the path.
 
 import java.util.HashMap;
 
-import com.ReasoningTechnology.Ariadne.Ariadne_ND_SR_TM;
+import com.ReasoningTechnology.Ariadne.Ariadne_TM_SR_ND;
 import com.ReasoningTechnology.Ariadne.Ariadne_Graph;
 
-class ND_SR_TM_Depth{
+class TM_SR_ND_Depth{
 
   // static
   //
-  ND_SR_TM_Depth make(Graph graph){
-    ND_SR_TM_Depth depth = new ND_SR_TM_Depth();
+  TM_SR_ND_Depth make(Graph graph){
+    TM_SR_ND_Depth depth = new TM_SR_ND_Depth();
     if(graph == null) return null;
     depth.graph = graph;
     depth.context_path.add( graph.start() );
@@ -61,12 +61,12 @@ class ND_SR_TM_Depth{
   // instance data
   //
   protected Graph graph = null;
-  protected List<Ariadne_ND_SR_TM> context_path = new ArrayList<>();
+  protected List<Ariadne_TM_SR_ND> context_path = new ArrayList<>();
   protected Label cycle_node_label = null;
 
   // constructor
   //
-  protected ND_SR_TM_Depth(){
+  protected TM_SR_ND_Depth(){
     set_topography(topo_null);
   }
 
@@ -78,7 +78,7 @@ class ND_SR_TM_Depth{
   protected boolean complete_context_path(){
 
     if( context_path.isEmpty() ){
-      System.out.println("ND_SR_TM_Depth::complete_context_path empty context_path");
+      System.out.println("TM_SR_ND_Depth::complete_context_path empty context_path");
       return false;
     }
 
@@ -87,8 +87,8 @@ class ND_SR_TM_Depth{
 
     // should add cycle check for anomalous case caller fed us an initial path with a cycle
     // initialize the path_node set
-    Ariadne_ND_SR_TM_Array<Ariadne_ND_SR_TM> context_path_srtm = Ariadne_ND_SR_TM_Array.make(context_path);
-    Ariadne_ND_SR_TM_List<label> child_srtm = null;
+    Ariadne_TM_SR_ND_Array<Ariadne_TM_SR_ND> context_path_srtm = Ariadne_TM_SR_ND_Array.make(context_path);
+    Ariadne_TM_SR_ND_List<label> child_srtm = null;
     Label path_node_label = null;
 
     // context_path is known not to be  empty, so can_read() is true
@@ -96,14 +96,14 @@ class ND_SR_TM_Depth{
       child_srtm = context_path_srtm.read();
       path_node_label = child_srtm.read();
       if(path_node_label == null){
-        System.out.println("ND_SR_TM_Depth::complete_context_path null path label");
+        System.out.println("TM_SR_ND_Depth::complete_context_path null path label");
         return false;
       }
       is_cycle_node = path_node_label_set.contains(path_node_label);
       if( is_cycle_node ){
         System.out.println
         (
-         "ND_SR_TM_Depth::complete_context_path: cycle found in initial context_path"
+         "TM_SR_ND_Depth::complete_context_path: cycle found in initial context_path"
          );
         cycle_node_label = path_node_label;
         return false; 
@@ -123,7 +123,7 @@ class ND_SR_TM_Depth{
       if(path_node == null){
         System.out.println
           (
-           "ND_SR_TM_Depth::complete_context_path node not found in graph for: label(\""
+           "TM_SR_ND_Depth::complete_context_path node not found in graph for: label(\""
            + path_node_label
            + "\")"
            );

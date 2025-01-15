@@ -5,10 +5,10 @@ Graph nodes are referenced by their labels.
 
 package com.ReasoningTechnology.Ariadne;
 
-public class Ariadne_ND_SR_TM_Label extends Ariadne_ND_SR_TM {
+public class Ariadne_TM_SR_ND_Label extends Ariadne_TM_SR_ND {
 
-  public static Ariadne_ND_SR_TM_Label make(){
-    return new Ariadne_ND_SR_TM_Label();
+  public static Ariadne_TM_SR_ND_Label make(){
+    return new Ariadne_TM_SR_ND_Label();
   }
 
   @Override public Ariadne_Label read(){
