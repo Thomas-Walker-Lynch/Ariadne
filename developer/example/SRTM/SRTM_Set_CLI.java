@@ -1,9 +1,9 @@
-import com.ReasoningTechnology.Ariadne.Ariadne_SRTM_Set;
+import com.ReasoningTechnology.Ariadne.Ariadne_ND_SR_TM_Set;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class SRTM_Set_CLI {
+public class ND_SR_TM_Set_CLI {
   public static void main( String[] args ){
     // Create a Set
     Set<String> label_set = new HashSet<>();
@@ -11,8 +11,8 @@ public class SRTM_Set_CLI {
     label_set.add("B");
     label_set.add("C");
 
-    // Attach SRTM to the set and traverse
-    Ariadne_SRTM_Set<String> srm = Ariadne_SRTM_Set.make(label_set);
+    // Attach ND_SR_TM to the set and traverse
+    Ariadne_ND_SR_TM_Set<String> srm = Ariadne_ND_SR_TM_Set.make(label_set);
     if( srm.can_read() ){
       do{
         System.out.println( "Reading: " + srm.read() );

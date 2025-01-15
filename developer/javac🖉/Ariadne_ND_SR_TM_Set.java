@@ -3,11 +3,11 @@ package com.ReasoningTechnology.Ariadne;
 import java.util.Iterator;
 import java.util.Set;
 
-public class Ariadne_SRTM_Set<T> extends Ariadne_SRTM{
+public class Ariadne_ND_SR_TM_Set<T> extends Ariadne_ND_SR_TM{
 
   // Static factory method
-  public static <T> Ariadne_SRTM_Set<T> make(Set<T> set){
-    return new Ariadne_SRTM_Set<>(set);
+  public static <T> Ariadne_ND_SR_TM_Set<T> make(Set<T> set){
+    return new Ariadne_ND_SR_TM_Set<>(set);
   }
 
   // Instance data
@@ -20,7 +20,7 @@ public class Ariadne_SRTM_Set<T> extends Ariadne_SRTM{
   private final TopoIface topo_rightmost = new TopoRightmost();
 
   // Constructor
-  protected Ariadne_SRTM_Set(Set<T> set){
+  protected Ariadne_ND_SR_TM_Set(Set<T> set){
     this.set = set;
 
     if( set == null || set.isEmpty() ){

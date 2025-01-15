@@ -5,7 +5,7 @@ import java.math.BigInteger;
 import java.util.Arrays;
 
 import com.ReasoningTechnology.Ariadne.Ariadne_Label;
-import com.ReasoningTechnology.Ariadne.Ariadne_SRTM_List;
+import com.ReasoningTechnology.Ariadne.Ariadne_ND_SR_TM_List;
 
 
 public class Label implements Ariadne_Label{
@@ -74,8 +74,8 @@ public class Label implements Ariadne_Label{
 
     StringBuilder formatted = new StringBuilder("Label([");
 
-    // Use precise loop with SRTM_List to iterate
-    Ariadne_SRTM_List<BigInteger> value_srtm = Ariadne_SRTM_List.make(Arrays.asList(value));
+    // Use precise loop with ND_SR_TM_List to iterate
+    Ariadne_ND_SR_TM_List<BigInteger> value_srtm = Ariadne_ND_SR_TM_List.make(Arrays.asList(value));
     if(value_srtm.can_read()){
       do{
         formatted.append(value_srtm.read().toString());

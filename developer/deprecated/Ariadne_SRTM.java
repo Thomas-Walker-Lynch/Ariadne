@@ -1,7 +1,7 @@
 /*
   Step Right Tape Machine
 
-  Depending how the undefined methods here are defined, the SRTM can
+  Depending how the undefined methods here are defined, the ND_SR_TM can
   equally be a finite iterator, a generator, or an infinite stream.
 
   This is for single-threaded execution. The multi-threaded model
@@ -9,7 +9,7 @@
 */
 package com.ReasoningTechnology.Ariadne;
 
-public class Ariadne_SRTM{
+public class Ariadne_ND_SR_TM{
 
   // static
   //
@@ -22,8 +22,8 @@ public class Ariadne_SRTM{
     ,INFINITE
   }
 
-  public static Ariadne_SRTM make(){
-    return new Ariadne_SRTM();
+  public static Ariadne_ND_SR_TM make(){
+    return new Ariadne_ND_SR_TM();
   }
 
   // instance data
@@ -35,48 +35,17 @@ public class Ariadne_SRTM{
   // constructor(s)
   //
 
-  protected Ariadne_SRTM(){
+  protected Ariadne_ND_SR_TM(){
     set_topology( not_mounted );
   }
+
+  // Implementation of instance interface.
+  //
 
   public boolean is_mounted(){
     return 
       current_topology != null 
       && current_topology != not_mounted;
-  }
-
-  // Implementation of instance interface.
-
-  protected interface TopoIface{
-    boolean can_read();
-    Object read();
-    boolean can_step();
-    void step();
-    Topology topology();
-  }
-
-  // Initially, the tape has not been mounted.
-  protected class NotMounted implements TopoIface{
-    @Override public boolean can_read(){
-      return false;
-    }
-    @Override public Object read(){
-      throw new UnsupportedOperationException("Ariadne_SRTM::NotMounted::read.");
-    }
-    @Override public boolean can_step(){
-      return false;
-    }
-    @Override public void step(){
-      throw new UnsupportedOperationException("Ariadne_SRTM::NotMounted::step.");
-    }
-    @Override public Topology topology(){
-      throw new UnsupportedOperationException("Ariadne_SRTM::NotMounted::topology.");
-    }
-  }
-
-  // Sets the tape access methods to be used.
-  protected void set_topology(TopoIface new_topology){
-    current_topology = new_topology;
   }
 
   public boolean can_read(){
@@ -98,6 +67,43 @@ public class Ariadne_SRTM{
   public Topology topology(){
     return current_topology.topology();
   }
+
+  // Sets the tape access methods to be used.
+  protected void set_topology(TopoIface new_topology){
+    current_topology = new_topology;
+  }
+
+  protected interface TopoIface{
+    boolean can_read();
+    Object read();
+    boolean can_step();
+    void step();
+    Topology topology();
+  }
+
+  // Initially, the tape has not been mounted.
+  protected class NotMounted implements TopoIface{
+    @Override public boolean can_read(){
+      return false;
+    }
+    @Override public Object read(){
+      throw new UnsupportedOperationException("Ariadne_ND_SR_TM::NotMounted::read.");
+    }
+    @Override public boolean can_step(){
+      return false;
+    }
+    @Override public void step(){
+      throw new UnsupportedOperationException("Ariadne_ND_SR_TM::NotMounted::step.");
+    }
+    @Override public Topology topology(){
+      throw new UnsupportedOperationException("Ariadne_ND_SR_TM::NotMounted::topology.");
+    }
+  }
+
+
+  // good citizen
+  //
+
 
 }
 

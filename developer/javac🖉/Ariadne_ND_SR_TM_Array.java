@@ -3,13 +3,13 @@ package com.ReasoningTechnology.Ariadne;
 import java.math.BigInteger;
 import java.util.List;
 
-public class Ariadne_SRTMI_Array<T> extends Ariadne_SRTMI{
+public class Ariadne_ND_SR_TM_Array<T> extends Ariadne_ND_SR_TM{
 
   // Static methods
   //
   
-  public static <T> Ariadne_SRTMI_Array<T> make(List<T> array){
-    return new Ariadne_SRTMI_Array<>(array);
+  public static <T> Ariadne_ND_SR_TM_Array<T> make(List<T> array){
+    return new Ariadne_ND_SR_TM_Array<>(array);
   }
 
   // Instance data
@@ -22,7 +22,7 @@ public class Ariadne_SRTMI_Array<T> extends Ariadne_SRTMI{
   private final TopoIface topo_rightmost = new TopoRightmost();
 
   // Constructor
-  protected Ariadne_SRTMI_Array(List<T> array){
+  protected Ariadne_ND_SR_TM_Array(List<T> array){
     super();
     this.array = array;
 
@@ -64,14 +64,14 @@ public class Ariadne_SRTMI_Array<T> extends Ariadne_SRTMI{
       return true;
     }
     @Override public Object read(){
-      return array.get( index().intValueExact() );
+      return array.get( head_address().intValueExact() );
     }
     @Override public boolean can_step(){
       return true;
     }
     @Override public void step(){
       increment();
-      if( index().compareTo(BigInteger.valueOf(array.size() - 1)) == 0 )
+      if( head_address().compareTo(BigInteger.valueOf(array.size() - 1)) == 0 )
         set_topology(topo_rightmost);
     }
     @Override public Topology topology(){
@@ -85,7 +85,7 @@ public class Ariadne_SRTMI_Array<T> extends Ariadne_SRTMI{
       return true;
     }
     @Override public Object read(){
-      return array.get( index().intValueExact() );
+      return array.get( head_address().intValueExact() );
     }
     @Override public boolean can_step(){
       return false;

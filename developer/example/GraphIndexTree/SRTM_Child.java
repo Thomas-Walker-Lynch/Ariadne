@@ -1,24 +1,24 @@
 /*
-SRTM_Child represents in the abstract the infinite child list of an
+ND_SR_TM_Child represents in the abstract the infinite child list of an
 IndexTree node.  Index tree node labels are paths through the tree, so
 labels can be computed.
 
-SRTM_Child is made from the leftmost child label. Then step() takes
+ND_SR_TM_Child is made from the leftmost child label. Then step() takes
 the current label and computes from it the right neighbor sibling
 node's label.
 
 */
 
 
-import com.ReasoningTechnology.Ariadne.Ariadne_SRTM_Label;
+import com.ReasoningTechnology.Ariadne.Ariadne_ND_SR_TM_Label;
 
-public class SRTM_Child extends Ariadne_SRTM_Label{
+public class ND_SR_TM_Child extends Ariadne_ND_SR_TM_Label{
 
   // Static
   //
 
-  public static SRTM_Child make( Label leftmost_child_label ){
-    return new SRTM_Child( leftmost_child_label );
+  public static ND_SR_TM_Child make( Label leftmost_child_label ){
+    return new ND_SR_TM_Child( leftmost_child_label );
   }
 
   // Instance data
@@ -31,7 +31,7 @@ public class SRTM_Child extends Ariadne_SRTM_Label{
   // Constructor(s)
   //
 
-  protected SRTM_Child( Label leftmost_child_label ){
+  protected ND_SR_TM_Child( Label leftmost_child_label ){
     this.label = leftmost_child_label.copy();
 
     if( label == null ){
