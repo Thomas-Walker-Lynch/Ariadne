@@ -39,16 +39,22 @@ the child node that is no the path.
 
 */
 
-import java.util.HashMap;
+import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.ReasoningTechnology.Ariadne.Ariadne_TM_SR_ND;
 import com.ReasoningTechnology.Ariadne.Ariadne_Graph;
+import com.ReasoningTechnology.Ariadne.Ariadne_Node;
+import com.ReasoningTechnology.Ariadne.Ariadne_Label;
+import com.ReasoningTechnology.Ariadne.Ariadne_TM_SR_ND_Array;
+import com.ReasoningTechnology.Ariadne.Ariadne_TM_SR_ND_List;
 
-class TM_SR_ND_Depth{
+class TM_SR_ND_Depth extends Ariadne_TM_SR_ND{
 
   // static
   //
-  TM_SR_ND_Depth make(Graph graph){
+  TM_SR_ND_Depth make(Ariadne_Graph graph){
     TM_SR_ND_Depth depth = new TM_SR_ND_Depth();
     if(graph == null) return null;
     depth.graph = graph;
@@ -60,14 +66,14 @@ class TM_SR_ND_Depth{
 
   // instance data
   //
-  protected Graph graph = null;
+  protected Ariadne_Graph graph = null;
   protected List<Ariadne_TM_SR_ND> context_path = new ArrayList<>();
-  protected Label cycle_node_label = null;
+  protected Ariadne_Label cycle_node_label = null;
 
   // constructor
   //
   protected TM_SR_ND_Depth(){
-    set_topography(topo_null);
+    set_topology(topo_null);
   }
 
   // instance interface implementation
@@ -82,14 +88,14 @@ class TM_SR_ND_Depth{
       return false;
     }
 
-    private final HashSet<Label> path_node_label_set = new HashSet<>();
+    HashSet<Ariadne_Label> path_node_label_set = new HashSet<>();
     boolean is_cycle_node = false;
 
     // should add cycle check for anomalous case caller fed us an initial path with a cycle
     // initialize the path_node set
     Ariadne_TM_SR_ND_Array<Ariadne_TM_SR_ND> context_path_srtm = Ariadne_TM_SR_ND_Array.make(context_path);
-    Ariadne_TM_SR_ND_List<label> child_srtm = null;
-    Label path_node_label = null;
+    Ariadne_TM_SR_ND child_srtm = null;
+    Ariadne_Label path_node_label = null;
 
     // context_path is known not to be  empty, so can_read() is true
     do{
@@ -117,7 +123,7 @@ class TM_SR_ND_Depth{
     // path descends down the left side of the unvisted portion of the tree.
     // extend the context_path downward until leftmost is a leaf node or a cycle node
     Ariadne_Node path_node = null;
-    boolean is_leaf_node = null;
+    boolean is_leaf_node = false;
     do{
       path_node = graph.lookup(path_node_label);
       if(path_node == null){

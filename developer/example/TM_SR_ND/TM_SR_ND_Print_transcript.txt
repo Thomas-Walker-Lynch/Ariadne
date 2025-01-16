@@ -1,2 +1,15 @@
-TM_SR_ND(SEGMENT(  42        World  1000  )
-                  |dd||-|<e>|ddddd||dddd|  
+
+TM_SR_ND(SEGMENT( 42        World  1000  )
+                 <dd>|-||e||ddddd||dddd|  
+
+TM_SR_ND(SEGMENT( 42        World  1000  )
+                 |dd|<->|e||ddddd||dddd|  
+
+TM_SR_ND(SEGMENT( 42        World  1000  )
+                 |dd||-|<e>|ddddd||dddd|  
+
+TM_SR_ND(SEGMENT( 42        World  1000  )
+                 |dd||-||e|<ddddd>|dddd|  
+
+TM_SR_ND(RIGHTMOST( 42        World  1000  )
+                   |dd||-||e||ddddd|<dddd>  

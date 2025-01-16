@@ -2,9 +2,50 @@
 
 2024-12-31T01:47:53Z
 
-The pencil on file names has been working well .. until yesterday.  The jvm doesn't like the `example🖉` directory and refuses to run code in it, so I had to change it to `example`.
+  The pencil on file names has been working well .. until yesterday.  The jvm doesn't like the `example🖉` directory and refuses to run code in it, so I had to change it to `example`.
 
-  2024-12-31T01:47:53Z
+    2024-12-31T01:47:53Z
 
-  The example directory turns out to be mixed content anyway.
+    The example directory turns out to be mixed content anyway.
 
+2025-01-16T07:46:45Z[]
+
+  Interesting Java 23 bug-feature. For purposes of backwards compatibility they have added
+  'type erasure' where generics are dropped and replaced with 'Object'.  This then causes
+  type mismatch warnings in places there are no type mismatches in the code.  An example
+  line of code that causes this is:
+
+  ```
+    protected final TopoIface topo_null = new TopoIface(){
+      ...
+      };
+
+  ```
+  Though perfectly legal, and it compiles, class extensions give type mismatch warnings.  This is then replaced with:
+
+  ```
+    protected class NullTopo<RT> implements TopoIface<RT>{
+       ...
+    }
+    protected final TopoIface<RT> topo_null = new NullTopo<>();
+  ```
+
+  And the type mismatch warnings go away.
+
+
+2025-01-16T10:09:24Z[]
+
+  Nuance:
+
+    `Label` is child type of `Ariadne_Label`.
+
+    However the compiler does not consider:
+
+      `Ariadne_TM_SR_ND<Label>`
+
+    To be a type of 
+
+      `Ariadne_TM_SR_ND<Ariadne_Label>`
+
+    This is awkward because `Graph::start` returns a TM of labels,
+    where the labels are derived from `Ariadne_Label`

@@ -1,7 +1,7 @@
 import java.util.Arrays;
 import com.ReasoningTechnology.Ariadne.Ariadne_Node;
 
-public class Node extends Ariadne_Node{
+public class Node extends Ariadne_Node<Label>{
 
   public static Node make(Label label){
     return new Node(label);

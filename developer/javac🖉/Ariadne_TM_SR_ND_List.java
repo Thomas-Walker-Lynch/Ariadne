@@ -11,7 +11,7 @@ package com.ReasoningTechnology.Ariadne;
 import java.util.List;
 import java.util.ListIterator;
 
-public class Ariadne_TM_SR_ND_List<T> extends Ariadne_TM_SR_ND{
+public class Ariadne_TM_SR_ND_List<RT> extends Ariadne_TM_SR_ND<RT>{
 
   // Static methods
   //
@@ -23,14 +23,14 @@ public class Ariadne_TM_SR_ND_List<T> extends Ariadne_TM_SR_ND{
   // instance data
   //
 
-  private List<T> list;  // The attached linked list
-  private ListIterator<T> iterator;  // Iterator for traversal
-  private T read_value;  // Stores the current cell value
+  private List<RT> list;  // The attached linked list
+  private ListIterator<RT> iterator;  // Iterator for traversal
+  private RT read_value;  // Stores the current cell value
 
   // constructor(s)
   //
 
-  protected Ariadne_TM_SR_ND_List(List<T> list){
+  protected Ariadne_TM_SR_ND_List(List<RT> list){
     this.list = list;
 
     if( list == null || list.isEmpty() ){
@@ -53,19 +53,17 @@ public class Ariadne_TM_SR_ND_List<T> extends Ariadne_TM_SR_ND{
   // instance interface implementation
   //
 
-  protected void entangle(Ariadne_TM_SR_ND_List<T> copy){
+  // Children of this can call entangle(copy) to perform the parent part of the entanglement.
+  // This calls super to perform its parent portion of the entanglement.
+  protected void entangle(Ariadne_TM_SR_ND_List<RT> copy){
     super.entangle(copy);
     copy.read_value = this.read_value;
     copy.iterator = this.list.listIterator(this.iterator.nextIndex());
   }
 
-  @Override public Ariadne_TM_SR_ND_List<T> entangle(){
-    Ariadne_TM_SR_ND_List<T> copy = Ariadne_TM_SR_ND_List.make(this.list);
-
-    // Copy shared fields
-    copy.index = this.index; // Copy the step count
-    copy.read_value = this.read_value; // Synchronize the current read value
-    copy.iterator = this.list.listIterator(this.iterator.nextIndex()); // Align iterator
+  @Override public Ariadne_TM_SR_ND_List<RT> entangle(){
+    Ariadne_TM_SR_ND_List<RT> copy = Ariadne_TM_SR_ND_List.make(this.list);
+    entangle(copy);
 
     // Set the appropriate topology in the copy based on the current topology
     switch (this.current_topology.topology()) {
@@ -100,48 +98,29 @@ public class Ariadne_TM_SR_ND_List<T> extends Ariadne_TM_SR_ND{
     set_topology(list.size() == 1 ? topo_rightmost : topo_segment); // Adjust topology
   }
 
-  @Override 
-  @SuppressWarnings("unchecked")
-  public T read(){
-    return (T) current_topology.read(); // Cast to ensure T is returned
-  }
-
-  protected final TopoIface topo_segment = new TopoIface(){
-    @Override public boolean can_read(){
-      return true;
-    }
-    @Override public T read(){
-      return (T)read_value;
-    }
-    @Override public boolean can_step(){
-      return true;
-    }
+  protected class SegmentTopo implements TopoIface<RT>{
+    @Override public boolean can_read(){ return true; }
+    @Override public RT read(){ return (RT) read_value; }
+    @Override public boolean can_step(){ return true; }
     @Override public void step(){
       read_value = iterator.next();
       if( !iterator.hasNext() ) set_topology(topo_rightmost);
     }
-    @Override public Topology topology(){
-      return Topology.SEGMENT;
-    }
-    };
+    @Override public Topology topology(){ return Topology.SEGMENT; }
+  }
+  protected final TopoIface<RT> topo_segment = new SegmentTopo();
 
-  protected final TopoIface topo_rightmost = new TopoIface(){
-    @Override public boolean can_read(){
-      return true;
-    }
-    @Override public T read(){
-      return read_value;
-    }
-    @Override public boolean can_step(){
-      return false;
-    }
+  protected class RightmostTopo implements TopoIface<RT>{
+    @Override public boolean can_read(){ return true; }
+    @Override public RT read(){ return read_value; }
+    @Override public boolean can_step(){ return false; }
     @Override public void step(){
-      throw new UnsupportedOperationException( "Cannot step from RIGHTMOST topo." );
+      throw new UnsupportedOperationException("Cannot step from RIGHTMOST topo.");
     }
-    @Override public Topology topology(){
-      return Topology.RIGHTMOST;
-    }
-    };
+    @Override public Topology topology(){ return Topology.RIGHTMOST; }
+  }
+  protected final TopoIface<RT> topo_rightmost = new RightmostTopo();
+
 }
 
 

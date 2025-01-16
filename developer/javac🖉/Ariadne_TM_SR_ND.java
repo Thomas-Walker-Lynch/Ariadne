@@ -12,7 +12,8 @@ to file system objects.
 package com.ReasoningTechnology.Ariadne;
 import java.math.BigInteger;
 
-public class Ariadne_TM_SR_ND{
+// RT == read type
+public class Ariadne_TM_SR_ND<RT>{
 
   // static
   //
@@ -36,7 +37,7 @@ public class Ariadne_TM_SR_ND{
 
   private int id;
   Ariadne_Test test = null;
-  protected TopoIface current_topology;
+  protected TopoIface<RT> current_topology;
   protected BigInteger index;
 
   // constructor(s)
@@ -65,7 +66,7 @@ public class Ariadne_TM_SR_ND{
     index = index.add(BigInteger.ONE);
   }
 
-  public boolean head_on_same_cell(Ariadne_TM_SR_ND tm){
+  public boolean head_on_same_cell(Ariadne_TM_SR_ND<RT> tm){
     boolean p = this.index.equals(tm.index);
     if( test.is_on() ){
       test.print("head_on_same_cell this id/index: " + this.id() + "/" + this.index );
@@ -75,13 +76,13 @@ public class Ariadne_TM_SR_ND{
     return p;
   }
 
-  protected void entangle(Ariadne_TM_SR_ND copy){
+  protected void entangle(Ariadne_TM_SR_ND<RT> copy){
     copy.current_topology = this.current_topology;
     // Nuance here, BigInteger is immutable, so operation on the original
     // index, and the copy index, will be independent, which is what we want.
     copy.index = this.index; 
   }
-  public Ariadne_TM_SR_ND entangle(){
+  public Ariadne_TM_SR_ND<RT> entangle(){
     throw new UnsupportedOperationException("Ariadne_TM_SR_ND::entangle not implemented.");
   }
 
@@ -106,8 +107,8 @@ public class Ariadne_TM_SR_ND{
     return p;
   }
 
-  public Object read(){
-    Object o = current_topology.read();
+  public RT read(){
+    RT o = current_topology.read();
     if( test.is_on() ) test.print("read: " + o);
     return o;
   }
@@ -129,7 +130,7 @@ public class Ariadne_TM_SR_ND{
   }
 
   // Sets the tape access methods to be used.
-  protected void set_topology(TopoIface new_topology){
+  protected void set_topology(TopoIface<RT> new_topology){
     current_topology = new_topology;
     if( test.is_on() ){
       test.print("set_topology i: " + index);
@@ -141,19 +142,22 @@ public class Ariadne_TM_SR_ND{
     }
   }
 
-  protected interface TopoIface{
+  protected interface TopoIface<T>{
     boolean can_read();
-    Object read();
+    T read();
     boolean can_step();
     void step();
     Topology topology();
   }
 
-  protected final TopoIface not_mounted = new TopoIface(){
+  // yes officially this works, but it introduces subtle problems at compile time:
+  //  protected final TopoIface<RT> not_mounted =  new TopoIface<RT>(){
+
+  protected class NotMountedTopo implements TopoIface<RT>{
     @Override public boolean can_read(){
       return false;
     }
-    @Override public Object read(){
+    @Override public RT read(){
       throw new UnsupportedOperationException("Ariadne_TM_SR_ND::NotMounted::read.");
     }
     @Override public boolean can_step(){
@@ -165,25 +169,32 @@ public class Ariadne_TM_SR_ND{
     @Override public Topology topology(){
       throw new UnsupportedOperationException("Ariadne_TM_SR_ND::NotMounted::topology.");
     }
-    };
+  }
+  protected final TopoIface<RT> not_mounted = new NotMountedTopo();
 
-  protected final TopoIface topo_null = new TopoIface(){
+
+  protected class NullTopo implements TopoIface<RT>{
     @Override public boolean can_read(){
       return false;
     }
-    @Override public Object read(){
-      throw new UnsupportedOperationException( "Cannot read from null topology." );
+
+    @Override public RT read(){
+      throw new UnsupportedOperationException("Cannot read from null topology.");
     }
+
     @Override public boolean can_step(){
       return false;
     }
+
     @Override public void step(){
-      throw new UnsupportedOperationException( "Cannot step over null topology." );
+      throw new UnsupportedOperationException("Cannot step over null topology.");
     }
+
     @Override public Topology topology(){
       return Topology.NULL;
     }
-    };
+  }
+  protected final TopoIface<RT> topo_null = new NullTopo();
 
   // good citizen
   //
@@ -192,14 +203,15 @@ public class Ariadne_TM_SR_ND{
     if(!is_mounted()) return "TM_SR_ND(NotMounted)";
     if(!can_read()) return "TM_SR_ND(Null)";
 
-    StringBuilder data_channel = new StringBuilder("");
+    // output takes two lines, starting from the left column on each
+    StringBuilder data_channel = new StringBuilder("\n");
     StringBuilder control_channel = new StringBuilder("");
     
-    data_channel.append( "TM_SR_ND(" ).append( topology().name()).append("( " );
-    control_channel.append( " ".repeat(data_channel.length()) );
+    data_channel.append( "TM_SR_ND(" ).append( topology().name()).append("(" );
+    control_channel.append( " ".repeat(data_channel.length()-1) );
 
     String element = null;
-    Ariadne_TM_SR_ND copy = this.entangle();
+    Ariadne_TM_SR_ND<RT> copy = this.entangle();
     if( copy.can_rewind() ) copy.rewind();
 
     Object o = null;

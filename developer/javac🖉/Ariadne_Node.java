@@ -31,30 +31,31 @@ package com.ReasoningTechnology.Ariadne;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class Ariadne_Node extends HashMap<String, Object>{
+// LT == Label Type
+public class Ariadne_Node<LT extends Ariadne_Label> extends HashMap<String, Object>{
 
   // Owned by the class
-  public static Ariadne_Node make(Ariadne_Label label){
-    return new Ariadne_Node(label);
+  public static <T extends Ariadne_Label> Ariadne_Node<T> make(T label) {
+    return new Ariadne_Node<>(label);
   }
 
   // Data owned by the instance
-  private final Ariadne_Label label;
+  private final LT label;
   private final HashSet<Ariadne_Token> mark_set;
   private static final String NEIGHBOR_PROPERTY_NAME = "neighbor_property";
 
   // Constructors
-  protected Ariadne_Node(Ariadne_Label label){
+  protected Ariadne_Node(LT label){
     this.label = label;
     this.mark_set = new HashSet<>();
   }
 
   // Instance interface
-  public Ariadne_Label label(){
+  public LT label(){
     return this.label;
   }
 
-  public Ariadne_TM_SR_ND_Label neighbor(){
+  public Ariadne_TM_SR_ND<LT> neighbor(){
     throw new UnsupportedOperationException("Ariadne_Node::neighbor not implemented in the base class.");
   }
 

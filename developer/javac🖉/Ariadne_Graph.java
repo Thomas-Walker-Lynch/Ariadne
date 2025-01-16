@@ -10,7 +10,8 @@
 
 package com.ReasoningTechnology.Ariadne;
 
-public class Ariadne_Graph{
+// LT = Label Type
+public class Ariadne_Graph<LT extends Ariadne_Label>{
 
   public static Ariadne_Graph make(){
     return new Ariadne_Graph();
@@ -18,11 +19,11 @@ public class Ariadne_Graph{
   protected Ariadne_Graph(){
   }
 
-  public Ariadne_TM_SR_ND start(){
+  public Ariadne_TM_SR_ND<LT> start(){
     throw new UnsupportedOperationException("Ariadne_Graph::start.");
   }
 
-  public Ariadne_Node lookup(Ariadne_Label label){
+  public Ariadne_Node lookup(LT label){
     throw new UnsupportedOperationException("Ariadne_Graph::lookup.");
   }
 
