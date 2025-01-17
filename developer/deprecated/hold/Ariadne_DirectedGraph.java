@@ -20,7 +20,7 @@ public class Ariadne_Graph{
 
   public Ariadne_StepRightMachine<Ariadne_Node> start();
   public Ariadne_StepRightMachine<Ariadne_Node> traverse();
-  public Ariadne_Node lookup(String label);
+  public Ariadne_Node lookup_node(String label);
 
 
 }

@@ -33,3 +33,6 @@ part of the TestBench.
   Java, it is not clear that benefits of having a 'cleaner' implementation would
   justify the work.
 
+4 add hash map to graph, lookup on node label pairs to find edge properties.
+
+5. append() method for TM_SR_ND.

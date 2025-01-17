@@ -100,7 +100,7 @@ public class Ariadne_GraphDirectedAcyclic extends Ariadne_Graph{
       Ariadne_LabelList undefined_node_list = new Ariadne_LabelList();
       for (int i = cycle_i0; i <= cycle_n; i++){
         Ariadne_Label node_label = left_path.get(i);
-        Ariadne_Node node = super.lookup(node_label);
+        Ariadne_Node node = super.lookup_node(node_label);
         if(node != null){
           node.mark(new Ariadne_Token("cycle_member"));
         } else{
@@ -139,7 +139,7 @@ public class Ariadne_GraphDirectedAcyclic extends Ariadne_Graph{
         }
 
         Ariadne_Label it_node_label = path_stack.get(path_stack.size() - 1).get(0);
-        Ariadne_Node it_node = super.lookup(it_node_label);
+        Ariadne_Node it_node = super.lookup_node(it_node_label);
         if(it_node == null){
           ret_value.add(new Ariadne_Token("undefined_node"));
           return ret_value;
@@ -216,8 +216,8 @@ public class Ariadne_GraphDirectedAcyclic extends Ariadne_Graph{
   }
 
   @Override
-  public Ariadne_Node lookup(Ariadne_Label node_label, boolean verbose){
-    Ariadne_Node node = super.lookup(node_label, verbose);
+  public Ariadne_Node lookup_node(Ariadne_Label node_label, boolean verbose){
+    Ariadne_Node node = super.lookup_node(node_label, verbose);
     if(node != null && node.has_mark(new Ariadne_Token("cycle_member"))){
       if(verbose){
         System.out.println("GraphDirectedAcyclic.lookup:: Node is part of a cycle, not returned: " + node_label);
@@ -227,8 +227,8 @@ public class Ariadne_GraphDirectedAcyclic extends Ariadne_Graph{
     return node;
   }
 
-  public Ariadne_Node lookup(Ariadne_Label node_label){
-    return lookup(node_label, this.debug);
+  public Ariadne_Node lookup_node(Ariadne_Label node_label){
+    return lookup_node(node_label, this.debug);
   }
 
 }

@@ -14,7 +14,7 @@ public class Graph extends Ariadne_Graph<Label>{
   }
 
   // no override, this graph does not lookup Ariadne_Label, only Label
-  @Override public Node lookup(Label label){
+  @Override public Node lookup_node(Label label){
     return Node.make(label);
   }
 

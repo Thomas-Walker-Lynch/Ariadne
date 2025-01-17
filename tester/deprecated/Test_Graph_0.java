@@ -36,8 +36,8 @@ public class Test_Graph_0 {
       Graph graph = new Graph(nodeMap, new ProductionList());
 
       // Test lookup for existing and non-existing labels
-      conditions[i++] = graph.lookup(label1, true) == node1;
-      conditions[i++] = graph.lookup(new Label("nonexistent"), true) == null;
+      conditions[i++] = graph.lookup_node(label1, true) == node1;
+      conditions[i++] = graph.lookup_node(new Label("nonexistent"), true) == null;
 
       io.clear_buffers(); // Clear after each case
       return MU.all(conditions);
@@ -57,7 +57,7 @@ public class Test_Graph_0 {
       Graph graph = new Graph(nodeMap, new ProductionList());
 
       // Perform lookup without verbosity
-      Node result = graph.lookup(label, false);
+      Node result = graph.lookup_node(label, false);
       conditions[i++] = result == node;  // Expected to find node without verbose output
 
       return MU.all(conditions);

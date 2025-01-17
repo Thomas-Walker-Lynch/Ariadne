@@ -23,8 +23,13 @@ public class Ariadne_Graph<LT extends Ariadne_Label>{
     throw new UnsupportedOperationException("Ariadne_Graph::start.");
   }
 
-  public Ariadne_Node lookup(LT label){
+  public Ariadne_Node lookup_node(LT label){
     throw new UnsupportedOperationException("Ariadne_Graph::lookup.");
   }
+
+  public Ariadne_Node lookup_edge(LT label ,LT label){
+    throw new UnsupportedOperationException("Ariadne_Graph::lookup.");
+  }
+
 
 }

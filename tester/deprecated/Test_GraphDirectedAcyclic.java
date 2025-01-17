@@ -113,7 +113,7 @@ public class Test_GraphDirectedAcyclic {
 
       Ariadne_GraphDirectedAcyclic graph = new Ariadne_GraphDirectedAcyclic(nodeMap, new Ariadne_ProductionList(), new Ariadne_LabelList());
 
-      Ariadne_Node foundNode = graph.lookup(label, true);
+      Ariadne_Node foundNode = graph.lookup_node(label, true);
       conditions[i++] = foundNode == node; // Expect to find the node
 
       return Mosaic_Util.all(conditions);

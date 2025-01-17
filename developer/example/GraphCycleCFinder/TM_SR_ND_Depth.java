@@ -50,7 +50,7 @@ import com.ReasoningTechnology.Ariadne.Ariadne_Label;
 import com.ReasoningTechnology.Ariadne.Ariadne_TM_SR_ND_Array;
 import com.ReasoningTechnology.Ariadne.Ariadne_TM_SR_ND_List;
 
-class TM_SR_ND_Depth extends Ariadne_TM_SR_ND{
+class TM_SR_ND_Depth extends Ariadne_TM_SR_ND<Label>{
 
   // static
   //
@@ -67,7 +67,7 @@ class TM_SR_ND_Depth extends Ariadne_TM_SR_ND{
   // instance data
   //
   protected Ariadne_Graph graph = null;
-  protected List<Ariadne_TM_SR_ND> context_path = new ArrayList<>();
+  protected List<Ariadne_TM_SR_ND<Label>> context_path = new ArrayList<>();
   protected Ariadne_Label cycle_node_label = null;
 
   // constructor
@@ -97,7 +97,7 @@ class TM_SR_ND_Depth extends Ariadne_TM_SR_ND{
     Ariadne_TM_SR_ND child_srtm = null;
     Ariadne_Label path_node_label = null;
 
-    // context_path is known not to be  empty, so can_read() is true
+    // context_path is known not to be empty, so can_read() is true
     do{
       child_srtm = context_path_srtm.read();
       path_node_label = child_srtm.read();
@@ -125,7 +125,7 @@ class TM_SR_ND_Depth extends Ariadne_TM_SR_ND{
     Ariadne_Node path_node = null;
     boolean is_leaf_node = false;
     do{
-      path_node = graph.lookup(path_node_label);
+      path_node = graph.lookup_node(path_node_label);
       if(path_node == null){
         System.out.println
           (
