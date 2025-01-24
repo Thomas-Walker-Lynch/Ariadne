@@ -1,0 +1,66 @@
+package com.ReasoningTechnology.Ariadne;
+
+import java.math.BigInteger;
+
+// LT == Label Type
+public abstract class 
+  Ariadne_SiblingContext<LT extends Ariadne_Label>
+  extends Ariadne_TM_SR_ND<LT>
+{
+
+  // Static
+  //
+
+  public static <T extends Ariadne_Label> Ariadne_SiblingContext<T> make(){
+    throw new UnsupportedOperationException("Ariadne_SiblingContext::make not implemented.");
+  }
+
+  // Instance Data
+  //
+
+  // Constructors
+  //
+
+  protected Ariadne_SiblingContext(){
+    super();
+  }
+
+  // Instance Interface
+  //
+
+  @Override public boolean can_read(){
+    return current_topology.can_read();
+  }
+
+  @Override public LT read(){
+    return current_topology.read();
+  }
+
+  @Override public boolean can_step(){
+    return current_topology.can_step();
+  }
+
+  @Override public void step(){
+    increment();
+    current_topology.step();
+  }
+
+  @Override public boolean can_rewind(){
+    return false;
+  }
+
+  @Override public void rewind(){
+    throw new UnsupportedOperationException("Ariadne_SiblingContext::rewind not implemented.");
+  }
+
+  @Override public void append_rightmost(LT x){
+    throw new UnsupportedOperationException("Ariadne_SiblingContext::append_rightmost not implemented.");
+  }
+
+  // Topology for sibling context
+  //
+
+  @Override public Topology topology(){
+    return current_topology.topology();
+  }
+}

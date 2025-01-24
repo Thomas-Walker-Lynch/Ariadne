@@ -1,28 +1,8 @@
 /*
-A node extends a Map. This map is for use by the user to add properties to the node.
-It is not used by the Ariadne code.  The class itself is already a sort of map, so
-node specific fields are expressed in the class itself.  
+A Node potentially has an infinite number of neighbors, in which case its
+neighbor set is defined using a function. See the IndexTree example.
 
-Node specific fields include the node label, and a set for Ariadne algorithms
-to use when adding token marks to nodes.  An extension will have to add
-a function or data set to hold the labels of neighboring nodes.
 
-Currently node labels are strings. I should probably have made them a
-generic type.
-
-A graph itself is a similar data structure to the Node.  A graph is defined by its
-lookup function, that makes it a map.  Also there is a start function that returns
-node labels, while a node has 'neighbor' which returns node labels.  Here are the
-differences:
-
-  The graph type lookup implementation is not constrained to any type, and
-  could be a function.  The node lookup comes from a HashMap, and thus is
-  guaranteed to have a finite number of entries.
-
-  The graph type is defined by the user, where as the node type is defined
-  by the programmer who is creating a graph based application.
-
-We should take a closer look at the possibility of unifying these later.
 
 */
 
@@ -32,25 +12,32 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 // LT == Label Type
-public class Ariadne_Node<LT extends Ariadne_Label> extends HashMap<String, Object>{
+public class Ariadne_Node<LT extends Ariadne_Label> extends HashMap<String ,Object>{
 
   // Owned by the class
-  public static <T extends Ariadne_Label> Ariadne_Node<T> make(T label) {
+  //
+
+  public static <T extends Ariadne_Label> Ariadne_Node<T> make(T label){
     return new Ariadne_Node<>(label);
   }
 
   // Data owned by the instance
+  //
+
   private final LT label;
   private final HashSet<Ariadne_Token> mark_set;
-  private static final String NEIGHBOR_PROPERTY_NAME = "neighbor_property";
 
   // Constructors
+  // 
+
   protected Ariadne_Node(LT label){
     this.label = label;
     this.mark_set = new HashSet<>();
   }
 
   // Instance interface
+  //
+  
   public LT label(){
     return this.label;
   }
@@ -63,16 +50,18 @@ public class Ariadne_Node<LT extends Ariadne_Label> extends HashMap<String, Obje
     mark_set.add(token);
   }
 
-  public boolean hasMark(Ariadne_Token token){
+  public boolean has_mark(Ariadne_Token token){
     return mark_set.contains(token);
   }
 
-  public void removeMark(Ariadne_Token token){
+  public void remove_mark(Ariadne_Token token){
     mark_set.remove(token);
   }
 
 
-  // Object interface
+  // good citizen
+  // 
+
   @Override public String toString(){
     StringBuilder output = new StringBuilder();
 

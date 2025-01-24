@@ -1,3 +1,81 @@
 
-wellformed is a single word. Its antonym is 'malformed'. Wellformed syntax
-parses without errors.
+1. Graph
+
+  The fundamental entities are a `Node`, and a `Edge`.  An `Edge` is a `Node` pair.
+
+  A Graph contains two dictionaries: 
+
+     1. A `Node` dictionary, keyed on the Node `Label`.
+     2. An `Edge` dictionary, keyed on a pair of Node `Label`s.
+
+  A Graph is defined by two functions:
+
+     1. `start` which returns a list of Node Labels.
+     2. `lookup` which when given a Label returns the corresponding Node.
+
+  A `Node` consists of a `Label`, a neighbor set, a `Token` set, and a property dictionary. A property is a String-Object pair, defined by the graph user.
+
+  An `Edge` consists of a `Label` pair and a property dictionary.
+
+  A Token is also called a 'mark'. They are used for by Graph algorithms to 'markup' a
+  graph.
+
+  A Node is said to be 'in the graph' when `lookup` returns the Node when given the Node's Label.
+
+  A graph can be infinite, in which case functions are used to abstract the dictionaries.
+  Note the infinite `IndexTree` Graph example.
+
+  A graph is said to be 'wellformed' (a single word), when:
+
+  1. Each and every Node in the graph has a distinct Label.
+  2. All `start` labels can be found by `lookup` 
+  3. For each and every edge, both members of the edge pair can be found 
+
+  When a graph is not wellformed, it is said to be malformed.
+
+  A Node that does not correspond to the ends of any Edge is said to be an 'island' node. If an island Node is not among the `start` Nodes, then no traversal will visit it.
+
+  For a directed graph, each edge is said to originate from the first node in the node pair, and said to terminate at the second node in the pair.  Given a node, and a set of all edges that originate at that node, each of the termination nodes for those edges are said to be the given node's 'neighbor'.
+
+  For a graph that is not directed, no order is given to the two nodes of an edge pair. The two nodes in an edge are said to be 'mutual neighbors'.
+
+  All the neighbors for a given node are said to constitute the neighbor set. If we are to be able to traverse this neighbor set in a deterministic manner, then we have a neighbor list.
+
+  Because any Node Label can be translated into a node by using `lookup`, we treat a Label as a Node reference. Hence a neighbor list could be a list of nodes, or a list of node labels.
+
+
+2. Tree
+
+  Tree nomenclature is a melange of terms about natural trees, and those about family trees. A CS tree is a mixed metaphor. Also a CS tree is visualized as having its root at the top, and then growing downward.
+
+  A Tree is a type of directed graph that meets certain constraints.
+
+  In a tree, no node is its own neighbor.
+
+  For any given node in the tree, each neighbor is called a 'child'.
+
+  For a tree, exactly one node in the graph is not the child of any other node. This is called the 'root'.
+
+  Except for the root, any given node is the child of exactly one other node, known as its parent.
+
+  A node that has no children is called a 'leaf' node.
+
+  What is the 'neighbor list' when viewed as a grpah, is a 'sibling list' when viewed as a tree.
+
+  Generally a tree traversal starts at the root, then visits a child. I breadth first traversal will then walk the sibling list, before descending further in the tree. In contrast a depth first traversal will then descend to the child of the child, until reaching a leaf node, then back track to the next sibling of the parent, and descend
+  again, etc. Other traversal orders are possible.
+
+
+3. Traversal
+
+  A list of visited nodes during a traversal is called a 'path'.
+
+  A tape machine is a list with one element being distinguished as the read value.
+
+  A tape machine bound to a 'neighbor list' is a 'neighbor tape machine'. For a tree
+  it can be called a 'sibling tape machine'.
+
+  A 'context path' is a list of neighbor machines, where the distinguished element
+  on each neighbor machine is the member of a traversal path.
+
+  A context path can be used as the state for a graph iterator.

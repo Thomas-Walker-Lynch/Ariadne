@@ -3,6 +3,7 @@ package com.ReasoningTechnology.Ariadne;
 import java.math.BigInteger;
 import java.util.List;
 
+// RT == read type
 public class Ariadne_TM_SR_ND_Array<RT> extends Ariadne_TM_SR_ND<RT>{
 
   // Static methods
@@ -45,7 +46,6 @@ public class Ariadne_TM_SR_ND_Array<RT> extends Ariadne_TM_SR_ND<RT>{
   protected void entangle(Ariadne_TM_SR_ND_Array<RT> copy){
     super.entangle(copy);
   }
-
   @Override public Ariadne_TM_SR_ND_Array<RT> entangle(){
     Ariadne_TM_SR_ND_Array<RT> copy = Ariadne_TM_SR_ND_Array.make(this.array);
     entangle(copy);

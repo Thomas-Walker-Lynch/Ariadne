@@ -1,10 +1,13 @@
+import com.ReasoningTechnology.Ariadne.Ariadne_Label;
+import com.ReasoningTechnology.Ariadne.Ariadne_Node;
 import com.ReasoningTechnology.Ariadne.Ariadne_Graph;
 
-public class Graph extends Ariadne_Graph<Label>{
+public class Graph extends Ariadne_Graph<Label ,Node>{
 
-  public static Graph make(){
+  public static <T extends Ariadne_Label, N extends Ariadne_Node<T>> Graph make(){
     return new Graph();
   }
+
   protected Graph(){
   }
 
@@ -14,7 +17,7 @@ public class Graph extends Ariadne_Graph<Label>{
   }
 
   // no override, this graph does not lookup Ariadne_Label, only Label
-  @Override public Node lookup_node(Label label){
+  @Override public Node node(Label label){
     return Node.make(label);
   }
 

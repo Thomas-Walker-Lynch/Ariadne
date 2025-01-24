@@ -48,7 +48,7 @@ public class IndexTree_TM_SR_ND_Diagonal extends Ariadne_TM_SR_ND_Label {
     IndexTree_Label root_label = IndexTree_Label.root();
     read_list.add( root_label );
 
-    IndexTree_Node root_node = lookup_node( root_label );
+    IndexTree_Node root_node = node( root_label );
     breadth_srm.mount( root_node.neighbor() );
 
     if( breadth_srm.can_read() ){
@@ -56,7 +56,7 @@ public class IndexTree_TM_SR_ND_Diagonal extends Ariadne_TM_SR_ND_Label {
     }
   }
 
-  private IndexTree_Node lookup_node( Ariadne_Label label ){
+  private IndexTree_Node node( Ariadne_Label label ){
     return IndexTree_Node.make( (IndexTree_Label)label );
   }
 
@@ -74,7 +74,7 @@ public class IndexTree_TM_SR_ND_Diagonal extends Ariadne_TM_SR_ND_Label {
       Ariadne_Label label = list_of__unopened_node.remove( 0 );
 
       // Retrieve the node using lookup
-      IndexTree_Node node = lookup_node( label );
+      IndexTree_Node node = node( label );
 
       // Mount a new breadth-first TM_SR_ND for children
       breadth_srm.mount( node.neighbor() );
@@ -97,7 +97,7 @@ public class IndexTree_TM_SR_ND_Diagonal extends Ariadne_TM_SR_ND_Label {
         Ariadne_Label label = child_list.remove( 0 );
         read_list.add( label );
 
-        IndexTree_Node node = lookup_node( label );
+        IndexTree_Node node = node( label );
         breadth_srm.mount( node.neighbor() );
 
         if( breadth_srm.can_read() ){

@@ -19,7 +19,7 @@ public class four_down_four_across_CLI{
     // Descend 3 more levels
     int i = 1;
     do{
-      node = graph.lookup_node(label);
+      node = graph.node(label);
       child_srm = node.neighbor();
       label = child_srm.read();
       System.out.println("Descended to: " + label.toString());

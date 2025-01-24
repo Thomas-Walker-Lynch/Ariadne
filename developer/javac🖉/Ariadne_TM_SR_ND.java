@@ -1,8 +1,6 @@
 /*
-An TM_SR_ND with indexing == TM_SR_ND
-
-An index is indicates where the head is located on the tape.  This is done by
-tracking the cell address for the head.
+A step right only, non-destructive tape operations, tape machine, TM_SR_ND. This
+machine has explicit tracking of the head address.
 
 BigInteger is used so that it will be possible to bind TM_SR_ND machine extensions
 to file system objects.
@@ -100,6 +98,21 @@ public class Ariadne_TM_SR_ND<RT>{
   public void rewind(){
     index = BigInteger.ZERO;
   }
+
+  // Append to rightmost is not considered 'destructive' because the system, including
+  // any entangled machines, remains sound after the operation. I.e. no
+  // machine is broken or has its current read value changed.
+  // However, an entangled machine can detect the end of tape, so a machine
+  // can detect that an append happened. Hence append can affect an algorithm
+  // that is running on an entangled machine, but this can also happen when
+  // any of the entangled machine writes the tape. Hence, append has a similar
+  // affect as other writes.
+  public void append_rightmost(RT x){
+    throw new UnsupportedOperationException("Ariadne_TM_SR_ND::entangle not implemented.");
+  }
+
+  // stateful interface
+  //
 
   public boolean can_read(){
     boolean p = current_topology.can_read();
@@ -199,7 +212,10 @@ public class Ariadne_TM_SR_ND<RT>{
   // good citizen
   //
 
-  @Override public String toString(){
+  public String to_string_annotated(){
+
+    test.print("::to_string_annotated");
+
     if(!is_mounted()) return "TM_SR_ND(NotMounted)";
     if(!can_read()) return "TM_SR_ND(Null)";
 
@@ -263,5 +279,35 @@ public class Ariadne_TM_SR_ND<RT>{
       .append(control_channel)
       .toString();
   }
+
+  // RT code format style comma separated list
+  @Override public String toString(){
+
+    Ariadne_TM_SR_ND<RT> tm = this.entangle();
+    if( tm.can_rewind() ) tm.rewind();
+
+    if( !tm.can_read() ) return "";
+
+    StringBuilder output = new StringBuilder();
+    do{
+
+      if( tm.head_on_same_cell(this) ) output.append("[");
+      RT x = tm.read();
+      if( x != null ) output.append(x);
+      if( tm.head_on_same_cell(this) ) output.append("]");
+
+      if( !tm.can_step() ) break;
+
+      tm.step();
+      if( x == null )
+        output.append(",");
+      else
+        output.append(" ,");
+
+    }while(true);
+
+    return output.toString();
+  }
+
 
 }
