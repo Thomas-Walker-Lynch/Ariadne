@@ -1,5 +1,5 @@
-import com.ReasoningTechnology.Ariadne.Ariadne_TM_SR_ND;
-import com.ReasoningTechnology.Ariadne.Ariadne_TM_SR_ND_List;
+import com.ReasoningTechnology.Ariadne.Ariadne_TM_SR_NX;
+import com.ReasoningTechnology.Ariadne.Ariadne_TM_SR_NX_List;
 
 public class four_down_four_across_CLI{
 
@@ -9,10 +9,10 @@ public class four_down_four_across_CLI{
 
     // Initialize graph and start at root
     Graph graph = Graph.make();
-    TM_SR_ND_Child start = graph.start();
+    TM_SR_NX_Child start = graph.start();
     Label label = start.read();
     Node node;
-    TM_SR_ND_Child child_srm;
+    TM_SR_NX_Child child_srm;
 
     System.out.println("starting at: " + start.read());
 

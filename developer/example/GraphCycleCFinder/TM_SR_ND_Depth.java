@@ -14,25 +14,25 @@ import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ReasoningTechnology.Ariadne.Ariadne_TM_SR_ND;
+import com.ReasoningTechnology.Ariadne.Ariadne_TM_SR_NX;
 import com.ReasoningTechnology.Ariadne.Ariadne_Graph;
 import com.ReasoningTechnology.Ariadne.Ariadne_Node;
 import com.ReasoningTechnology.Ariadne.Ariadne_Label;
-import com.ReasoningTechnology.Ariadne.Ariadne_TM_SR_ND_Array;
-import com.ReasoningTechnology.Ariadne.Ariadne_TM_SR_ND_List;
+import com.ReasoningTechnology.Ariadne.Ariadne_TM_SR_NX_Array;
+import com.ReasoningTechnology.Ariadne.Ariadne_TM_SR_NX_List;
 
-class TM_SR_ND_Depth extends Ariadne_TM_SR_ND<Label>{
+class TM_SR_NX_Depth extends Ariadne_TM_SR_NX<Label>{
 
   // ----------------------------------------
   // static
   //
 
-  TM_SR_ND_Depth make(Ariadne_Graph graph){
+  TM_SR_NX_Depth make(Ariadne_Graph graph){
     if(graph == null) return null;
-    TM_SR_ND_Depth depth = new TM_SR_ND_Depth();
+    TM_SR_NX_Depth depth = new TM_SR_NX_Depth();
     depth.graph = graph;
     depth.context_path.add( graph.start() );
-    depth.context_path_tm = Ariadne_TM_SR_ND_Array.make(context_path);
+    depth.context_path_tm = Ariadne_TM_SR_NX_Array.make(context_path);
     initialize i = initialize.f(depth.context_path_tm ,depth.path_member_set);
     if( !i.success() ) return null;
     first_in_path_cycle_node_label = i.first_in_path_cycle_node_label;
@@ -44,8 +44,8 @@ class TM_SR_ND_Depth extends Ariadne_TM_SR_ND<Label>{
   //
 
   protected Graph graph = null;
-  protected List<Ariadne_TM_SR_ND<Label>> context_path = new ArrayList<>();
-  protected Ariadne_TM_SR_ND_Array<Ariadne_TM_SR_ND> context_path_tm = null;
+  protected List<Ariadne_TM_SR_NX<Label>> context_path = new ArrayList<>();
+  protected Ariadne_TM_SR_NX_Array<Ariadne_TM_SR_NX> context_path_tm = null;
   protected Label first_in_path_cycle_node_label = null;
 
   // Used for cycle detection.
@@ -55,7 +55,7 @@ class TM_SR_ND_Depth extends Ariadne_TM_SR_ND<Label>{
   // constructor
   //
 
-  protected TM_SR_ND_Depth(){
+  protected TM_SR_NX_Depth(){
     set_topology(topo_null);
   }
 
@@ -79,20 +79,20 @@ class TM_SR_ND_Depth extends Ariadne_TM_SR_ND<Label>{
     protected void g(context_path_tm ,path_member_set){
 
       if( context_path.isEmpty() ){
-        System.out.println("TM_SR_ND_Depth::initialize required context_path is empty.");
+        System.out.println("TM_SR_NX_Depth::initialize required context_path is empty.");
         success = false;
         return;
       }
 
       boolean is_cycle_node = false;
-      Ariadne_TM_SR_ND sibling_tm = null;
+      Ariadne_TM_SR_NX sibling_tm = null;
       Ariadne_Label path_node_label = null;
 
       do{
         sibling_tm = context_path_tm.read();
         path_node_label = sibling_tm.read();
         if(path_node_label == null){
-          System.out.println("TM_SR_ND_Depth::complete_context_path hit null path label on path");
+          System.out.println("TM_SR_NX_Depth::complete_context_path hit null path label on path");
           success = false;
           return;
         }
@@ -110,7 +110,7 @@ class TM_SR_ND_Depth extends Ariadne_TM_SR_ND<Label>{
       if( is_cycle_node && context_path_tm.can_step() ){
         System.out.println
           (
-           "TM_SR_ND_Depth::initialize_path_member_set: cycle found in initial context_path."
+           "TM_SR_NX_Depth::initialize_path_member_set: cycle found in initial context_path."
            );
         first_in_path_cycle_node_label = path_node_label;
         success = false;
@@ -136,7 +136,7 @@ class TM_SR_ND_Depth extends Ariadne_TM_SR_ND<Label>{
     boolean is_cycle_node = false;
     Ariadne_Node path_node = null;
     boolean is_leaf_node = false;
-    Ariadne_TM_SR_ND sibling_tm = null;
+    Ariadne_TM_SR_NX sibling_tm = null;
     Ariadne_Label path_node_label = null;
 
     sibling_tm = context_path_tm.read();
@@ -147,7 +147,7 @@ class TM_SR_ND_Depth extends Ariadne_TM_SR_ND<Label>{
       if(path_node == null){
         System.out.println
           (
-           "TM_SR_ND_Depth::complete_context_path internal algorithm error, node on path not found in graph for: label(\""
+           "TM_SR_NX_Depth::complete_context_path internal algorithm error, node on path not found in graph for: label(\""
            + path_node_label
            + "\")"
            );

@@ -40,15 +40,15 @@ public class Ariadne_Node_FD<LT extends Ariadne_Label> extends Ariadne_Node<LT>{
   // Instance interface
   //
   
-  @Override public Ariadne_TM_SR_ND<LT> neighbor(){
-    return Ariadne_TM_SR_ND_Set.make(neighbor_set);
+  @Override public Ariadne_TM_SR_NX<LT> neighbor(){
+    return Ariadne_TM_SR_NX_Set.make(neighbor_set);
   }
 
   // Good citizen
   //
 
   @Override public String toString(){
-    Ariadne_TM_SR_ND_Set<LT> tm = Ariadne_TM_SR_ND_Set.make(neighbor_set);
+    Ariadne_TM_SR_NX_Set<LT> tm = Ariadne_TM_SR_NX_Set.make(neighbor_set);
     boolean has_label = label() != null;
     boolean has_neighbor = tm.can_read();
 

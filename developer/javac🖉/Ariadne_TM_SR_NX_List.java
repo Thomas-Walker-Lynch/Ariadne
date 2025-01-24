@@ -1,7 +1,7 @@
 /*
-  By convention an TM_SR_ND is named after the type of values found in the tape cells.
-  However, in this case the name reflects the type that that TM_SR_ND is made from.
-  The type of values found in the TM_SR_ND cells is abstracted as "T".
+  By convention an TM_SR_NX is named after the type of values found in the tape cells.
+  However, in this case the name reflects the type that that TM_SR_NX is made from.
+  The type of values found in the TM_SR_NX cells is abstracted as "T".
 
   This implementation uses Java's ListIterator, which lacks a direct
   method to read the current cell value, rather it yields the next
@@ -11,13 +11,13 @@ package com.ReasoningTechnology.Ariadne;
 import java.util.List;
 import java.util.ListIterator;
 
-public class Ariadne_TM_SR_ND_List<RT> extends Ariadne_TM_SR_ND<RT>{
+public class Ariadne_TM_SR_NX_List<RT> extends Ariadne_TM_SR_NX<RT>{
 
   // Static methods
   //
 
-  public static <T> Ariadne_TM_SR_ND_List<T> make(List<T> list) {
-    return new Ariadne_TM_SR_ND_List<>(list);
+  public static <T> Ariadne_TM_SR_NX_List<T> make(List<T> list) {
+    return new Ariadne_TM_SR_NX_List<>(list);
   }
 
   // instance data
@@ -30,7 +30,7 @@ public class Ariadne_TM_SR_ND_List<RT> extends Ariadne_TM_SR_ND<RT>{
   // constructor(s)
   //
 
-  protected Ariadne_TM_SR_ND_List(List<RT> list){
+  protected Ariadne_TM_SR_NX_List(List<RT> list){
     this.list = list;
 
     if( list == null || list.isEmpty() ){
@@ -55,14 +55,14 @@ public class Ariadne_TM_SR_ND_List<RT> extends Ariadne_TM_SR_ND<RT>{
 
   // Children of this can call entangle(copy) to perform the parent part of the entanglement.
   // This calls super to perform its parent portion of the entanglement.
-  protected void entangle(Ariadne_TM_SR_ND_List<RT> copy){
+  protected void entangle(Ariadne_TM_SR_NX_List<RT> copy){
     super.entangle(copy);
     copy.read_value = this.read_value;
     copy.iterator = this.list.listIterator(this.iterator.nextIndex());
   }
 
-  @Override public Ariadne_TM_SR_ND_List<RT> entangle(){
-    Ariadne_TM_SR_ND_List<RT> copy = Ariadne_TM_SR_ND_List.make(this.list);
+  @Override public Ariadne_TM_SR_NX_List<RT> entangle(){
+    Ariadne_TM_SR_NX_List<RT> copy = Ariadne_TM_SR_NX_List.make(this.list);
     entangle(copy);
 
     // Set the appropriate topology in the copy based on the current topology

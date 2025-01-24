@@ -20,28 +20,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ReasoningTechnology.Ariadne.Ariadne_Test;
-import com.ReasoningTechnology.Ariadne.Ariadne_TM_SR_ND;
-import com.ReasoningTechnology.Ariadne.Ariadne_TM_SR_ND_List;
+import com.ReasoningTechnology.Ariadne.Ariadne_TM_SR_NX;
+import com.ReasoningTechnology.Ariadne.Ariadne_TM_SR_NX_List;
 
-public class TM_SR_ND_Diagonal extends Ariadne_TM_SR_ND<List<Label>> {
+public class TM_SR_NX_Diagonal extends Ariadne_TM_SR_NX<List<Label>> {
 
   // Static
   //
 
-  public static TM_SR_ND_Diagonal make(Label start_node) {
-    return new TM_SR_ND_Diagonal(start_node);
+  public static TM_SR_NX_Diagonal make(Label start_node) {
+    return new TM_SR_NX_Diagonal(start_node);
   }
 
   // Instance data
   //
 
   private List<Label> diagonal = new ArrayList<>();
-  private final List<TM_SR_ND_Child> child_srtm_list = new ArrayList<>();
+  private final List<TM_SR_NX_Child> child_srtm_list = new ArrayList<>();
 
   // Constructor(s)
   //
 
-  protected TM_SR_ND_Diagonal(Label start_node) {
+  protected TM_SR_NX_Diagonal(Label start_node) {
     if (start_node == null) {
       set_topology(topo_null);
       return;
@@ -74,7 +74,7 @@ public class TM_SR_ND_Diagonal extends Ariadne_TM_SR_ND<List<Label>> {
       List<Label> diagonal_1 = new ArrayList<>();
 
       // inc_down from each node on diagonal_0 -> entry on child_srtm list
-      Ariadne_TM_SR_ND_List<Label> diagonal_srtm = Ariadne_TM_SR_ND_List.make(diagonal);
+      Ariadne_TM_SR_NX_List<Label> diagonal_srtm = Ariadne_TM_SR_NX_List.make(diagonal);
       if( diagonal_srtm.can_read() ){
         do{
           Node node = Node.make(diagonal_srtm.read());
@@ -85,10 +85,10 @@ public class TM_SR_ND_Diagonal extends Ariadne_TM_SR_ND<List<Label>> {
       }
 
       // add to diagonal_1 from each on entry on the child_srtm list
-      Ariadne_TM_SR_ND_List<TM_SR_ND_Child> child_srtm_srtm = Ariadne_TM_SR_ND_List.make(child_srtm_list);
+      Ariadne_TM_SR_NX_List<TM_SR_NX_Child> child_srtm_srtm = Ariadne_TM_SR_NX_List.make(child_srtm_list);
       if( child_srtm_srtm.can_read() ){
         do{
-          TM_SR_ND_Child child_srtm = child_srtm_srtm.read();
+          TM_SR_NX_Child child_srtm = child_srtm_srtm.read();
           Label label = child_srtm.read();
           diagonal_1.add(label.copy());
           child_srtm.step();
@@ -111,8 +111,8 @@ public class TM_SR_ND_Diagonal extends Ariadne_TM_SR_ND<List<Label>> {
   //
   
   @Override public String toString() {
-    StringBuilder formatted = new StringBuilder("TM_SR_ND_Diagonal(");
-    Ariadne_TM_SR_ND_List<Label> diagonal_srtm = Ariadne_TM_SR_ND_List.make(diagonal);
+    StringBuilder formatted = new StringBuilder("TM_SR_NX_Diagonal(");
+    Ariadne_TM_SR_NX_List<Label> diagonal_srtm = Ariadne_TM_SR_NX_List.make(diagonal);
 
     if (diagonal_srtm.can_read()) {
       do {

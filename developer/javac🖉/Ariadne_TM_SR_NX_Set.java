@@ -3,11 +3,11 @@ package com.ReasoningTechnology.Ariadne;
 import java.util.Set;
 import java.util.Iterator;
 
-public class Ariadne_TM_SR_ND_Set<RT> extends Ariadne_TM_SR_ND<RT>{
+public class Ariadne_TM_SR_NX_Set<RT> extends Ariadne_TM_SR_NX<RT>{
 
   // Static methods
-  public static <RT> Ariadne_TM_SR_ND_Set<RT> make(Set<RT> set){
-    return new Ariadne_TM_SR_ND_Set<>(set);
+  public static <RT> Ariadne_TM_SR_NX_Set<RT> make(Set<RT> set){
+    return new Ariadne_TM_SR_NX_Set<>(set);
   }
 
   // Instance data
@@ -19,7 +19,7 @@ public class Ariadne_TM_SR_ND_Set<RT> extends Ariadne_TM_SR_ND<RT>{
   protected final TopoIface<RT> topo_rightmost = new RightmostTopo();
 
   // Constructor
-  protected Ariadne_TM_SR_ND_Set(Set<RT> set){
+  protected Ariadne_TM_SR_NX_Set(Set<RT> set){
     this.set = set;
     if (set == null || set.isEmpty()){
       this.iterator = null;
@@ -43,14 +43,14 @@ public class Ariadne_TM_SR_ND_Set<RT> extends Ariadne_TM_SR_ND<RT>{
     set_topology(set.size() == 1 ? topo_rightmost : topo_segment);
   }
 
-  protected void entangle(Ariadne_TM_SR_ND_Set<RT> copy){
+  protected void entangle(Ariadne_TM_SR_NX_Set<RT> copy){
     super.entangle(copy);
     copy.iterator = this.set.iterator();
     copy.read_value = this.read_value;
   }
 
-  @Override public Ariadne_TM_SR_ND_Set<RT> entangle(){
-    Ariadne_TM_SR_ND_Set<RT> copy = Ariadne_TM_SR_ND_Set.make(this.set);
+  @Override public Ariadne_TM_SR_NX_Set<RT> entangle(){
+    Ariadne_TM_SR_NX_Set<RT> copy = Ariadne_TM_SR_NX_Set.make(this.set);
     entangle(copy);
     switch (this.current_topology.topology()){
       case NULL:

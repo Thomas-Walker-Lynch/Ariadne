@@ -51,7 +51,7 @@ public class Ariadne_Graph_FD<LT extends Ariadne_Label ,NT extends Ariadne_Node<
     // Nodes are distinct due to the use of the HashMap
 
     // Check that start nodes are in the graph
-    Ariadne_TM_SR_ND_Array<LT> tm = Ariadne_TM_SR_ND_Array.make(start_list);
+    Ariadne_TM_SR_NX_Array<LT> tm = Ariadne_TM_SR_NX_Array.make(start_list);
     if( tm.can_read() ){
       do{
         start_flag = this.node( tm.read() ) != null;
@@ -64,8 +64,8 @@ public class Ariadne_Graph_FD<LT extends Ariadne_Label ,NT extends Ariadne_Node<
     return distinct_flag && start_flag;
   }
 
-  @Override public Ariadne_TM_SR_ND<LT> start(){
-    return Ariadne_TM_SR_ND_Array.make(start_list);
+  @Override public Ariadne_TM_SR_NX<LT> start(){
+    return Ariadne_TM_SR_NX_Array.make(start_list);
   }
 
   // Lookup a node on the graph by label
@@ -74,8 +74,8 @@ public class Ariadne_Graph_FD<LT extends Ariadne_Label ,NT extends Ariadne_Node<
   }
 
   // A tm of all nodes
-  public Ariadne_TM_SR_ND<NT> node(){
-    return Ariadne_TM_SR_ND_Array.make( new ArrayList<>(node_db.values()) );
+  public Ariadne_TM_SR_NX<NT> node(){
+    return Ariadne_TM_SR_NX_Array.make( new ArrayList<>(node_db.values()) );
   }
 
   // Lookup an edge by two labels. For a directed graph, label0 is the origin node label.
@@ -84,8 +84,8 @@ public class Ariadne_Graph_FD<LT extends Ariadne_Label ,NT extends Ariadne_Node<
   }
 
   // A tm of all edges
-  public Ariadne_TM_SR_ND<Ariadne_Edge<LT>> edge(){
-    return Ariadne_TM_SR_ND_Array.make( new ArrayList<>(edge_db.values()) );
+  public Ariadne_TM_SR_NX<Ariadne_Edge<LT>> edge(){
+    return Ariadne_TM_SR_NX_Array.make( new ArrayList<>(edge_db.values()) );
   }
 
   // Object interface
@@ -96,7 +96,7 @@ public class Ariadne_Graph_FD<LT extends Ariadne_Label ,NT extends Ariadne_Node<
     output.append("Graph_FD( ");
 
     {
-      Ariadne_TM_SR_ND<NT> tm = this.node();
+      Ariadne_TM_SR_NX<NT> tm = this.node();
       if( !tm.can_read() ){
         output.append( "Node_list()" );
       }else{
@@ -107,7 +107,7 @@ public class Ariadne_Graph_FD<LT extends Ariadne_Label ,NT extends Ariadne_Node<
     }
 
     {
-      Ariadne_TM_SR_ND<Ariadne_Edge<LT>> tm = this.edge();
+      Ariadne_TM_SR_NX<Ariadne_Edge<LT>> tm = this.edge();
       if( !tm.can_read() ){
         output.append( "Edge_list()" );
       }else{

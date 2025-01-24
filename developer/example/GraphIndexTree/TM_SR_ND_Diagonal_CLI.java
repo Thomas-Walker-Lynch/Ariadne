@@ -1,13 +1,13 @@
 import java.util.List;
 
-public class TM_SR_ND_Diagonal_CLI{
+public class TM_SR_NX_Diagonal_CLI{
 
   public static void main(String[] args){
-    System.out.println("Starting IndexTree TM_SR_ND Example");
+    System.out.println("Starting IndexTree TM_SR_NX Example");
 
-    // Instantiate the IndexTree Diagonal TM_SR_ND
+    // Instantiate the IndexTree Diagonal TM_SR_NX
     Graph g = Graph.make();
-    TM_SR_ND_Child start_srtm = g.start();
+    TM_SR_NX_Child start_srtm = g.start();
     if( !start_srtm.can_read() ){
       System.out.println("Graph provides no start nodes. Thought you might want to know.");
       return;
@@ -16,7 +16,7 @@ public class TM_SR_ND_Diagonal_CLI{
     do{
       Label start_label = start_srtm.read();
       System.out.println("Graph diagonalization starting from: " + start_label);
-      TM_SR_ND_Diagonal srtm = TM_SR_ND_Diagonal.make(start_label);
+      TM_SR_NX_Diagonal srtm = TM_SR_NX_Diagonal.make(start_label);
       int step_count = 0;
       if( srtm.can_read() ){
         do{

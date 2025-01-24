@@ -1,7 +1,7 @@
-import com.ReasoningTechnology.Ariadne.Ariadne_TM_SR_ND;
+import com.ReasoningTechnology.Ariadne.Ariadne_TM_SR_NX;
 import java.math.BigInteger;
 
-public class CountingNumber extends Ariadne_TM_SR_ND<BigInteger>{
+public class CountingNumber extends Ariadne_TM_SR_NX<BigInteger>{
 
   // Static
   //

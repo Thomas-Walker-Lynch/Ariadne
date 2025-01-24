@@ -9,7 +9,7 @@ import java.math.BigInteger;
 // LT == Label Type
 public abstract class 
   Ariadne_SiblingContext<LT extends Ariadne_Label>
-  extends Ariadne_TM_SR_NX<LT>
+  extends Ariadne_TM_SR_NX_Array<LT>
 {
 
   // static

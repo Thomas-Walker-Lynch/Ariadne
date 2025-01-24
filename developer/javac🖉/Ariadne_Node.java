@@ -42,7 +42,7 @@ public class Ariadne_Node<LT extends Ariadne_Label> extends HashMap<String ,Obje
     return this.label;
   }
 
-  public Ariadne_TM_SR_ND<LT> neighbor(){
+  public Ariadne_TM_SR_NX<LT> neighbor(){
     throw new UnsupportedOperationException("Ariadne_Node::neighbor not implemented in the base class.");
   }
 
@@ -78,7 +78,7 @@ public class Ariadne_Node<LT extends Ariadne_Label> extends HashMap<String ,Obje
 
     // Marks representation
     if( !mark_set.isEmpty() ){
-      Ariadne_TM_SR_ND_Set srm = Ariadne_TM_SR_ND_Set.make(mark_set);
+      Ariadne_TM_SR_NX_Set srm = Ariadne_TM_SR_NX_Set.make(mark_set);
       output.append( " Mark(" );
 
       do{

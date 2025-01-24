@@ -4,13 +4,13 @@ import java.math.BigInteger;
 import java.util.List;
 
 // RT == read type
-public class Ariadne_TM_SR_ND_Array<RT> extends Ariadne_TM_SR_ND<RT>{
+public class Ariadne_TM_SR_NX_Array<RT> extends Ariadne_TM_SR_NX<RT>{
 
   // Static methods
   //
   
-  public static <T> Ariadne_TM_SR_ND_Array<T> make(List<T> array){
-    return new Ariadne_TM_SR_ND_Array<>(array);
+  public static <T> Ariadne_TM_SR_NX_Array<T> make(List<T> array){
+    return new Ariadne_TM_SR_NX_Array<>(array);
   }
 
   // Instance data
@@ -21,7 +21,7 @@ public class Ariadne_TM_SR_ND_Array<RT> extends Ariadne_TM_SR_ND<RT>{
   // Constructor(s)
   //
   
-  protected Ariadne_TM_SR_ND_Array(List<RT> array){
+  protected Ariadne_TM_SR_NX_Array(List<RT> array){
     super();
     this.array = array;
 
@@ -43,11 +43,11 @@ public class Ariadne_TM_SR_ND_Array<RT> extends Ariadne_TM_SR_ND<RT>{
 
   // Children of this can call super.entangle(copy) to perform the parent part of the entanglement.
   // This calls super to perform its parent portion of the entanglement.
-  protected void entangle(Ariadne_TM_SR_ND_Array<RT> copy){
+  protected void entangle(Ariadne_TM_SR_NX_Array<RT> copy){
     super.entangle(copy);
   }
-  @Override public Ariadne_TM_SR_ND_Array<RT> entangle(){
-    Ariadne_TM_SR_ND_Array<RT> copy = Ariadne_TM_SR_ND_Array.make(this.array);
+  @Override public Ariadne_TM_SR_NX_Array<RT> entangle(){
+    Ariadne_TM_SR_NX_Array<RT> copy = Ariadne_TM_SR_NX_Array.make(this.array);
     entangle(copy);
 
     switch (this.current_topology.topology()) {

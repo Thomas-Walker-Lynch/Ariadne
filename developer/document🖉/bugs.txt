@@ -41,11 +41,11 @@
 
     However the compiler does not consider:
 
-      `Ariadne_TM_SR_ND<Label>`
+      `Ariadne_TM_SR_NX<Label>`
 
     To be a type of 
 
-      `Ariadne_TM_SR_ND<Ariadne_Label>`
+      `Ariadne_TM_SR_NX<Ariadne_Label>`
 
     This is awkward because `Graph::start` returns a TM of labels,
     where the labels are derived from `Ariadne_Label`
@@ -55,21 +55,21 @@
   Java is inconsistent in its interpretation of generic types. For example
   it considers these to be different types:
 
-    Ariadne_TM_SR_ND<T>
-    Ariadne_TM_SR_ND_Array<T> // extends Ariadne_TM_SR_ND<T>
+    Ariadne_TM_SR_NX<T>
+    Ariadne_TM_SR_NX_Array<T> // extends Ariadne_TM_SR_NX<T>
 
    Hence, the result from a factory for the child:
 
-    Ariadne_TM_SR_ND_Array<T> x make(){...}
+    Ariadne_TM_SR_NX_Array<T> x make(){...}
 
    Cannot be assigned to a variable declared of the parent type, 
-     Ariadne_TM_SR_ND<T>
+     Ariadne_TM_SR_NX<T>
 
    Yet it will not allow overloading of 
 
-     Ariadne_TM_SR_ND<T> make(..){
+     Ariadne_TM_SR_NX<T> make(..){
      }
-     Ariadne_TM_SR_ND_Array<T> make(..){
+     Ariadne_TM_SR_NX_Array<T> make(..){
      }
     
    If the programmer puts a caste on the factory output when assigning
@@ -82,4 +82,8 @@
      The crux of the issue is Java's type erasure combined with its strict generic type checks:
 
      Java enforces that overloaded methods can't differ only by their return type because, after type erasure, they would have identical signatures.
-     At the same time, assigning a subclass instance (Ariadne_TM_SR_ND_Array<T>) to a variable of the parent type (Ariadne_TM_SR_ND<T>) causes type ambiguity with generics.   
+     At the same time, assigning a subclass instance (Ariadne_TM_SR_NX_Array<T>) to a variable of the parent type (Ariadne_TM_SR_NX<T>) causes type ambiguity with generics.   
+
+2025-01-24T10:54:26Z[]
+    global substitute in this file _ND -> _NX
+

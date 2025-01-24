@@ -67,7 +67,7 @@ public class Ariadne_Graph<LT extends Ariadne_Label, NT extends Ariadne_Node<LT>
     throw new UnsupportedOperationException("Ariadne_Graph::is_wellformed.");
   }
 
-  public Ariadne_TM_SR_ND<LT> start() {
+  public Ariadne_TM_SR_NX<LT> start() {
     throw new UnsupportedOperationException("Ariadne_Graph::start.");
   }
 

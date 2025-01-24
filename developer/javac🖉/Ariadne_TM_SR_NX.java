@@ -1,8 +1,8 @@
 /*
-A step right only, non-destructive tape operations, tape machine, TM_SR_ND. This
+A step right only, non-destructive tape operations, tape machine, TM_SR_NX. This
 machine has explicit tracking of the head address.
 
-BigInteger is used so that it will be possible to bind TM_SR_ND machine extensions
+BigInteger is used so that it will be possible to bind TM_SR_NX machine extensions
 to file system objects.
 
 */
@@ -11,7 +11,7 @@ package com.ReasoningTechnology.Ariadne;
 import java.math.BigInteger;
 
 // RT == read type
-public class Ariadne_TM_SR_ND<RT>{
+public class Ariadne_TM_SR_NX<RT>{
 
   // static
   //
@@ -26,8 +26,8 @@ public class Ariadne_TM_SR_ND<RT>{
     ,INFINITE
   }
 
-  public static Ariadne_TM_SR_ND make(){
-    return new Ariadne_TM_SR_ND();
+  public static Ariadne_TM_SR_NX make(){
+    return new Ariadne_TM_SR_NX();
   }
 
   // instance data
@@ -41,9 +41,9 @@ public class Ariadne_TM_SR_ND<RT>{
   // constructor(s)
   //
 
-  public Ariadne_TM_SR_ND(){
+  public Ariadne_TM_SR_NX(){
     id = id_well++;
-    test = Ariadne_Test.make("Ariadne_TM_SR_ND::" + id + "::");
+    test = Ariadne_Test.make("Ariadne_TM_SR_NX::" + id + "::");
     test.switch_test(false);
     set_topology( not_mounted );
     this.index = BigInteger.ZERO;
@@ -64,7 +64,7 @@ public class Ariadne_TM_SR_ND<RT>{
     index = index.add(BigInteger.ONE);
   }
 
-  public boolean head_on_same_cell(Ariadne_TM_SR_ND<RT> tm){
+  public boolean head_on_same_cell(Ariadne_TM_SR_NX<RT> tm){
     boolean p = this.index.equals(tm.index);
     if( test.is_on() ){
       test.print("head_on_same_cell this id/index: " + this.id() + "/" + this.index );
@@ -74,14 +74,14 @@ public class Ariadne_TM_SR_ND<RT>{
     return p;
   }
 
-  protected void entangle(Ariadne_TM_SR_ND<RT> copy){
+  protected void entangle(Ariadne_TM_SR_NX<RT> copy){
     copy.current_topology = this.current_topology;
     // Nuance here, BigInteger is immutable, so operation on the original
     // index, and the copy index, will be independent, which is what we want.
     copy.index = this.index; 
   }
-  public Ariadne_TM_SR_ND<RT> entangle(){
-    throw new UnsupportedOperationException("Ariadne_TM_SR_ND::entangle not implemented.");
+  public Ariadne_TM_SR_NX<RT> entangle(){
+    throw new UnsupportedOperationException("Ariadne_TM_SR_NX::entangle not implemented.");
   }
 
   public boolean is_mounted(){
@@ -108,7 +108,7 @@ public class Ariadne_TM_SR_ND<RT>{
   // any of the entangled machine writes the tape. Hence, append has a similar
   // affect as other writes.
   public void append_rightmost(RT x){
-    throw new UnsupportedOperationException("Ariadne_TM_SR_ND::entangle not implemented.");
+    throw new UnsupportedOperationException("Ariadne_TM_SR_NX::entangle not implemented.");
   }
 
   // stateful interface
@@ -171,16 +171,16 @@ public class Ariadne_TM_SR_ND<RT>{
       return false;
     }
     @Override public RT read(){
-      throw new UnsupportedOperationException("Ariadne_TM_SR_ND::NotMounted::read.");
+      throw new UnsupportedOperationException("Ariadne_TM_SR_NX::NotMounted::read.");
     }
     @Override public boolean can_step(){
       return false;
     }
     @Override public void step(){
-      throw new UnsupportedOperationException("Ariadne_TM_SR_ND::NotMounted::step.");
+      throw new UnsupportedOperationException("Ariadne_TM_SR_NX::NotMounted::step.");
     }
     @Override public Topology topology(){
-      throw new UnsupportedOperationException("Ariadne_TM_SR_ND::NotMounted::topology.");
+      throw new UnsupportedOperationException("Ariadne_TM_SR_NX::NotMounted::topology.");
     }
   }
   protected final TopoIface<RT> not_mounted = new NotMountedTopo();
@@ -216,18 +216,18 @@ public class Ariadne_TM_SR_ND<RT>{
 
     test.print("::to_string_annotated");
 
-    if(!is_mounted()) return "TM_SR_ND(NotMounted)";
-    if(!can_read()) return "TM_SR_ND(Null)";
+    if(!is_mounted()) return "TM_SR_NX(NotMounted)";
+    if(!can_read()) return "TM_SR_NX(Null)";
 
     // output takes two lines, starting from the left column on each
     StringBuilder data_channel = new StringBuilder("\n");
     StringBuilder control_channel = new StringBuilder("");
     
-    data_channel.append( "TM_SR_ND(" ).append( topology().name()).append("(" );
+    data_channel.append( "TM_SR_NX(" ).append( topology().name()).append("(" );
     control_channel.append( " ".repeat(data_channel.length()-1) );
 
     String element = null;
-    Ariadne_TM_SR_ND<RT> copy = this.entangle();
+    Ariadne_TM_SR_NX<RT> copy = this.entangle();
     if( copy.can_rewind() ) copy.rewind();
 
     Object o = null;
@@ -283,7 +283,7 @@ public class Ariadne_TM_SR_ND<RT>{
   // RT code format style comma separated list
   @Override public String toString(){
 
-    Ariadne_TM_SR_ND<RT> tm = this.entangle();
+    Ariadne_TM_SR_NX<RT> tm = this.entangle();
     if( tm.can_rewind() ) tm.rewind();
 
     if( !tm.can_read() ) return "";

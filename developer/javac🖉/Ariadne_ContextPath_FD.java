@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 
 // LT == Label Type
-public class Ariadne_ContextPath_FD< Ariadne_TM_SR_ND<LT> >{
+public class Ariadne_ContextPath_FD< Ariadne_TM_SR_NX<LT> >{
 
   //----------------------------------------
   // static
@@ -15,7 +15,7 @@ public class Ariadne_ContextPath_FD< Ariadne_TM_SR_ND<LT> >{
   //----------------------------------------
   // Instance data
 
-  private final List< Ariadne_TM_SR_ND<LT> > context_path_list;
+  private final List< Ariadne_TM_SR_NX<LT> > context_path_list;
   private final HashSet<LT> path_member_set;
   private Ariand_Label cycle_node_label;;
 
@@ -42,7 +42,7 @@ public class Ariadne_ContextPath_FD< Ariadne_TM_SR_ND<LT> >{
    * @param tm The traversal state to add.
    * @return true if successfully added, false if it introduces a cycle.
    */
-  public boolean push(Ariadne_TM_SR_ND<LT> tm){
+  public boolean push(Ariadne_TM_SR_NX<LT> tm){
     if( tm == null || !tm.can_read() ){
       return false;
     }
@@ -63,12 +63,12 @@ public class Ariadne_ContextPath_FD< Ariadne_TM_SR_ND<LT> >{
    *
    * @return The removed traversal state, or null if the path is empty.
    */
-  public Ariadne_TM_SR_ND<LT> pop(){
+  public Ariadne_TM_SR_NX<LT> pop(){
     if( context_path_list.isEmpty() ){
       return null;
     }
 
-    Ariadne_TM_SR_ND<LT> last = context_path_list.remove( context_path_list.size() - 1 );
+    Ariadne_TM_SR_NX<LT> last = context_path_list.remove( context_path_list.size() - 1 );
     path_member_set.remove( last.read() );
     return last;
   }
@@ -110,7 +110,7 @@ public class Ariadne_ContextPath_FD< Ariadne_TM_SR_ND<LT> >{
   public String toString(){
     StringBuilder output = new StringBuilder("Ariadne_ContextPath(");
     @SuppressWarnings("unchecked")
-      Ariadne_TM_SR_ND<Ariadne_TM_SR_ND<LT>> tm = Ariadne_TM_SR_ND_Array.make(context_path_list);
+      Ariadne_TM_SR_NX<Ariadne_TM_SR_NX<LT>> tm = Ariadne_TM_SR_NX_Array.make(context_path_list);
     if( tm.can_read() ){
       do{
 
