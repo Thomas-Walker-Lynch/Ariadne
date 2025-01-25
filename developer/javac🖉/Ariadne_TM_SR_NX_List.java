@@ -11,7 +11,7 @@ package com.ReasoningTechnology.Ariadne;
 import java.util.List;
 import java.util.ListIterator;
 
-public class Ariadne_TM_SR_NX_List<RT> extends Ariadne_TM_SR_NX<RT>{
+public class Ariadne_TM_SR_NX_List<RT> extends Ariadne_TM_SR_NX_F<RT>{
 
   // Static methods
   //

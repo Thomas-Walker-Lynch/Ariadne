@@ -1,0 +1,20 @@
+
+<42> ,, ,World ,1000
+TM_SR_NX(SEGMENT( 42        World  1000  )
+                 <dd>|-||e||ddddd||dddd|  
+
+42 ,<>, ,World ,1000
+TM_SR_NX(SEGMENT( 42        World  1000  )
+                 |dd|<->|e||ddddd||dddd|  
+
+42 ,,<> ,World ,1000
+TM_SR_NX(SEGMENT( 42        World  1000  )
+                 |dd||-|<e>|ddddd||dddd|  
+
+42 ,, ,<World> ,1000
+TM_SR_NX(SEGMENT( 42        World  1000  )
+                 |dd||-||e|<ddddd>|dddd|  
+
+42 ,, ,World ,<1000>
+TM_SR_NX(RIGHTMOST( 42        World  1000  )
+                   |dd||-||e||ddddd|<dddd>  

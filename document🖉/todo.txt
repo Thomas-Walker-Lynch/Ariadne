@@ -35,4 +35,14 @@ part of the TestBench.
 
 4 add hash map to graph, lookup on node label pairs to find edge properties.
 
-5. append() method for TM_SR_ND.
+xx 5. append() method for TM_SR_NX. done
+
+
+2025-01-25T14:23:55Z[]
+
+Better to require copy constructor then use make instead of `entangle` `can_rewind` `rewind`.
+I wonder about the wisdom of having `can_rewind` or even `rewind`.  With a cpoy constructor
+the structure bound to must be passed as an argument if the tm is passed as an argument and
+then the function wants to rewind via copy construct ... dunno.
+
+TM_SR_NX

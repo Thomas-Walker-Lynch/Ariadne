@@ -1,4 +1,7 @@
-Tape
+
+See TTCA book for more details about the model. There also exists a reference implementation used as a Lisp iteration library.
+
+Tape 
 
   A 'tape' is a one dimensional discrete space.  Being a discrete space, rather than having points, it has 'cells'.
 
@@ -42,45 +45,55 @@ Singly Linked Tape
   
   A machine with a singly linked tape mounted, can not compute some things that a Turing Machine can, yet, it is a common data structure used in computing. It can be used with forward, irreversible, advance of a program. This is the most common kind actually. If local reversibility is needed, a cache or window can be used for recent values.  The depth of this local memory is an interesting metric.  For macro level reversibility, a system can use checkpoints.
 
----
 
-The Step Right Tape Machine
+  Tape Topology
 
-  This is a conventional iterator for traversing through containers. The items visited
-  during the traversal are as though values in cells on a single linked tape.
+    A tape is a one-dimensional discrete space consisting of "cells." These cells represent the fundamental units of memory that a machine can read from or write to. The set of all cells defines the tape topology, which determines the connectivity and traversal characteristics of the tape.
 
+    Key Characteristics of Tape Topologies
+    1. Stepping Determines Topology:
+       - A machine begins at the leftmost cell when the tape is mounted. Stepping right from this cell reveals the connectivity of the tape. This process is analogous to "shrinking the circle" in topology, where stepping serves as an operation to explore and classify the tape's structure.
 
----------------------------------------
+    2. Single-ended Constraint:
+       - A tape is always single-ended because there is no cell to the left of the leftmost cell. This rules out two-way infinite tapes, as there is no way to step left.
 
-Tape Topology
+    3. Unbroken Connectivity:
+       - The tape is either unbounded (infinite), cyclic (all cells connect into a single cycle), or finite (with distinct leftmost and rightmost boundaries). If stepping reaches a cell that is not connected to any other cell, that cell is the rightmost cell of a finite tape segment.
 
-A tape is a one-dimensional discrete space consisting of "cells." These cells represent the fundamental units of memory that a machine can read from or write to. The set of all cells defines the tape topology, which determines the connectivity and traversal characteristics of the tape.
-
-Key Characteristics of Tape Topologies
-1. Stepping Determines Topology:
-   - A machine begins at the leftmost cell when the tape is mounted. Stepping right from this cell reveals the connectivity of the tape. This process is analogous to "shrinking the circle" in topology, where stepping serves as an operation to explore and classify the tape's structure.
-
-2. Single-ended Constraint:
-   - A tape is always single-ended because there is no cell to the left of the leftmost cell. This rules out two-way infinite tapes, as there is no way to step left.
-
-3. Unbroken Connectivity:
-   - The tape is either unbounded (infinite), cyclic (all cells connect into a single cycle), or finite (with distinct leftmost and rightmost boundaries). If stepping reaches a cell that is not connected to any other cell, that cell is the rightmost cell of a finite tape segment.
-
-Defined Topologies
-
-State	can_read()	can_step()	Notes
-Null	false	false	No cells exist; the machine cannot perform any operation.
-Cyclic	true	true	The machine loops indefinitely, can always read and step.
-Segment	true	true (until rightmost)	Represents a bounded tape; steps until reaching the rightmost cell.
-Infinite Right	true	true	Unbounded cells extend infinitely; can always read and step.
-Rightmost	true	false	At the last cell of a finite segment (or singleton tape).
-
----
-🥳 Cheers to:
-
-A precise loop that doesn’t compromise readability or efficiency.
-An elegant state pattern that aligns with the real-world model.
-The beauty of RT code format guiding clarity and consistency!
+    Defined Topologies
+   
+    State     can_read can_step	Notes
+    Null	false	false	No cells exist; the machine cannot perform any operation.
+    Cyclic	true	true	Stepping visits same sequence of cells repeatedly.
+    Segment	true	true    Sequence leading to, but not including, a rightmost cell
+    Rightmost	true	false	A single cell that can not be stepped right from.
+    Infinite	true	true	Can always step to a cell not yet visited.
 
 
-Callisto
+Tape Machine
+
+  The structure of a tape machine is fixed. It consists of a tape transport for holding and stepping the tape, and a read write head. 
+
+  A tape is 'mounted' on a tape machine.  The tape consists of a series of cells for holding
+  data. The machine writes or reads one cell at a time, the cell that 'the head is over'.  Thus, the data on the tape is variable, and for some specialized application could even be  non-determinstic. Even in the case non-deterministic data, the machine structure remains
+  fixed.
+
+  A tape machine provides five operations:
+
+    write: Writes a value in the tape cell under the head.
+
+    read: Reads a value in the tape cell under the head.
+
+    can_read: True iff a non-empty tape is mounted.
+
+    step: Conceptually moves the head right to the neighbor cell on the tape, though in real tape machines it is the tape that moves. In our examples here, we only support stepping to the right.
+
+    can_step: Tells if the tape can be stepped to the right without running off the end of the tape.
+
+    step_left: not supported by the Ariadne_TM_SR machines (hence the _SR, which means 'Step Right'.)
+
+    can_step_left: not supported, but for machines that doe support it, tells if the tape
+    can be stepped left.
+
+
+

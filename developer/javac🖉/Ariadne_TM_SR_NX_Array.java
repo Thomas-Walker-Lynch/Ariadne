@@ -4,7 +4,7 @@ import java.math.BigInteger;
 import java.util.List;
 
 // RT == read type
-public class Ariadne_TM_SR_NX_Array<RT> extends Ariadne_TM_SR_NX<RT>{
+public class Ariadne_TM_SR_NX_Array<RT> extends Ariadne_TM_SR_NX_F<RT>{
 
   // Static methods
   //

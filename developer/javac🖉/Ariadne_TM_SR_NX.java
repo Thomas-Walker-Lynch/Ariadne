@@ -5,6 +5,13 @@ machine has explicit tracking of the head address.
 BigInteger is used so that it will be possible to bind TM_SR_NX machine extensions
 to file system objects.
 
+It is an interesting question as to whether a TM_SR should support rewind, which
+is similar to stepping left. However, a new machine can always be made from
+the same initial data, and would have its head on the leftmost cell. Hence, the
+effect of adding rewind is to require that the machine keep enough information
+to perform the same function that 'make' originally performed.
+
+
 */
 
 package com.ReasoningTechnology.Ariadne;
@@ -34,14 +41,14 @@ public class Ariadne_TM_SR_NX<RT>{
   //
 
   private int id;
-  Ariadne_Test test = null;
+  protected Ariadne_Test test = null;
   protected TopoIface<RT> current_topology;
   protected BigInteger index;
 
   // constructor(s)
   //
 
-  public Ariadne_TM_SR_NX(){
+  protected Ariadne_TM_SR_NX(){
     id = id_well++;
     test = Ariadne_Test.make("Ariadne_TM_SR_NX::" + id + "::");
     test.switch_test(false);
@@ -97,18 +104,6 @@ public class Ariadne_TM_SR_NX<RT>{
 
   public void rewind(){
     index = BigInteger.ZERO;
-  }
-
-  // Append to rightmost is not considered 'destructive' because the system, including
-  // any entangled machines, remains sound after the operation. I.e. no
-  // machine is broken or has its current read value changed.
-  // However, an entangled machine can detect the end of tape, so a machine
-  // can detect that an append happened. Hence append can affect an algorithm
-  // that is running on an entangled machine, but this can also happen when
-  // any of the entangled machine writes the tape. Hence, append has a similar
-  // affect as other writes.
-  public void append_rightmost(RT x){
-    throw new UnsupportedOperationException("Ariadne_TM_SR_NX::entangle not implemented.");
   }
 
   // stateful interface
@@ -208,106 +203,6 @@ public class Ariadne_TM_SR_NX<RT>{
     }
   }
   protected final TopoIface<RT> topo_null = new NullTopo();
-
-  // good citizen
-  //
-
-  public String to_string_annotated(){
-
-    test.print("::to_string_annotated");
-
-    if(!is_mounted()) return "TM_SR_NX(NotMounted)";
-    if(!can_read()) return "TM_SR_NX(Null)";
-
-    // output takes two lines, starting from the left column on each
-    StringBuilder data_channel = new StringBuilder("\n");
-    StringBuilder control_channel = new StringBuilder("");
-    
-    data_channel.append( "TM_SR_NX(" ).append( topology().name()).append("(" );
-    control_channel.append( " ".repeat(data_channel.length()-1) );
-
-    String element = null;
-    Ariadne_TM_SR_NX<RT> copy = this.entangle();
-    if( copy.can_rewind() ) copy.rewind();
-
-    Object o = null;
-    do{
-
-      o = copy.read();
-
-      if(o == null){
-        data_channel.append( " ".repeat(3) );
-        if( head_on_same_cell(copy) ){
-          control_channel.append("<->");
-        }else{
-          control_channel.append("|-|");
-        }
-      }else if(o.toString().isEmpty()){
-        data_channel.append( " ".repeat(3) );
-        if( head_on_same_cell(copy) ){
-          control_channel.append("<e>");
-        }else{
-          control_channel.append("|e|");
-        }
-      }else{
-        element = o.toString();
-        data_channel.append(" ").append(element).append(" ");
-        if(head_on_same_cell(copy)){
-          control_channel
-            .append("<")
-            .append("d".repeat(element.length()))
-            .append(">");
-        }else{
-          control_channel
-            .append("|")
-            .append("d".repeat(element.length()))
-            .append("|");
-        }
-      }
-
-      if( !copy.can_step() ) break;
-      copy.step();
-
-    }while(true);
-
-    data_channel.append(" )");
-    control_channel.append("  ");
-
-    return 
-      data_channel
-      .append("\n")
-      .append(control_channel)
-      .toString();
-  }
-
-  // RT code format style comma separated list
-  @Override public String toString(){
-
-    Ariadne_TM_SR_NX<RT> tm = this.entangle();
-    if( tm.can_rewind() ) tm.rewind();
-
-    if( !tm.can_read() ) return "";
-
-    StringBuilder output = new StringBuilder();
-    do{
-
-      if( tm.head_on_same_cell(this) ) output.append("[");
-      RT x = tm.read();
-      if( x != null ) output.append(x);
-      if( tm.head_on_same_cell(this) ) output.append("]");
-
-      if( !tm.can_step() ) break;
-
-      tm.step();
-      if( x == null )
-        output.append(",");
-      else
-        output.append(" ,");
-
-    }while(true);
-
-    return output.toString();
-  }
 
 
 }

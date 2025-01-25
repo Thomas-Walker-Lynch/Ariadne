@@ -4,31 +4,57 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+// SiblingContext a tm of graph node labels, that are siblings to a path node, in a tree search
 // LT == Label Type
-public class Ariadne_ContextPath_FD< Ariadne_TM_SR_NX<LT> >{
+public class Ariadne_ContextPath_FD
+  <
+    SiblingContext extends Ariadne_TM_SR_NX<LT> 
+    ,LT extends Ariadne_Label
+    >
+{
 
   //----------------------------------------
-  // static
+  // Static
 
-  ... make ...
+  public static
+    <
+     SiblingContext extends Ariadne_TM_SR_NX<LT> 
+     ,LT extends Ariadne_Label
+     >
+    Ariadne_ContextPath_FD<SiblingContext ,LT> 
+    make()
+  {
+    return new Ariadne_ContextPath_FD<>();
+  }
+
+  public static
+    <
+     SiblingContext extends Ariadne_TM_SR_NX<LT> 
+     ,LT extends Ariadne_Label
+     >
+    Ariadne_ContextPath_FD<SiblingContext ,LT> 
+    make(Ariadne_ContextPath_FD<SiblingContext ,LT> other)
+ {
+    return new Ariadne_ContextPath_FD<>();
+  }
+
 
   //----------------------------------------
   // Instance data
 
-  private final List< Ariadne_TM_SR_NX<LT> > context_path_list;
+  private final List<SiblingContext> context_path_list;
   private final HashSet<LT> path_member_set;
-  private Ariand_Label cycle_node_label;;
+  private LT cycle_node_label;
 
   //----------------------------------------
   // Constructors
-  //
 
-  public Ariadne_ContextPath(){
+  public Ariadne_ContextPath_FD(){
     this.context_path_list = new ArrayList<>();
-    this.path_member_set = new HashSet<>(); 
+    this.path_member_set = new HashSet<>();
   }
 
-  public Ariadne_ContextPath(Ariadne_ContextPath<LT> other){
+  public Ariadne_ContextPath_FD(Ariadne_ContextPath_FD<SiblingContext ,LT> other){
     this.context_path_list = new ArrayList<>( other.context_path_list );
     this.path_member_set = new HashSet<>( other.path_member_set );
   }
@@ -39,21 +65,21 @@ public class Ariadne_ContextPath_FD< Ariadne_TM_SR_NX<LT> >{
   /**
    * Adds a traversal state to the context path.
    *
-   * @param tm The traversal state to add.
+   * @param sibling_context The traversal state to add.
    * @return true if successfully added, false if it introduces a cycle.
    */
-  public boolean push(Ariadne_TM_SR_NX<LT> tm){
-    if( tm == null || !tm.can_read() ){
+  public boolean push(SiblingContext sibling_context){
+    if( sibling_context == null || !sibling_context.can_read() ){
       return false;
     }
 
-    LT label = tm.read();
+    LT label = sibling_context.read();
     if( path_member_set.contains(label) ){
       cycle_node_label = label;
       return false; // Cycle detected
     }
 
-    context_path_list.add(tm);
+    context_path_list.add( sibling_context );
     path_member_set.add(label);
     return true;
   }
@@ -63,12 +89,12 @@ public class Ariadne_ContextPath_FD< Ariadne_TM_SR_NX<LT> >{
    *
    * @return The removed traversal state, or null if the path is empty.
    */
-  public Ariadne_TM_SR_NX<LT> pop(){
+  public SiblingContext pop(){
     if( context_path_list.isEmpty() ){
       return null;
     }
 
-    Ariadne_TM_SR_NX<LT> last = context_path_list.remove( context_path_list.size() - 1 );
+    SiblingContext last = context_path_list.remove( context_path_list.size() - 1 );
     path_member_set.remove( last.read() );
     return last;
   }
@@ -81,15 +107,6 @@ public class Ariadne_ContextPath_FD< Ariadne_TM_SR_NX<LT> >{
    */
   public boolean contains(LT label){
     return path_member_set.contains(label);
-  }
-
-  /**
-   * Creates a copy of the current context path.
-   *
-   * @return A new ContextPath instance with the same state.
-   */
-  public Ariadne_ContextPath<LT> copy(){
-    return new Ariadne_ContextPath<>(this);
   }
 
   /**
@@ -108,32 +125,21 @@ public class Ariadne_ContextPath_FD< Ariadne_TM_SR_NX<LT> >{
    */
   @Override
   public String toString(){
-    StringBuilder output = new StringBuilder("Ariadne_ContextPath(");
-    @SuppressWarnings("unchecked")
-      Ariadne_TM_SR_NX<Ariadne_TM_SR_NX<LT>> tm = Ariadne_TM_SR_NX_Array.make(context_path_list);
+    StringBuilder output = new StringBuilder("Ariadne_ContextPath_FD(");
+    Ariadne_TM_SR_NX_F< SiblingContext > tm = Ariadne_TM_SR_NX_Array.make(context_path_list);
     if( tm.can_read() ){
       do{
-
-        if( tm.head_on_same_cell(this) ){
-          output.append("[Sibling(");
-        } else {
-          output.append("Sibling(");
-        }
+        output.append("Sibling( ");
         output.append( tm.toString() );
-        if( tm.head_on_same_cell(this) )
-          output.append(")]");
-        else
-          output.append(")");
-
+        output.append(" )");
         if( !tm.can_step() ) break;
         tm.step();
         output.append(" ,");
-
       }while(true);
     }
-
     output.append(")");
     return output.toString();
   }
 
 }
+

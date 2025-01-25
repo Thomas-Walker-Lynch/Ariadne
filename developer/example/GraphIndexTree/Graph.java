@@ -1,10 +1,11 @@
 import com.ReasoningTechnology.Ariadne.Ariadne_Label;
 import com.ReasoningTechnology.Ariadne.Ariadne_Node;
-import com.ReasoningTechnology.Ariadne.Ariadne_Graph;
+import com.ReasoningTechnology.Ariadne.Ariadne_Graph_FD;
 
-public class Graph extends Ariadne_Graph<Label ,Node>{
+public class Graph extends Ariadne_Graph_FD<Label ,Node>{
 
-  public static <T extends Ariadne_Label, N extends Ariadne_Node<T>> Graph make(){
+  @SuppressWarnings("unchecked")
+  public static Graph make(){
     return new Graph();
   }
 
