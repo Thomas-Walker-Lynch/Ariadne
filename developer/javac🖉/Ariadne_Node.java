@@ -2,6 +2,8 @@
 A Node potentially has an infinite number of neighbors, in which case its
 neighbor set is defined using a function. See the IndexTree example.
 
+A node extends from HashMap so to facilitate the user in adding his or
+her own properties.
 
 
 */
@@ -17,7 +19,9 @@ public class Ariadne_Node<LT extends Ariadne_Label> extends HashMap<String ,Obje
   // Owned by the class
   //
 
-  public static <T extends Ariadne_Label> Ariadne_Node<T> make(T label){
+  public static 
+  <T extends Ariadne_Label> 
+  Ariadne_Node<T> make(T label){
     return new Ariadne_Node<>(label);
   }
 
@@ -42,6 +46,7 @@ public class Ariadne_Node<LT extends Ariadne_Label> extends HashMap<String ,Obje
     return this.label;
   }
 
+  // the returned machine should have the head on leftmost
   public Ariadne_TM_SR_NX<LT> neighbor(){
     throw new UnsupportedOperationException("Ariadne_Node::neighbor not implemented in the base class.");
   }

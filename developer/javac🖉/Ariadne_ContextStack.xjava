@@ -1,0 +1,186 @@
+/*
+  Node.neighbor() returns a tm full of labels to neighbor nodes. For a node in a tree neighbors are called 'siblings'.
+
+  Each path node (node in a traversal path) comes from either the start list, or a neighbor list.  This is the path node's 'sibling context'.
+
+  The sibling context is important in both breadth first and depth first traversals.
+
+  When the context for each node along a path is put on a stack, the result is the ContextStack.
+
+*/
+
+package com.ReasoningTechnology.Ariadne;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
+public class Ariadne_ContextStack
+  <
+    Label extends Ariadne_Label
+    ,Node extends Ariadne_Node_FD<Label>
+    ,SiblingContext extends Ariadne_TM_SR_NX_F<Label>
+  >
+{
+
+  //----------------------------------------
+  // Static
+
+  public static
+    <
+      Label extends Ariadne_Label
+      ,Node extends Ariadne_Node_FD<Label>
+      ,SiblingContext extends Ariadne_TM_SR_NX_F<Label>
+    >
+    Ariadne_ContextStack<Label ,Node ,SiblingContext>
+    make()
+  {
+    return new Ariadne_ContextStack<>();
+  }
+
+  public static
+    <
+      Label extends Ariadne_Label
+      ,Node extends Ariadne_Node_FD<Label>
+      ,SiblingContext extends Ariadne_TM_SR_NX_F<Label>
+      ,Graph extends Ariadne_Graph_FD<Label, Node>
+    >
+    Ariadne_ContextStack<Label ,Node ,SiblingContext>
+    make(Ariadne_ContextStack<Label ,Node ,SiblingContext> other)
+ {
+    // full form required by the compiler
+    return new Ariadne_ContextStack<Label, Node, SiblingContext, Graph>(other);
+  }
+
+
+  //----------------------------------------
+  // Instance data
+
+  private final List<SiblingContext> context_stack;
+  private final HashSet<Label> path_member_set; // speed up cycle checks
+  private Label cycle_node_label;
+
+  //----------------------------------------
+  // Constructors
+
+  protected Ariadne_ContextStack(){
+    this.context_stack = new ArrayList<>();
+    this.path_member_set = new HashSet<>();
+  }
+
+  protected Ariadne_ContextStack(
+    Ariadne_ContextStack<Label ,Node ,SiblingContext> other
+  ){
+    this.context_stack = new ArrayList<>( other.context_stack );
+    this.path_member_set = new HashSet<>( other.path_member_set );
+  }
+
+  //----------------------------------------
+  // Instance methods
+
+  public enum PushResult{
+    NO_CONTEXT
+    ,CYCLE
+    ,SUCCESS
+  }
+  public boolean push(SiblingContext sibling_context){
+    if( sibling_context == null || !sibling_context.can_read() ){
+      return PushResult.NO_CONTEXT;
+    }
+
+    Label label = sibling_context.read();
+    if( path_member_set.contains(label) ){
+      cycle_node_label = label;
+      return PushResult.CYCLE;
+    }
+
+    context_stack.add( sibling_context );
+    path_member_set.add(label);
+    return PushResult.SUCCESS;
+  }
+
+  public SiblingContext top(){
+    return context_stack.get( context_stack.size() - 1 );
+  }
+
+  public SiblingContext pop(){
+    if( context_stack.isEmpty() ){
+      return null;
+    }
+    SiblingContext popped_top = context_stack.remove( context_stack.size() - 1 );
+    path_member_set.remove( popped_top.read() );
+    return popped_top;
+  }
+
+  public boolean in_path(Label label){
+    return path_member_set.contains(label);
+  }
+
+  /**
+   * Checks if the context path contains the given label.
+   *
+   * @param label The label to check.
+   * @return true if the label is in the path, false otherwise.
+   */
+  public boolean contains(Label label){
+    return path_member_set.contains(label);
+  }
+
+  /**
+   * Returns the size of the context path.
+   *
+   * @return The number of traversal states in the path.
+   */
+  public int size(){
+    return context_stack.size();
+  }
+
+  public enum StepResult{
+    NOT_CANSTEP
+    ,CYCLE
+    ,SUCCESS
+  }
+  StepResult top_step(){
+    if( top() == null || !top().can_step() ) return StepResult.NOT_CANSTEP;
+    top().step();
+    Label node_label = top().read();
+    if( path_member_set.contains(node_label) ){ // cycle found
+      cycle_node_label = node_label;
+      return StepResult.CYCLE;
+    }
+    path_member_set.add(node_label);
+    context_stack.push(s); 
+    return StepResult.SUCCESS;
+  }
+  
+  //----------------------------------------
+  // Good Citizen
+
+  @Override public boolean isEmpty(){
+    return context_stack.isEmpty();
+  }
+
+  /**
+   * Provides a string representation of the context path for debugging.
+   *
+   * @return A string representing the context path.
+   */
+  @Override public String toString(){
+    StringBuilder output = new StringBuilder("Ariadne_ContextStack(");
+    Ariadne_TM_SR_NX_F< SiblingContext > tm = Ariadne_TM_SR_NX_Array.make(context_stack);
+    if( tm.can_read() ){
+      do{
+        output.append("Sibling( ");
+        output.append( tm.toString() );
+        output.append(" )");
+        if( !tm.can_step() ) break;
+        tm.step();
+        output.append(" ,");
+      }while(true);
+    }
+    output.append(")");
+    return output.toString();
+  }
+
+}
+

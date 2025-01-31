@@ -32,11 +32,15 @@ public class Ariadne_Graph<LT extends Ariadne_Label, NT extends Ariadne_Node<LT>
     ,UNKNOWN
   }
 
-  public static < T extends Ariadne_Label, N extends Ariadne_Node<T> > Ariadne_Graph<T, N> make() {
+  public static 
+  < T extends Ariadne_Label, N extends Ariadne_Node<T> > 
+  Ariadne_Graph<T, N> make() {
     return new Ariadne_Graph<>();
   }
 
-  public static <T extends Ariadne_Label, N extends Ariadne_Node<T>> Ariadne_Graph<T, N> make(String name) {
+  public static 
+  <T extends Ariadne_Label, N extends Ariadne_Node<T>> 
+  Ariadne_Graph<T, N> make(String name) {
     return new Ariadne_Graph<>(name);
   }
 

@@ -3,7 +3,7 @@ package com.ReasoningTechnology.Ariadne;
 import java.util.Set;
 import java.util.Iterator;
 
-public class Ariadne_TM_SR_NX_Set<RT> extends Ariadne_TM_SR_NX<RT>{
+public class Ariadne_TM_SR_NX_Set<RT> extends Ariadne_TM_SR_NX_F<RT>{
 
   // Static methods
   public static <RT> Ariadne_TM_SR_NX_Set<RT> make(Set<RT> set){

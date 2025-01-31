@@ -1,13 +1,13 @@
 /*
 A node with a finite fixed set of neighbors.
 
-
 */
 
 package com.ReasoningTechnology.Ariadne;
 
 import java.util.HashSet;
 import java.util.Arrays;
+import java.util.List;
 
 // LT == Label Type
 public class Ariadne_Node_FD<LT extends Ariadne_Label> extends Ariadne_Node<LT>{
@@ -15,41 +15,31 @@ public class Ariadne_Node_FD<LT extends Ariadne_Label> extends Ariadne_Node<LT>{
   // Owned by the class
   //
 
-  @SafeVarargs
-  public static <T extends Ariadne_Label> Ariadne_Node_FD<T> make(T label ,T... neighbors){
-    return new Ariadne_Node_FD<>(label ,neighbors);
-  }
-
   // Data owned by the instance
   //
-
-  private final HashSet<LT> neighbor_set;
 
   // Constructors
   // 
 
-  @SafeVarargs
-  protected Ariadne_Node_FD(LT label ,LT... neighbors){
+  protected Ariadne_Node_FD(LT label){
     super(label);
-    this.neighbor_set = new HashSet<>();
-    if( neighbors != null ){
-      this.neighbor_set.addAll(Arrays.asList(neighbors));
-    }
   }
 
   // Instance interface
   //
   
-  @Override public Ariadne_TM_SR_NX<LT> neighbor(){
-    return Ariadne_TM_SR_NX_Set.make(neighbor_set);
+  @Override public Ariadne_TM_SR_NX_F<LT> neighbor(){
+    throw new UnsupportedOperationException("Ariadne_Node_F::neighbor not implemented in the base class.");
   }
 
   // Good citizen
   //
 
   @Override public String toString(){
-    Ariadne_TM_SR_NX_Set<LT> tm = Ariadne_TM_SR_NX_Set.make(neighbor_set);
+
     boolean has_label = label() != null;
+
+    Ariadne_TM_SR_NX_F<LT> tm = neighbor();
     boolean has_neighbor = tm.can_read();
 
     if( !has_label && !has_neighbor ){

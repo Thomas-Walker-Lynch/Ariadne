@@ -87,3 +87,121 @@
 2025-01-24T10:54:26Z[]
     global substitute in this file _ND -> _NX
 
+2025-01-26T15:35:15Z[]
+
+    Chat GPT explaining why Java is giving a type mismatch error on two identical types.
+    Of course we should give Java a break, as it is a young experimental language.
+
+      Yes, you're absolutely right! The generic bounds at the top of the class declaration guarantee that both GraphType and SiblingContext are tied to the same LabelType. Specifically:
+
+      SiblingContext extends Ariadne_TM_SR_NX_F<LabelType> ensures that SiblingContext is a subtype of Ariadne_TM_SR_NX_F<LabelType>.
+      GraphType extends Ariadne_Graph_FD<LabelType, NodeType> ensures that GraphType is a type of graph using the same LabelType.
+      Thus, conceptually, the cast should always be safe because graph.start() returns a type that satisfies the bounds of SiblingContext. The problem is that Java's type system is not sophisticated enough to understand this guarantee at runtime.
+
+
+     ```
+     public class 
+       Ariadne_Graph_FD
+       < LabelType extends Ariadne_Label ,NodeType extends Ariadne_Node_FD<LabelType> > 
+       extends Ariadne_Graph<LabelType ,NodeType>
+     {
+      ...
+        @Override public Ariadne_TM_SR_NX_F<LabelType> start(){
+          return Ariadne_TM_SR_NX_Array.make(start_list);
+        }
+
+    ```
+
+    ```
+    public class Ariadne_ContextStack
+      <
+        LabelType extends Ariadne_Label
+        ,NodeType extends Ariadne_Node_FD<LabelType>
+        ,SiblingContext extends Ariadne_TM_SR_NX_F<LabelType>
+        ,GraphType extends Ariadne_Graph_FD<LabelType, NodeType>
+      >
+    {
+      ...
+      protected Ariadne_ContextStack(GraphType graph){
+        this.graph = graph;
+        this.context_path = new ArrayList<>();
+        this.context_path.add( graph.start() ); // <--- type mismatch error this line
+        this.path_member_set = new HashSet<>();
+      }
+      
+      ...
+
+      private final List<SiblingContext> context_path;
+
+    ```
+
+    Sure looks to me like graph.start() is said to return the same Ariadne_TM_SR_NX_F<LabelType>, as that accepted by context_path.add(). The two
+    'LabelType' are tied together at the top of the class ContextStack declaration.
+    However the compiler says:
+
+   ```
+    javac🖉/Ariadne_ContextStack.java:72: error: incompatible types: Ariadne_TM_SR_NX_F<LabelType> cannot be converted to SiblingContext
+        this.context_path.add( graph.start() );
+                                          ^
+      where LabelType,SiblingContext are type-variables:
+        LabelType extends Ariadne_Label declared in class Ariadne_ContextStack
+        SiblingContext extends Ariadne_TM_SR_NX_F<LabelType> declared in class Ariadne_ContextStack
+   ```
+
+   This is only one of many type errors that appear to be the same sort of thins.
+   It is a scary proposition to be start correcting the compiler and inserting
+   a bunch of casts.  And which of these casts would be a mistake?
+
+   small variation:
+
+   ```
+  javac🖉/Ariadne_ContextStack.java:74: error: incompatible types: Ariadne_TM_SR_NX_F<LabelType> cannot be converted to SiblingContext
+      SiblingContext s = t;
+   ```
+
+   add insult to injury, it gives a syntax error when a cast is added:
+   ```
+       this.context_path.add( (SiblingContext)graph.start() );
+   ```
+   ```
+     javac🖉/Ariadne_ContextStack.java:77: error: illegal start of type
+      this.context_path.add( (SiblingContext)graph.start() );
+      ^
+   ```
+
+   I thought I was going to be doing graph research, instead I am using
+   my time to learn the quirks of Java. Is it a more valuable activity?
+
+   This works, but issues a warning, which can be surpressed. Great, a
+   language made to patch the main language. Very useful of the main
+   language needs patching:
+
+   ```
+    @SuppressWarnings("unchecked")
+    SiblingContext sc = (SiblingContext) graph.start();
+    this.context_path.add( sc );
+   ```
+
+2025-01-31T07:43:30Z[]
+
+  Suppose class A parent, class B child type. Java does not allow
+  class B to have static methods with the same type signature as
+  static methods in class A.
+
+  This clobbers the factory method pattern because the factory is
+  always called `make`.  
+
+  The 'cure' is to require each class to have a unique factory
+  method name.  Perhaps make_<type>.  So basically like a constructor
+  with 'make_' prepended.  However, statics are already called
+  with their type name, so then a call to make would look like:
+
+     T x = T.make_T();
+
+  Type names tend to be long in Java and there is no type
+  alias facility, so that will surely span more than one line.
+
+  How many times can a person write type the same thing without
+  making an error?  It is a game of 'Simon Says'.
+
+

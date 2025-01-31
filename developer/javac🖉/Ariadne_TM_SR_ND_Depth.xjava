@@ -1,0 +1,169 @@
+/*
+Depth first traversal of a graph.
+
+Descent ends when reaching a cycle or a leaf node.
+
+*/
+package com.ReasoningTechnology.Ariadne;
+
+import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
+
+
+
+//    ,SiblingContext extends Ariadne_TM_SR_NX_Set< HashSet<Label> >
+class TM_SR_NX_Depth
+  <
+    Label extends Ariadne_Label
+    ,Node extends Ariadne_Node_FD<Label>
+    ,Graph extends Ariadne_Graph_FD<Label ,Node>
+    > 
+  extends Ariadne_TM_SR_NX_F<Ariadne_Label>
+{
+
+  // ----------------------------------------
+  // static
+  //
+  <
+    Label extends Ariadne_Label
+    ,Node extends Ariadne_Node_FD<Label>
+    ,Graph extends Ariadne_Graph_FD<Label ,Node>
+  >
+  TM_SR_NX_Depth<Label ,Node ,Graph>
+  make(Graph graph){
+    if(graph == null) return null;
+    if(graph.start() == null) return null;
+    TM_SR_NX_Depth depth = new TM_SR_NX_Depth(graph);
+    return depth;
+  }
+
+  // ----------------------------------------
+  // instance data
+  //
+
+  protected Graph graph;
+  protected Ariadne_ContextStack<SiblingContext ,Label> context_stack;
+  protected Ariadne_ContextStac
+    <
+      
+      SiblingContext
+        
+    > context_stack_tm;
+  protected Label cycle_node_label;
+
+  // ----------------------------------------
+  // constructor
+  //
+
+  protected TM_SR_NX_Depth(Graph graph){
+    graph = graph;
+    context_stack = Ariadne_ContextStack.make();
+    context_stack.push( graph.start() );
+    context_stack_tm = Ariadne_TM_SR_NX_Array.make(context_stack);
+    cycle_node_label = null;
+    extend_down();
+    set_topology(topo_segment);
+  }
+
+  // ----------------------------------------
+  // instance interface implementation
+  //
+
+  public enum BacktrackResult{
+    NO_CONTEXT
+    ,CYCLE
+    ,SUCCESS
+    ,DEPLETED
+  }
+  public BacktrackResult backtrack(){
+    if( isEmpty() ){
+      return BacktrackResult.NO_CONTEXT;
+    }
+
+    do{
+      pop();
+      if( isEmpty() ) return BacktrackResult.DEPLETED;
+      StepResult step_result = top_step();
+      switch( step_result ){
+        case NOT_CANSTEP:
+          continue;
+        case CYCLE:
+          return BacktrackResult.CYCLE;
+        case SUCCESS:
+          return BacktrackResult.SUCCESS;
+        default:
+          throw new UnsupportedOperationException(
+            "Ariadne_ContextStack::backtrack: Unknown result from top_step."
+            );
+      }
+    }while(true);
+  }
+
+  // Typically called after backtracking.
+  // The base node, that the function extends down from, will already be in the path.
+  // Returns true upon finding new read value, false upon finding a cycle.
+  public enum DescendResult{
+    NO_CONTEXT
+    ,LEAF
+    ,CYCLE
+  }
+  public DescendResult descend(){
+    if( isEmpty() ){
+      return DescendResult.NO_CONTEXT;
+    }
+
+    Label node_label = top().read();
+    Node node;
+
+    do{
+      node = graph.node(node_label);
+      if( node == null ){
+        throw new UnsupportedOperationException(
+          "Ariadne_ContextStack::descend: SiblingContext node label not found in the graph."
+          );
+      }
+
+      @SuppressWarnings("unchecked")
+      SiblingContext s = (SiblingContext)node.neighbor(); // this is a downward extension
+      PushResult result = push(s);
+      switch( result ){
+        case CYCLE:
+          return DescendResult.CYCLE;
+        case NO_CONTEXT:
+          return DescendResult.LEAF;
+        case SUCCESS:
+          node_label = s.read();
+          break; // from the switch statement
+        default:
+          throw new UnsupportedOperationException("Ariadne_ContextStack::descend result from push not known to descend.");
+      }
+    }while(true);
+  }
+
+
+  // being a good object citizen
+  //
+  protected class SegmentTopo implements TopoIface<RT>{
+    @Override public boolean can_read(){ return true; }
+    @Override public RT read(){ return (RT) read_value; }
+    @Override public boolean can_step(){ return true; }
+    @Override public void step(){
+      read_value = null;
+    }
+    @Override public Topology topology(){ return Topology.SEGMENT; }
+  }
+  protected final TopoIface<RT> topo_segment = new SegmentTopo();
+
+  protected class RightmostTopo implements TopoIface<RT>{
+    @Override public boolean can_read(){ return true; }
+    @Override public RT read(){ return read_value; }
+    @Override public boolean can_step(){ return false; }
+    @Override public void step(){
+      throw new UnsupportedOperationException("Cannot step from RIGHTMOST topo.");
+    }
+    @Override public Topology topology(){ return Topology.RIGHTMOST; }
+  }
+  protected final TopoIface<RT> topo_rightmost = new RightmostTopo();
+
+}

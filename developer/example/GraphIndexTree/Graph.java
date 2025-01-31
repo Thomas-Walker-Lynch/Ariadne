@@ -1,8 +1,8 @@
 import com.ReasoningTechnology.Ariadne.Ariadne_Label;
 import com.ReasoningTechnology.Ariadne.Ariadne_Node;
-import com.ReasoningTechnology.Ariadne.Ariadne_Graph_FD;
+import com.ReasoningTechnology.Ariadne.Ariadne_Graph;
 
-public class Graph extends Ariadne_Graph_FD<Label ,Node>{
+public class Graph extends Ariadne_Graph<Label ,Node>{
 
   @SuppressWarnings("unchecked")
   public static Graph make(){
