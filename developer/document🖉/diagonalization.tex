@@ -1,4 +1,4 @@
-% Copyright (C) 2025 Thomas Walker Lynch
+% Copyright (C) 2025 Thomas Walker Lynch All Rights Reserved
 \documentclass{article}
 \usepackage[english,iso]{isodate} 
 \usepackage{booktabs}
@@ -34,7 +34,7 @@
 	
 	The initial setup requires using the inverse of a 'representation function' to express each number in the enumeration as a sequence of symbols called its 'representation'. A table is then constructed such that each representation is placed on a row, while each symbol of the representation is placed in a column.  For a not too long bounded enumeration the table can be explicitly constructed; otherwise the table is described using mathematical abstraction. 
 	
-	After the initial setup, a step by step algorithm instructs the construction of a symbol sequence not to be found in the table.  This 'exception sequence'  is to be constructed symbol by symbol. It is possible that the exception sequence is commense with a fixed symbol sequence prefix, but for now we will consider the case of no such prefix.  
+	After the initial setup, a step by step algorithm instructs the construction of a symbol sequence not to be found in the table.  This 'exception sequence'  is to be constructed symbol by symbol. The exception sequence can begin with a predefined prefix, but for now, we will consider the case of an empty prefix.  
 	
 	Starting at iteration step 0, the algorithm reads the first symbol on the diagonal, i.e. the one located at row \(0\) and column \(0\). This symbol is given to a 'symbol altering function'.  This function is given a single symbol and returns a different symbol. The new symbol output from the symbol altering function is appended to the exception sequence. In some formulations of the algorithm, the exception sequence might not be empty, but for our purposes in this section, we will assume that the initial exception sequence is empty, so in step \(0\) it is given a first symbol, and this symbol is different than the symbol found for the row \(0\) symbol sequence first symbol.  Continuing in this manner, at step \(n\) the symbol appended to the exception sequence will differ at symbol \(n\) from the row  \(n\) sequence symbol \(n\). Thus by inductive reasoning this algorithm will produce a symbol sequence not found in the table.
 	
@@ -42,7 +42,7 @@
 	
 	Finally, given that each symbol sequence, according to the representation function, represents a distinct number, the conclusion of the inductive phase implies that the exception sequence represents a distinct number from those found in the rows of the table. The one to one constraint placed on the representation function can be relaxed, as the rows of the table actually need not be distinct. Rather the only true requirement is that the exception sequence be different than all the rows.
 	
-	Cantor's algorithm is often introduced with demonstration shows that an enumeration of numbers with fraction digits, say of the form \(1.xxxxx...\) fails to be exhaustive, proving that the set of real numbers between 1 and 2 is uncountable. However, a more structured presentation of the method would first apply Cantor’s algorithm to the \textbf{sequence of Natural Numbers} to demonstrate what a failure to produce an exception looks like.  Hence in this section we will examine the an exhaustive enumeration of the binary Arabic representation symbol sequences for the \textbf{Natural Numbers},and demonstrate that the construction of a sequence from the diagonal fails to be exceptional.
+	Cantor's algorithm is often introduced with demonstration shows that an enumeration of numbers with fraction digits, say of the form \(1.xxxxx...\) fails to be exhaustive, proving that the set of real numbers between 1 and 2 is uncountable. However, a more structured presentation of the method would first apply Cantor’s algorithm to a sequence of Natural Numbers to demonstrate how it fails to produce an exception.  Hence in this section we will examine the an exhaustive enumeration of the binary Arabic representation symbol sequences for the \textbf{Natural Numbers},and demonstrate that the construction of a sequence from the diagonal fails to be exceptional.
 	
 	The table below illustrates an enumeration of the \textbf{Natural Numbers} in binary form. \textbf{Zero is included} in this definition so that arithmetic retains an additive identity. The bits on the diagonal are given to a symbol altering function and appended to an initially empty exception sequence, in a step by step manner. 
 	
@@ -69,17 +69,17 @@
 			&       &       &  &  &  &  & . \\
 			&       &       &  &  &  &  & . \\
 		\end{tabular}
-		\caption{Step by Step, Diagaonal Prefix}
+		\caption{Step by Step, Diagonal Prefix}
 		\label{tab:natural_numbers}
 	\end{table}
 
 	The number of symbols used to represent a number in Arabic representation, i.e. the length of a number, is logarithmically proportional to the value of the number being represented. This can be seen in the table above by noting the location of the leftmost bit in each row of the table, and how it only slowly occupies a more leftward digit position when walking down the table. In contrast, the diagonal grows in length linearly when stepping down the table. Consequently, once the diagonal departs from the length of a represented number, it will be forevermore in the land of zero symbols.
 	
-	For a binary string, the only function that always alters a bit, is the bit flip function.  When given a \(0\) it returns a \(1\), and when given a \(1\) it urns a \(0\). If a number representation has a \(0\) in bit position \( i \), then flipping that bit will add \( 2^i \) to the number, thus producing a different number. Conversely, if a number representation has a \( 1 \) in bit position \( i \), flipping the bit will subtract \( 2^i \). In either case, the resulting number is different than the given number.
+	For a binary string, the only function that always alters a bit, is the bit flip function.  When given a \(0\) it returns a \(1\), and when given a \(1\) it returns a \(0\). If a number representation has a \(0\) in bit position \( i \), then flipping that bit will add \( 2^i \) to the number, thus producing a different number. Conversely, if a number representation has a \( 1 \) in bit position \( i \), flipping the bit will subtract \( 2^i \). In either case, the resulting number is different than the given number.
 
 	Thus, it seems that we have all the prerequisites necessary for constructing an exception number, as we have an enumeration of the numbers, digit by digit, in a table. We have a definition for the diagonal, and we have a function that produces a number that is unique to the table discovered thus far, as we walk down it step by step. It would seem then, by induction, we should be able to produce an exception to the enumeration of Natural Numbers. 
 	
-	For step \(0\) the initial case, on row \(0\), the column zero digit is \(0\) so that is flipped to to get \(1\).  As Cantor promised, this makes the diagonal different from the number in row zero; however, this exception number prefix is identical to the number in the next row, row 1. Stepping down to row 1, we rectify this problem by flipping the row 1 column 1 bit, and appending that to the exception number, yielding an exception number prefix of \(11\). The diagonal prefix is now indeed different from the row \(0\) number, and different from the row 1 number, but alas, it is now identical to the row 3 number. So as we proceed step by step we find the following values:
+	The iteration phase begins at step \(0\) while focusing on row \(0\) column \(0\), where the table entry is found to be \(0\). This bit is flipped and \(1\) is appended to the currently empty exception number.  As Cantor promised, this makes the exception number prefix different from the number in row zero; however, this exception number prefix is identical to the number in the next row, row \(1\). Stepping down to row \(1\), we rectify this problem by flipping the row 1 column 1 bit, and appending that to the exception number, yielding an exception number prefix of \(11\). The exception prefix is now indeed different from the row \(0\) number, and different from the row \(1\) number, but alas, it is now identical to the row \(3\) number. So as we proceed step by step we find the following values:
 	
 	
 	\begin{table}[H]
@@ -132,17 +132,17 @@
 	
 	\[n = x + y\]
 	
-	Accordingly, when \(n = 0\), \(x\) and \(y\) must be \(0\). When \(n\) is a non-zero number, \(x\) will range from \(0\) to \(n\), while \(y\) takes on the value \(n - x\) at each step. Due to both the diagonal index and the shell having to be numerated, this will take \(t^2\) number of steps, each step visiting a single pair, and t is the step index.  And it must be this way because the area of the triangle that results from adding multiple diagonals is size \(1/2 x^2\).
+	Accordingly, when \(n = 0\), \(x\) and \(y\) must be \(0\). When \(n\) is a non-zero number, \(x\) will range from \(0\) to \(n\), while \(y\) takes on the value \(n - x\) at each step. Due to both the diagonal index and the shell having to be enumerated, the enumeration will take \(t^2\) number of steps, where \(t\) is the step counter. Each step will visit a single pair.  And it must be this way because the area of the triangle that results from adding multiple diagonals is size \(1/2 x^2\).
 	
  	Another approach is to enumerate in rectangular shells, with the following traversal function:
  	
  	\[max(x, y) = n\]
  	
- 	Here \( x \) will range from \( 0 \) to \( n \) while \( y \) is \( n \),  and \( y \) will range from \( 0 \) to \( n-1 \) while $x$ is \( n \).  The reason for \( y \) stopping one short is to not repeat the point \( <n, n> \).  The shell iteration also requires \(t^2\) number of single pair steps.  And it must be this way because the area of the square that results from adding multiple shells is size \(x^2\).
+ 	First, \( x \) will range from \( 0 \) to \( n \) while \( y \) remains at \( n \). Then, \( y \) will range from \( 0 \) to \( n − 1 \) while \( x \) stays fixed at \( n \). The reason for \( y \) stopping one short is to not repeat the point \( <n, n> \).  The shell iteration also requires \(t^2\) number of single pair steps.  And it must be this way because the area of the square that results from adding multiple shells is size \(x^2\).
  
    	\subsection{Index Tree}
 
-   In a sense an index tree also have two free variables, that of depth and breadth, say \(d\) and \(b\).  There is a difference however. On a grid, each successive \(x\) value exposes on unbounded \(y\) sequence. For a tree where ever node has an unbounded number of children,  each successive \(d\) value exposes an unbounded number unbounded sequences, because an unbounded number of children each have an unbounded number of grand children.  Thus, while enumerated area of on a grid grows with the square with the addition of each diagonal, the area enumerated by an Index Tree grows exponentially.  The first difference of a quadratic is a constant value, so on a grid each diagonal grows in length by a constant.  The first difference of an exponential is \(e^{n+1} - e^n) = e^n( e - 1)\) Hence, for the Index Tree each diagonal also grows in size exponentially.
+   In a sense an index tree also has two free variables, that of depth and breadth, say \(d\) and \(b\).  There is a difference however. On a grid, each successive \(x\) value exposes one unbounded \(y\) sequence. For a tree where ever node has an unbounded number of children,  each successive \(d\) value exposes an unbounded number of unbounded sequences. This is because each of an unbounded number of children  have an unbounded number of grand children.  Thus, while enumerated diagonals or shells of on a grid, the area covered, as measured by the number of points visited, grows with the square of the diagonal or shell count. In contrast the area covered by an Index Tree grows exponentially with count of diagonals included.  The first difference of a quadratic is a constant value, so on a grid each diagonal grows in length by a constant.  The first difference of an exponential is \(e^{n+1} - e^n) = e^n( e - 1)\) Hence, for the Index Tree each successive diagonal grows in length exponentially.
    
    A diagonal traversal for enumerating the labels of the index tree step by step has been implemented in Java and is available at \url{https://github.com/Thomas-Walker-Lynch/Ariadne/tree/examples_1.0}.  Here are the first four diagonals.
    
@@ -257,9 +257,9 @@
 
  	Here the row \(0\) function has no domain, nor range.  It is the null function.  The row 1 function has only \(0\) in its domain, and the function defined at that point is \(0\). Looking further down the table for another example, row \(10\) is defined for the domain \({0, 1, 2}\) with \(F(0)=0\), \(F(1)=1\), and \(F(2)=0\).  Coverage of the domain indeed grows very slowly, but any bound chosen for the domain will eventually be passed.  With an unbounded table, the domain is unbounded.  Furthermore as every node in the Index Tree is eventually traversed, for an unbounded function, all single argument Functions over the Natural Numbers will be found in the table.
  	
- 	We find a similar situation as for the enumeration of Natural Numbers in that the diagonal grows faster than the sequences. Each diagonal calls for descent from the prior diagonal, and this increases the length of the sequences by one. However, each diagonal grows exponentially in length, and is then enumerated, essentially folding it down the table. Consequently the increasing length of 1 is seen exponentially further down the table. This means the maximum sequence length is growing logarithmically.  Where as when we enumerated the Natural Numbers this caused the diagonal to fill with zeros, here the diagonal is going to fill with null values due to the domain not being defined.  
+ 	We find a similar situation as for the enumeration of Natural Numbers in that the diagonal grows faster than the sequences found in the rows. Each diagonal step begins with a descent from the prior diagonal, where this descent increases the length of the member sequences in the new diagonal by one. Also each diagonal grows exponentially in length, so each successive diagonal appears exponentially further down the enumeration of sequences table. This means the maximum sequence length is growing logarithmically.  When we enumerated the Natural Numbers this same disparity in growth caused the diagonal to fill with zeros, here the diagonal will fill with null values while it ventures beyond the region for which the function domain is defined. Undefined areas are shown as blank in above table.
  	
- 	Cantor's diagonal exception generating algorithm requires only defining one among all the possible digit altering functions while walking down the table.  So let us propose this one:  If the domain is not defined for the column, that the exception function value becomes 0 for that domain point. If the domain is defined, then the exception function value for that domain point will be \(1\) plus the row function value at that point.  In this manner the exception function value will differ from each row function in row \(n\) for the domain value of \(n\).  Below is a table of exception function prefixes.
+ 	In this scenarior, Cantor's exception generating algorithm requires choosing only one among all the possible digit altering functions  So let us propose this one:  If the domain value is not accepted by the row function, then the exception function becomes 0 for that domain value. If the domain value is accepted by the row function, then the exception function value for that domain value will be \(1\) plus the row function value.  In this manner the exception function value will differ from each row \(n\) function, \(F_n\) for the domain value of \(n\).  Below is a table of the resulting exception function prefixes.
  	
  	\begin{table}[H]
  		\centering
@@ -277,7 +277,7 @@
  		\label{tab:exception_prefixes}
  	\end{table}
  	
-    Note, the row \(0\) exception function prefix is found in row \(1\) of the table.  The row \(1\) exception function prefix is found in row 2 of the table. The row \(2\) prefix is found in row \(4\). In general the \(n\)th prefix is found in row \(2^n\).  Hence the diagonal method fails to create an exception to this enumeration of the functions over the Natural Numbers.
+    Note, the row \(0\) exception function prefix is found in row \(1\) of the table. The row \(1\) exception function prefix is found in row 2 of the table. The row \(2\) prefix is found in row \(4\). In general the \(n\)th prefix is found in row \(2^n\).  Hence the diagonal method fails to create an exception to this enumeration of the functions over the Natural Numbers.
     
     
  	
